@@ -11,5 +11,7 @@ BEGIN {
 use Math::Simple;
 
 ok(add(5, 7) == 12);
+ok((add 5, 7) == 12);
 ok(subtract(5, 7) == -2);
+ok((subtract 5, 7) == -2);
 
