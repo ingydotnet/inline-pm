@@ -9,35 +9,26 @@ sub import {
     my ($class, $language, $source, %args) = @_;
     my $package = caller;
     my $version;
-    {no strict 'refs'; $version = ${$package . "::VERSION"}}
+    {no strict 'refs'; $version = ${"${package}::VERSION"}}
 
     if ($class eq 'Inline' and $language eq 'C' and
 	defined $args{NAME} and $args{NAME} eq $package and
 	defined $args{VERSION} and $args{VERSION} eq $version
        ) {
-	dynaload($package, $version, $args{NAME}) 
+	dynaload($package, $version);
     }
-    else {    
+    else {
 	require Inline::devel;
 	goto &import_devel;
     }
 }
 
 sub dynaload {
-    my ($package, $version, $name) = @_;
     require DynaLoader;
-    @Inline::ISA = qw(DynaLoader);
-
-    eval <<END;
-	package $package;
-	push \@$ {package}::ISA, qw($name)
-          unless \$name eq "$package";
-        local \$$ {name}::VERSION = '$version';
-
-	package $name;
-	push \@$ {name}::ISA, qw(Exporter DynaLoader);
-	${name}::->bootstrap;
-END
+    my ($package, $version) = @_;
+    no strict 'refs';
+    push @{"${package}::ISA"}, qw(DynaLoader);
+    $package->bootstrap;
     croak "Couldn't dynaload Inline based module $package.\n$@" if $@;
 }
 
