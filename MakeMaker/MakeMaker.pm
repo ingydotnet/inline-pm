@@ -33,6 +33,9 @@ sub postamble {
 
 pure_all :: $object.inl
 
+inline_dist :
+	perl -e 'die "foo"'
+
 END
 }
 
@@ -85,10 +88,10 @@ END
     }
 
     # Provide a convenience rule to clean up Inline's messes
-    $args{clean} = { FILES => "_Inline $object.inl" } 
+    $args{clean} = { FILES => "_Inline $object.inl _bootstrap" } 
     unless defined $args{clean};
     # Add Inline to the dependencies
-    $args{PREREQ_PM}{Inline} = '0.41' unless defined $args{PREREQ_PM}{Inline};
+    $args{PREREQ_PM}{Inline} = '0.50' unless defined $args{PREREQ_PM}{Inline};
 
     &ExtUtils::MakeMaker::WriteMakefile(%args);
 }
@@ -96,15 +99,15 @@ END
 1;
 __EOCODE__
 
+#==============================================================================
 sub mkdir_or_die {
     my ($dir) = @_;
     -d $dir or mkdir($dir) or die "Couldn't mkdir('$dir'): $!";
 }
 
-mkdir_or_die('Inline');
-mkdir_or_die('Inline/MakeMaker');
+mkdir_or_die('_bootstrap');
 
-my $bootstrap_pm = "Inline/MakeMaker/Bootstrap.pm";
+my $bootstrap_pm = "_bootstrap/makemaker.pm";
 open(BOOTSTRAP, ">$bootstrap_pm") or die "Couldn't open $bootstrap_pm: $!";
 print BOOTSTRAP $bootstrap_code;
 close(BOOTSTRAP);
