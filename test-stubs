@@ -41,6 +41,14 @@ sub run_releaseversion_tests {
     -e $tarball_name and system_or_die "rm $tarball_name";
     system_or_die "make dist";
     -e $tarball_name or die "No tarball!";
+
+    my $untar_to_dir_name = '../dist';
+    mkdir $untar_to_dir_name or die;
+    chdir $untar_to_dir_name or die;
+
+    my $bootstrap_pm_name = 'Inline/MakeMaker/Bootstrap.pm';
+    -e $bootstrap_pm_name or die "No $bootstrap_pm_name";
+    system_or_die "rm -rf $untar_to_dir_name";
 }
 
 sub start_over {
