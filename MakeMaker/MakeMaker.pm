@@ -1,4 +1,8 @@
 package Inline::MakeMaker;
+
+my (undef, $bootstrap_code) = (<<__EOVIMTRICK__, <<'__EOCODE__');
+__EOVIMTRICK__
+package Inline::MakeMaker;
 use strict;
 use Carp;
 use Config;
@@ -88,5 +92,23 @@ END
 
     &ExtUtils::MakeMaker::WriteMakefile(%args);
 }
+
+1;
+__EOCODE__
+
+sub mkdir_or_die {
+    my ($dir) = @_;
+    -d $dir or mkdir($dir) or die "Couldn't mkdir('$dir'): $!";
+}
+
+mkdir_or_die('Inline');
+mkdir_or_die('Inline/MakeMaker');
+
+my $bootstrap_pm = "Inline/MakeMaker/Bootstrap.pm";
+open(BOOTSTRAP, ">$bootstrap_pm") or die "Couldn't open $bootstrap_pm: $!";
+print BOOTSTRAP $bootstrap_code;
+close(BOOTSTRAP);
+
+require $bootstrap_pm;
 
 1;
