@@ -1,0 +1,66 @@
+On 25/08/01 12:52 -0400, Ken Williams wrote:
+> Hiya,
+> 
+> Brian keeps encouraging me to get on the Inline train, so here I am. =)
+
+Welcome.
+
+> I'm wondering whether there's a better way to embed C data structures
+> inside Perl data structures.  I don't need to access them from Perl
+> (I'm using Inline wrappers for that), so I don't think Inline::Struct
+> is the ticket.  So far I have this hacky method:
+
+Ken,
+
+I'm afraid I couldn't figure out exactly where you were coming from. My
+guess is that you are looking for a more memory efficient way to store a
+lot of numbers. I cooked up a little example of how you might want to
+implement your own array of doubles. It uses tie, which makes things a
+lot cleaner. It also avoids malloc which is generally a bad idea to mix
+in with Perl API calls. (Just use a new SV for your struct buffer and
+inherit all the ease of use that SV's provide) Here's what I came up
+with. (It's oversimplified for general use, but you'll get the idea)
+
+--8<--
+package main;
+
+tie @foo, "Double::Array";
+
+$foo[5] = 10.5;
+print $foo[5], "\n";
+print $foo[6], "\n";
+
+#####################################################
+package Double::Array;
+
+use Inline C;
+
+__DATA__
+__C__
+
+SV* TIEARRAY(char* class) {
+    SV* obj_ref = newSViv(0);
+    SV* obj = newSVrv(obj_ref, class);
+    SvUPGRADE(obj, SVt_PV);
+    return obj_ref;
+}
+
+double STORE(SV* self, int index, double value) {
+    SV* obj = SvRV(self);
+    double* array_ptr = (double*)SvGROW(obj, (index + 1) * sizeof(double));
+    return *(array_ptr + index) = value;
+}
+
+double FETCH(SV* self, int index) {
+    SV* obj = SvRV(self);
+    double* array_ptr = (double*)SvPVX(obj);
+    if (index >= SvLEN(obj) / sizeof(double))
+        croak("Double::Array index [%d] exceeds bounds", index);
+    return *(array_ptr + index);
+}
+--8<-- 
+
+BTW, It's generally better to send a working example to the mailing
+list, than just parts of code. Let me know if this helps.
+
+Cheers, Brian

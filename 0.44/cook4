@@ -1,0 +1,41 @@
+
+I'm really not an XS guru, so I love the way I can do fast things in C
+with Inline.  Here's a much simplified version of today's problem:
+
+#!/usr/bin/perl
+
+use Inline C => 'DATA';
+
+$n = 100;                        # int i, n = 100;
+
+                                 # int **matrix = calloc(n, sizeof(int *));
+@matrix = ( [ (0) x $n ] ) x $n; # matrix[0] = calloc(n*n, sizeof(int));
+                                 # for(i = 1 ; i < n ; i++) {
+                                 #   matrix[i] = matrix[0] + (i * n);
+                                 # }
+
+# do other stuff to fill up @matrix with real, non-zero values.
+
+invert(@matrix, $n);             # invert(&matrix, n)
+
+__DATA__
+
+void invert(int ***matrix, n) {
+
+  int i, j;
+  for(i = 0 ; i < n ; i++) {
+    for(j = 0 ; j < i ; j++) {
+      *matrix[i][j] = *matrix[j][i];
+    }
+  }
+}
+
+Now, obviously this doesn't work quite right ("Warning. No Inline C
+functions bound to Perl") since I don't have a typemap for int *** ... but
+is it worse than that?  Am I going to have to pollute my C code with lots
+of SV* manipulations?
+
+Thanks for what I'm sure is a FAQ (but isn't in the Cookbook - how do I
+make my own typemaps?)
+
+-Aaron

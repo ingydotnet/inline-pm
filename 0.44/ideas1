@@ -1,0 +1,196 @@
+I've now spent several hours reading and playing around Inline::* .
+Here are several questions I had as I went along, whose answers I could not easily find.
+Here the questions are, with draft answers i made up after perusing the code.
+
+WARNING-- there is some sarcasm below. No hard feelings;
+this is to prompt a proper replacement answer and for entertainment value.
+Also, i'm sure some of these answers are wrong, and probably many
+of them will be wrong in the future as Inline improves.
+
+Feel free to incorporate this contribution in whatever permanent faq you like.
+
+-mda
+
+Q: What is this "C => Config => Name => 'Foobar'" idiom?
+
+A: It looks odd, but this is acceptable perl. It just makes a flat list. The
+only difference between "=>" and "," is that the token on the left is automatically
+quoted, which is convenient here. You don't have to have an even number of
+elements, as in "Config => TYPEMAPS => 'typemap'". See "perldoc perldata".
+
+Q: How does Inline deal with =pod or #ifdef or other complicated C cruft?
+Will it expand macros or typedefs? Will it follow #includes?
+
+A: First off, you should understand that your Inline'd C code is used twice: 
+in the "parse" phase, when Inline is trying to automatically find functions for which
+to make XS glue, and in the "compile" phase, when it is creating a .dll/.so.
+For C, it uses a simple C grammar for the parse phase, while for the compile phase,
+it of course uses a real C compiler.
+(For languages more introspective than C and C++, it can use the real compiler for both
+phases.)
+
+You can see the C grammar at Inline/C/grammar.pm; it looks roughly like this:
+
+  code: part*
+  part: comment | function_definition | function_declaration | anything_else
+  comment: cxx_comment | c_comment
+  cxx_comment: m{\s* // [^\n]* \n }x
+  c_comment: m{\s* /\* (?:[^*]+|\*(?!/))* \*/  ([ \t]*)? }x
+  function_definition: rtype IDENTIFIER '(' <leftop: arg ',' arg>(s?) ')' '{'
+  function_declaration: rtype IDENTIFIER '(' <leftop: arg_decl ',' arg_decl>(s?) ')' ';'
+  rtype: TYPE star* | modifier* TYPE star*
+  arg: type IDENTIFIER | '...'
+  arg_decl: type IDENTIFIER* | '...'
+  type: TYPE star*
+  modifier: 'unsigned' | 'long' | 'extern'
+  star: '*'
+  IDENTIFIER: /\w+/
+  TYPE: /\w+/
+  anything_else: /.*/
+
+Note that the grammar does not understand comments inside a function_declaration.
+Note also the simplistic grammar for rtype, which is why static functions are not matched.
+
+The grammar for C++ in Inline/CPP/grammar.pm is completely independent of
+that for C.
+For example, it currently matches both declarations and definitions regardless of
+AUTOWRAP. Also, Inline::CPP is smarter about structs than Inline::C.
+Maybe eventually someone will capitalize on the fact that C and C++ are related.
+
+By default, Inline will just match the grammar against the literal text you provide
+(either directly or in the contents of the file whose name you specify). This means:
+
+  it will not expand #includes
+  it will not obey #ifdef's or =pod but will look at every line outside of C or C++ comments
+  it will not expand #define macros
+  it will not try to understand typedefs
+
+Of course, the compile phase will act like a real compiler.
+
+Q: But maybe I want my C code to be processed before parsing?
+
+A: The above default behavior might work fine if you are writing your
+own code from scratch, or hand writing your perl-C interface code, but it is
+often not so useful if you are attempting to use already existing C code.
+
+You can provide a list of FILTERS to apply before the parse phase is done:
+
+    use Inline C => $code, FILTERS => ['Strip_POD', \&MyFilter, 'Preprocess' ];
+
+If a filter is a string such as 'foobar', then there has to be a function Inline::Filters::foobar.
+Otherwise you can provide a CODE ref. If you supply a CODE ref, it should take a single argument
+of $code, and return a modified version of it. (Functions in Inline::Filters are objects which
+take a filter($ilsm,$code) method, but that is hidden from you.)
+
+Filters are run in order, chained to each other (output of one becomes input to the next).
+
+Note that the filter result is used *both* in the parse phase and in the compile phase.
+This is generally a good thing, for example you would want to remove pod documentation your C code
+for both phases. It does mean that if you run the C preprocessor as a filter, then it
+will get run again in the compile phase.
+
+Note also that the 'Preprocess' filter uses this command:
+
+ $Config{cpprun},
+ $Config{cppflags},
+ "-I$Config{archlibexp}/CORE",
+ @{$ilsm->{ILSM}{MAKEFILE}{INC}||[]}
+
+which excludes CCFLAGS and OPTIMIZE (not to mention ignoring CC). So the result
+may not match what the compiler does in the compile phase.
+
+Q: But even with preprocessing, Inline won't deal with typedefs will it?
+
+A: Not unless you provide a filter which does that. Inline uses a string match
+on whatever type name is given in the function declaration, and looks that up
+in the typemap file. Sometimes, most of the time this is a good thing, because
+you often don't want to treat all char* typedefs the same way, for example.
+(Note that SWIG has support for a typedef declaration.)
+
+Q: Why isn't the Inline::Filters module part of the base Inline distribution?
+
+A: Because Brian Ingerson and Neil Watkiss are different people, and
+it isn't like they work for the same company, so that coordination would be easy.
+
+Q: What does AUTOWRAP do?
+
+A: No, this option does not wrap long lines. Rather, it makes the builtin C parser
+look for function *declarations*, in addition to function *definitions*.
+The same grammar is used; it is just that more is taken from it.
+Oh, and currently Inline::CPP always takes declarations, regardless of AUTOWRAP.
+
+Q: Why is the C++ module called Inline::CPP instead of Inline::CXX or Inline::CC?
+
+A: People who have spent too much time with Microsoft development tools tend
+to think of CPP as a file suffix, not as the C preprocessor. Not that this is
+any kind of an excuse.
+
+Q: How do I get my #define's, const variables, and enum's automatically converted
+to perl constants?
+
+A: You don't, at least not with Inline. You could try SWIG.
+
+Q: How does Inline interpret foobar(int* x)? As an array of int? An output parameter?
+What about baz(Something* x)? Is this treated as an output returning Something, or
+an input pointer to a Something struct? What is char** argv?
+
+A: Inline just uses the typemap (Perl's builtin one, plus any you provide).
+(Note that Perl's typemap defines "char **"; it is the only double star type, which
+is why it is treated differently.)
+Inline doesn't do anything at all about input vs. output,
+or const argument declarations. (For example, there is nothing like SWIG's 
+mechanisms for noting INPUT, OUTPUT, or BOTH parameters.)
+You can manually create wrapper functions if you like. Isn't that fun?
+
+Q: Are Inline's typemaps anything like SWIG's typemaps?
+A: No, Inline uses typemap files formatted like Perl's. SWIG has a different
+(cross-language) syntax.
+
+Q: What sort of protection is there against passing the wrong number of arguments,
+or the wrong type of arguments, or undef, to some C function?
+
+A: XS will verify that the number of arguments is correct (unless ellipses are used).
+XS will also verify that the type of arguments is correct. Of course, your C program
+can still crash, by making assumptions about the value within the range of the
+type, or doing bad things with free or malloc, etc.
+The Inline module does not support constraint declarations, like SWIG.
+
+Q: Is there an easy way to map C++ exceptions to perl exceptions? 
+
+A: You mean like in SWIG? No, nothing right now.
+
+Q: Is there an easy way to map C return codes to perl exceptions?
+
+A: You could do this by a typemap for a typedef'd return type. I think.
+
+Q: Is there a way to get Inline to automatically generate tracing code whenever
+I cross a language boundary?
+
+A: That would be nice, wouldn't it?
+
+Q: Can I specify string contents or a hash data structure instead of a filename for TYPEMAPS?
+
+A: No. It has to be a filename. Of course internally it is parsed into a data
+structure (see Inline::C::get_types()).
+
+Q: Why is "TYPEMAPS" plural?
+
+A: The value has to be a scalar filename value, not an array ref.
+However, you can repeat the option, in which case it adds it to a list of typemaps
+(that is, it is internally stored as an array ref).
+Ultimately these are added as -typemap arguments to xsubpp.
+Note that the "typemap" file in your perl distribution is always used
+regardless of what you do.
+
+Q: If I specify a relative path for the filename value of C or TYPEMAPS,
+what is it relative to?
+
+A: It is relative to the current working directory; this might *not*
+the directory your perl module is in, unless you arrange for it to be.
+
+Q: Is using AUTO_INCLUDE the same as if I put an "#include" in my C code?
+
+A: Yes, right after the builtin includes for perl and Inline. So the
+AUTO_INCLUDE option is really only useful if you have multiple uses of Inline
+sharing a single configuration.
+

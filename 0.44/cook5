@@ -1,0 +1,80 @@
+OK,
+
+I read perlguts.  I read perlapi.  I read Inline::C.  I read Inline::C-Cookbook.
+I never did understand the Hash of Lists example.  I finally prevailed.
+
+I offer the following up for inclusion in C-Cookbook to save someone else the
+pain of doing this again --- particularly becasue there are not many examples
+in the Cookbook that deal with arrays and doubles.
+
+I am unclear if the newRV_noinc() macros at the end are correct.  I used
+the newRV_noinc() because the Hash of Lists examples used them.
+
+Suggestions for improvement would be welcome.
+
+Thanks,
+Scott
+******************************************
+#!/usr/bin/perl -w
+
+my $n = 21;
+my @angles = map {$_ * 3.1415926/($n-1)} (0..$n);
+my ($cosine, $sine) = trig_wrap($n, \@angles);
+
+for (0..$n-1) {
+	print $_,"  ", $angles[$_],"  ", $$cosine[$_], "  ", $$sine[$_], "\n";
+}
+
+use Inline C => <<'END_OF_C_CODE';
+
+/* this typically would be in a library */
+void trig(int n, double * angles, double ** cosines, double ** sines)
+{
+	int i;
+	*sines   = (double *) malloc(n*sizeof(double));
+	*cosines = (double *) malloc(n*sizeof(double));
+
+	for (i=0; i<n; i++) {
+		(*cosines)[i] = cos(angles[i]);
+		(*sines)[i] = sin(angles[i]);
+	}
+}
+
+void trig_wrap(int n, SV* array_ref)
+{
+	Inline_Stack_Vars;
+	double *cosine, *sine, *angles;
+	AV *pcos, *psin, *av_ptr;
+	SV** sv_ptr;
+	int i;
+	
+/* copy values from array_ref into C array */
+	angles  = (double *) malloc(n*sizeof(double));
+	av_ptr = (AV*) SvRV(array_ref);	
+    	for (i=0; i<n; i++) {
+    		sv_ptr = av_fetch(av_ptr,i,0);
+    		angles[i] = SvNV(*sv_ptr);
+	}
+
+	trig(n, angles, &cosine, &sine);
+	
+/* copy values from C arrays into perl arrays */
+	pcos = newAV();
+	psin = newAV();
+	for (i=0; i<n; i++) {
+    		av_push(pcos, newSVnv(cosine[i]));
+   		av_push(psin, newSVnv(sine[i]  ));
+   	}
+
+/* get rid of C arrays */
+	free(angles);
+	free(sine);
+	free(cosine);
+	
+/* return references to perl arrays */
+	Inline_Stack_Reset;
+	Inline_Stack_Push(newRV_noinc((SV*) pcos));
+	Inline_Stack_Push(newRV_noinc((SV*) psin));
+	Inline_Stack_Done;
+}
+END_OF_C_CODE

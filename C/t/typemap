@@ -1,0 +1,11 @@
+float			T_FLOAT
+
+INPUT
+
+T_FLOAT
+	$var = (float)SvNV($arg)
+
+OUTPUT
+
+T_FLOAT
+	sv_setnv($arg, (double)$var);

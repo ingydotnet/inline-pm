@@ -1,0 +1,18 @@
+------_=_NextPart_001_01C1153E.0D05BCC0
+Content-Type: text/plain;
+	charset="iso-8859-1"
+
+--- Inline-FAQ.pod      Tue Jun 12 23:30:50 2001
++++ Inline-FAQ.new      Wed Jul 25 14:08:55 2001
+@@ -41,7 +41,8 @@
+     1) Create a module with Inline.
+     2) Test it using the normal/local _Inline/ cache.
+     3) Create a Makefile.PL (like the one produced by h2xs)
+-    4) Change 'use ExtUtils::MakeMaker' to 'use Inline::MakeMaker'
++    4) Change 'use ExtUtils::MakeMaker' to 'use Inline::MakeMaker' and
++       'WriteMakefile' to WriteInlineMakefile'
+     5) Change your 'use Inline C => DATA' to 'use Inline C => DATA => NAME
+        => Foo => VERSION => 1.23'
+     6) Make sure NAME matches your package name ('Foo'), or begins with
+
+------_=_NextPart_001_01C1153E.0D05BCC0--
