@@ -29,6 +29,17 @@ The one line version is:
 -------------------------------------------------------------------------------
 FEATURES:
 
+Inline version 0.44 is a semi-major release:
++ This version is intended to be backwards compatible with 0.43.
++ Fixed many bugs reported since 0.43
++ Sped up parsing of C with 'USING => ParseRegExp'
++ Added BUILD_NOISY and BUILD_TIMERS options
++ Use File::Spec for all path operations. First step in porting to all
+  platforms.
++ Always call ILSM->validate()
++ Allow C++ modules to be written with Inline
++ New improved Inline::MakeMaker
+
 Inline version 0.43 is a minor release:
 
 + Added XSMODE for using Inline directly with XS

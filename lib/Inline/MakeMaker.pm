@@ -9,12 +9,12 @@ use ExtUtils::MakeMaker();
 use Carp;
 
 sub WriteInlineMakefile {
-    warn <<END;
-
-Inline::MakeMaker::WriteInlineMakefile() is deprecated as of Inline-0.44.
-Inline::MakeMaker::WriteMakefile() should be used instead.
-
-END
+#    warn <<END;
+#
+#Inline::MakeMaker::WriteInlineMakefile() is deprecated as of Inline-0.44.
+#Inline::MakeMaker::WriteMakefile() should be used instead.
+#
+#END
     goto &WriteMakefile;
 }
     

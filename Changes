@@ -2,6 +2,20 @@
 
 ---
 version: 0.44
+date:    Thu Oct 24 16:17:27 PDT 2002
+changes:
+  - Fixed ParseRecDescent to handle 'unsigned foo()' and 'long foo()'
+  - Updated README
+  - Fixed %INC problem
+
+---
+version: 0.44
+date:    Wed Oct 23 10:27:41 PDT 2002
+changes:
+  - Used File::Spec::Unix for %INC keys (which are always in Unix form)
+
+---
+version: 0.44
 date:    Mon Oct 21 16:49:54 PDT 2002
 changes:
   - Applied Mitchell's patch for Inline::C::ParseRegExp

@@ -11,10 +11,11 @@ require Inline::C::ParseRegExp;
 # Do all the typemap foo that Inline::C does
 require Inline::C;
 use Config;
-my $typemap = File::Spec->catfile($Config::Config{installprivlib},"ExtUtils","typemap")
-  if -f File::Spec->catfile($Config::Config{installprivlib},"ExtUtils","typemap");
+my $typemap = File::Spec->catfile($Config::Config{installprivlib},
+                                  'ExtUtils', 'typemap');
 my $o = bless {}, 'Inline::C';
-push @{$o->{ILSM}{MAKEFILE}{TYPEMAPS}}, $typemap;
+push @{$o->{ILSM}{MAKEFILE}{TYPEMAPS}}, $typemap
+  if -f $typemap;
 $o->get_types;
 
 # Create new instances of each parser
@@ -25,10 +26,11 @@ $recdescent->{data}{typeconv} = $o->{ILSM}{typeconv};
 $regexp->{data}{typeconv} = $o->{ILSM}{typeconv};
 
 my @test_objects = @{YAML::Load($Inline::cases)};
-plan(tests=>scalar @test_objects);
+plan(tests => 2 * @test_objects);
 
 for my $case (@test_objects) {
     my $input = $case->{input};
+    my $expect = $case->{expect};
 
     my @outputs;
     for ($recdescent, $regexp) {
@@ -39,12 +41,13 @@ for my $case (@test_objects) {
         my $parser = deep_clone($_);
         $parser->code($input);
         delete $parser->{data}{typeconv};
-        push @outputs, YAML::Store($parser->{data});
+        my $output = YAML::Dump($parser->{data});
+        $output =~ s/^---.*\n//;
+        push @outputs, $output;
     }
 
-    my $expected = YAML::Store($case->{output});
-    ok($outputs[0], $outputs[1], "RecDescent didn't match RegExp for $input");
-    ok($outputs[1], $expected, "RegExp structure mismatch for $input");
+    ok($outputs[0], $expect, "ParseRecDescent failed for:$input\n");
+    ok($outputs[1], $expect, "ParseRegExp failed for:$input\n");
 }
 
 use Data::Dumper;
@@ -55,10 +58,117 @@ sub deep_clone {
 }
 
 BEGIN {
-$Inline::cases = q[---
--
- input: void simplest() { }
- output: &simplest
+($Inline::cases, undef) = (<<END, <<END);
+- input: long get_serial(SV* obj) {
+  expect: |
+    done:
+      get_serial: 1
+    function:
+      get_serial:
+        arg_names:
+          - obj
+        arg_types:
+          - SV *
+        return_type: long
+    functions:
+      - get_serial
+
+- input: SV* new(char* class, char* name, char* rank, long serial) {
+  expect: |
+    done:
+      new: 1
+    function:
+      new:
+        arg_names:
+          - class
+          - name
+          - rank
+          - serial
+        arg_types:
+          - char *
+          - char *
+          - char *
+          - long
+        return_type: SV *
+    functions:
+      - new
+
+- input: |
+    unsigned foo (unsigned int a, 
+                  unsigned short b,
+                  unsigned char c, 
+                  unsigned char * d) {
+  expect: |
+    done:
+      foo: 1
+    function:
+      foo:
+        arg_names:
+          - a
+          - b
+          - c
+          - d
+        arg_types:
+          - unsigned int
+          - unsigned short
+          - unsigned char
+          - unsigned char *
+        return_type: unsigned
+    functions:
+      - foo
+
+- input: long Foo5(int i, int j, ...) { return 3; }
+  expect: |
+    done:
+      Foo5: 1
+    function:
+      Foo5:
+        arg_names:
+          - i
+          - j
+          - '...'
+        arg_types:
+          - int
+          - int
+          - '...'
+        return_type: long
+    functions:
+      - Foo5
+
+- input: char *func(char *x, char* y, char  *  z) {
+  expect: |
+    done:
+      func: 1
+    function:
+      func:
+        arg_names:
+          - x
+          - y
+          - z
+        arg_types:
+          - char *
+          - char *
+          - char *
+        return_type: char *
+    functions:
+      - func
+
+- input: unsigned func(unsigned arg) {
+  expect: |
+    done:
+      func: 1
+    function:
+      func:
+        arg_names:
+          - arg
+        arg_types:
+          - unsigned
+        return_type: unsigned
+    functions:
+      - func
+
+- input: void simplest() { }
+  expect: &simplest |
     done:
       simplest: 1
     function:
@@ -68,64 +178,45 @@ $Inline::cases = q[---
         return_type: void
     functions:
       - simplest
--
- input: void simplest() {
- output: *simplest
-#-
-# Surely this should work...
-# input: void simplest();
-# output: *simplest
--
- input: |
-  void
-  simplest
-  (
-  )
-  {
- output: *simplest
--
- input: |
+
+- input: void simplest() {
+  expect: *simplest
+- input: |
+    void
+    simplest
+    (
+    )
+    {
+  expect: *simplest
+
+- input: |
     void simplest() {
         with_a_body__too();
     }
- output: *simplest
--
- input: |
+  expect: *simplest
+
+- input: |
     /* C comment */
     void simplest() {
- output: *simplest
--
- input: |
+  expect: *simplest
+
+- input: |
     void simplest() { }
     /* void bogus() { } */
- output: *simplest
--
- input: |
+  expect: *simplest
+
+- input: |
     // C++/C99 comment...
     void simplest() {
- output: *simplest
--
- input: |
+  expect: *simplest
+
+- input: |
     void simplest() { }
     // void bogus() { }
- output: *simplest
-# How does Inline handle user-defined types?  Neither of the parsers seem to
-# support it... am I missing something?
-#-
-# input: "void f(UserDefinedType* t) { }"
-# output:
-#    done:
-#      f: 1
-#    function:
-#      f:
-#        arg_names: ['t']
-#        arg_types: ['UserDefinedType']
-#        return_type: void
-#    functions:
-#      - f
--
- input: int with_return_value() {
- output:
+  expect: *simplest
+
+- input: int with_return_value() {
+  expect: |
     done:
       with_return_value: 1
     function:
@@ -135,24 +226,26 @@ $Inline::cases = q[---
         return_type: int
     functions:
       - with_return_value
--
- input: void takes_a_char_star(char* name) {
- output:
+
+- input: void takes_a_char_star(char* name) {
+  expect: |
     done:
       takes_a_char_star: 1
     function:
       takes_a_char_star:
-        arg_names: ['name']
-        arg_types: ['char *']
+        arg_names:
+          - name
+        arg_types:
+          - char *
         return_type: void
     functions:
       - takes_a_char_star
--
- input: |
+
+- input: |
     int addem(int x, int y) {
         return x + y;
     }
- output:
+  expect: |
     done:
       addem: 1
     function:
@@ -166,12 +259,12 @@ $Inline::cases = q[---
         return_type: int
     functions:
       - addem
--
- input: |
+
+- input: |
     void a() { }
     void b() { }
     void c() { }
- output:
+  expect: |
     done:
       a: 1
       b: 1
@@ -193,5 +286,7 @@ $Inline::cases = q[---
       - a
       - b
       - c
-];
+
+END
+END
 }

@@ -2,14 +2,15 @@ package Inline;
 
 use strict;
 require 5.005;
-$Inline::VERSION = '0.44-TRIAL7';
+$Inline::VERSION = '0.44';
 
-# use XXX AutoLoader 'AUTOLOAD';
+use AutoLoader 'AUTOLOAD';
 use Inline::denter;
 use Config;
 use Carp;
 use Cwd qw(abs_path cwd);
 use File::Spec;
+use File::Spec::Unix;
 
 my %CONFIG = ();
 my @DATA_OBJS = ();
@@ -117,7 +118,7 @@ sub import {
 	$o->{API}{language_id} = $language_id;
 	if ($option =~ /^(FILE|BELOW)$/ or
 	    not $option and
-            defined $INC{File::Spec->catfile('Inline','Files.pm')} and
+            defined $INC{File::Spec::Unix->catfile('Inline','Files.pm')} and
 	    Inline::Files::get_filename($pkg)
 	   ) {
 	    $o->read_inline_file;
@@ -428,8 +429,9 @@ sub check_installed {
 
     my @pkgparts = split(/::/, $o->{API}{pkg});
     my $realname = File::Spec->catfile(@pkgparts) . '.pm';
-    my $realpath = $INC{$realname}
-      or croak M27_module_not_indexed($realname);
+    my $realname_unix = File::Spec::Unix->catfile(@pkgparts) . '.pm';
+    my $realpath = $INC{$realname_unix}
+      or croak M27_module_not_indexed($realname_unix);
 
     my ($volume,$dir,$file) = File::Spec->splitpath($realpath);
     my @dirparts = File::Spec->splitdir($dir);
@@ -597,8 +599,8 @@ sub DESTROY {
 }
 
 # Comment out the next 2 lines to stop autoloading of subroutines (testing)
-#1; XXX
-#__END__
+1;
+__END__
 
 #==============================================================================
 # Get the source code
@@ -640,7 +642,7 @@ sub read_inline_file {
     my $langfile = uc($lang);
     croak M59_bad_inline_file($lang) unless $langfile =~ /^[A-Z]\w*$/;
     croak M60_no_inline_files() 
-      unless (defined $INC{File::Spec->catfile("Inline","Files.pm")} and
+      unless (defined $INC{File::Spec::Unix->catfile("Inline","Files.pm")} and
 	      $Inline::Files::VERSION =~ /^\d\.\d\d$/ and
 	      $Inline::Files::VERSION ge '0.51');
     croak M61_not_parsed() unless $lang = Inline::Files::get_filename($pkg);
