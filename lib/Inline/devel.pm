@@ -1,4 +1,5 @@
 package Inline;
+die "mooooooooooooo";
 
 use strict;
 
@@ -30,6 +31,7 @@ my %shortcuts =
    UNSAFE =>       [SAFEMODE => 0],
    GLOBAL =>       [GLOBAL_LOAD => 1],
    _INSTALL_ =>    [_INSTALL_ => 1],
+   _PREP_ =>       [_INSTALL_PREP_ => 1],
    SITE_INSTALL => undef,  # No longer supported.
   );
 
@@ -50,6 +52,7 @@ my $default_config =
    SAFEMODE => -1,
    GLOBAL_LOAD => 0,
    _INSTALL_ => 0,
+   _INSTALL_PREP_ => 0,
   };
 
 sub UNTAINT {$untaint}
@@ -74,6 +77,8 @@ sub import_devel {
 
     return unless @_;
     &create_config_file(), return 1 if $_[0] eq '_CONFIG_';
+    return $CONFIG{pkg}{template}{_INSTALL_PREP_} = 1 
+      if $_[0] eq '_PREP_';
     goto &maker_utils if $_[0] =~ /^(install|makedist|makeppd)$/i;
 
     my $control = shift;
