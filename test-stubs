@@ -5,8 +5,6 @@ use Carp;
 {
     my %args = parse_args();
     install_inline() unless exists $args{shoddy};
-    chdir_or_die('modules/Math/Simple');
-    start_over();
     run_develversion_tests();
     run_releaseversion_tests();
     print "\nIf you got this far, then the tests passed.\n";
@@ -40,35 +38,44 @@ sub install_inline {
 }
 
 sub run_develversion_tests {
-    system_or_die "make test";
+    chdir_or_die('modules/Math/Simple');
+    run_perl_tests();
 }
 
 sub run_releaseversion_tests {
+    # Create the tarball...
     my $module_dashy_name = 'Math-Simple-1.23';
     my $tarball_name = "$module_dashy_name.tar.gz";
     -e $tarball_name and system_or_die "rm $tarball_name";
     system_or_die "make dist";
     -e $tarball_name or die "No tarball!";
 
+    # Extract the contents...
     chdir_or_die '..';
     my $untar_to_dir_name = 'dist';
     mkdir_or_die $untar_to_dir_name or die;
     chdir_or_die $untar_to_dir_name;
-
     system_or_die "tar xvzf ../Simple/$tarball_name";
 
+    # Verify contents...
     chdir_or_die $module_dashy_name;
     my $bootstrap_pm_name = 'Inline/MakeMaker/Bootstrap.pm';
     -e $bootstrap_pm_name or die "No $bootstrap_pm_name";
-    chdir_or_die '../..';
+    run_perl_tests();
 
+    # TODO: Need a way to simulate a setup where Inline::devel is not
+    # installed.  "sudo mv $INC{Inline::devel} /tmp" ?
+
+    # Clean up...
+    chdir_or_die '../..';
     system_or_die "rm -rf $untar_to_dir_name";
 }
 
-sub start_over {
+sub run_perl_tests {
     -e 'Makefile' and system_or_die "make purge";
     system_or_die "perl Makefile.PL";
     system_or_die "make";
+    system_or_die "make test";
 }
 
 # vim: ft=perl:
