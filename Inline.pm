@@ -2,7 +2,7 @@ package Inline;
 
 use strict;
 require 5.005;
-$Inline::VERSION = '0.44-TRIAL4';
+$Inline::VERSION = '0.44-TRIAL5';
 
 use AutoLoader 'AUTOLOAD';
 use Inline::denter;
@@ -432,10 +432,13 @@ sub check_installed {
       or croak M27_module_not_indexed($realname);
 
     my ($volume,$dir,$file) = File::Spec->splitpath($realpath);
-    my @dirparts = (grep($_, File::Spec->splitdir($dir)), $file);
+    my @dirparts = File::Spec->splitdir($dir);
+    pop @dirparts unless $dirparts[-1];
+    push @dirparts, $file;
     my @endparts = splice(@dirparts, 0 - @pkgparts);
     
-    $dirparts[-1] = 'arch' if "@dirparts[-2, -1]" eq 'blib lib';
+    $dirparts[-1] = 'arch'
+      if $dirparts[-2] eq 'blib' && $dirparts[-1] eq 'lib';
     File::Spec->catfile(@endparts) eq $realname 
       or croak M28_error_grokking_path($realpath);
     $realpath = 
