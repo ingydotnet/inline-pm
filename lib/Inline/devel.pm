@@ -4,7 +4,7 @@ use strict;
 require 5.005;
 $Inline::VERSION = '0.43';
 
-use AutoLoader 'AUTOLOAD';
+#use AutoLoader 'AUTOLOAD';
 use Inline::denter;
 use Config;
 use Carp;

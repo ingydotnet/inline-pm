@@ -1,4 +1,4 @@
-use Inline::MakeMaker::Bootstrap;
+use Inline::MakeMaker;
 
 WriteInlineMakefile( NAME => 'Math::Simple',
 	             VERSION_FROM => 'Simple.pm',
