@@ -2,7 +2,6 @@ package Inline::C;
 
 use strict;
 require Inline;
-require Inline::C::grammar;
 use Config;
 use Data::Dumper;
 use Carp;
@@ -267,15 +266,7 @@ sub parse {
     $o->get_types;
     $o->{ILSM}{code} = $o->filter(@{$o->{ILSM}{FILTERS}});
     return if $o->{ILSM}{XSMODE};
-
-    my $hack = sub { # Appease -w using Inline::Files
-	print Parse::RecDescent::IN '';
-        print Parse::RecDescent::IN '';
-	print Parse::RecDescent::TRACE_FILE '';
-        print Parse::RecDescent::TRACE_FILE '';
-    };
     my $parser = $o->{ILSM}{parser} = $o->get_parser;
-
     Inline::Struct::parse($o) if $o->{STRUCT}{'.any'};
     $parser->code($o->{ILSM}{code})
       or croak "Bad $o->{API}{language} code passed to Inline at @{[caller(2)]}\n";
@@ -284,11 +275,10 @@ sub parse {
 # Create and initialize a parser
 sub get_parser {
     my $o = shift;
-    my $grammar = Inline::C::grammar::grammar()
-      or croak "Can't find C grammar\n";
-    $::RD_HINT++;
-    require Parse::RecDescent;
-    my $parser = Parse::RecDescent->new($grammar);
+#    require Inline::C::recdescent;
+#    my $parser = Inline::C::recdescent->new();
+    require Inline::C::charity;
+    my $parser = Inline::C::charity->new();
     $parser->{data}{typeconv} = $o->{ILSM}{typeconv};
     $parser->{data}{AUTOWRAP} = $o->{ILSM}{AUTOWRAP};
     return $parser;
@@ -739,5 +729,4 @@ sub fix_make {
 }
 
 1;
-
 __END__

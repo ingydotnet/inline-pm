@@ -1,8 +1,12 @@
-package Inline::C::grammar;
-
+package Inline::C::recdescent;
+$VERSION = '0.44';
 use strict;
+use Parse::RecDescent;
 
-$Inline::C::grammar::VERSION = '0.30';
+sub new { 
+    $::RD_HINT++;
+    Parse::RecDescent->new(grammar());
+}
 
 sub grammar {
     <<'END';
@@ -97,5 +101,12 @@ anything_else: /.*/
 
 END
 }
+
+my $hack = sub { # Appease -w using Inline::Files
+    print Parse::RecDescent::IN '';
+    print Parse::RecDescent::IN '';
+    print Parse::RecDescent::TRACE_FILE '';
+    print Parse::RecDescent::TRACE_FILE '';
+};
 
 1;
