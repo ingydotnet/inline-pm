@@ -5,6 +5,7 @@ use strict;
     my %args = parse_args();
     install_inline() unless exists $args{shoddy};
     chdir_to_sample_modules_dir();
+    start_over();
     run_develversion_tests();
     run_releaseversion_tests();
     print "\nIf you got this far, then the tests passed.\n";
@@ -32,12 +33,10 @@ sub chdir_to_sample_modules_dir {
 }
 
 sub run_develversion_tests {
-    start_over();
     system_or_die "make test";
 }
 
 sub run_releaseversion_tests {
-    start_over();
     my $tarball_name = 'Math-Simple-1.23.tar.gz';
     -e $tarball_name and system_or_die "rm $tarball_name";
     system_or_die "make dist";
