@@ -279,6 +279,14 @@ In this category you have both a C<void> return type and an unfixed number of ar
 
 =back
 
+=head2 Avoiding Memory Leaks
+
+When you first start writing C code, it's easy to introduce memory leaks. This
+section will give you a few simple pointers for avoiding memory leaks. For
+more detailed examples showing these techniques, see L<Inline::C-Cookbook>.
+
+...
+
 =head1 Examples
 
 Here are a few examples. Each one is a complete program that you can try running yourself. For many more examples see L<Inline::C-Cookbook>.

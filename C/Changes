@@ -1,5 +1,8 @@
 Revision history for Perl extension Inline::C.
 
+0.44  Fri Jan 25 16:01:27 PST 2002
+	- Added new chapter in Inline::C.pod: "Avoiding Memory Leaks". 
+
 0.43  Sun Jul 22 08:15:26 PDT 2001
 	- Auto add script directory to INC path (-I)..
 
