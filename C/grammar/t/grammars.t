@@ -44,8 +44,7 @@ for my $case (@test_objects) {
 
     my $expected = YAML::Store($case->{output});
     ok($outputs[0], $outputs[1], "RecDescent didn't match Charity for $input");
-    ok($outputs[1], $expected, "Charity structure mismatch for $input")
-        if $case->{output};
+    ok($outputs[1], $expected, "Charity structure mismatch for $input");
 }
 
 use Data::Dumper;
@@ -72,6 +71,10 @@ $Inline::cases = q[---
 -
  input: void simplest() {
  output: *simplest
+#-
+# Surely this should work...
+# input: void simplest();
+# output: *simplest
 -
  input: |
   void
@@ -87,14 +90,30 @@ $Inline::cases = q[---
     }
  output: *simplest
 -
-# Not working (?)
-# input: |
-#    /* C comment */
-#    void simplest()
-# output: *simplest
-# -
-# input: void f(UserDefinedType* t) { }
-# output: 
+ input: |
+    /* C comment */
+    void simplest() {
+ output: *simplest
+-
+ input: |
+    void simplest() { }
+    /* void bogus() { } */
+ output: *simplest
+-
+ input: |
+    // C++/C99 comment...
+    void simplest() {
+ output: *simplest
+-
+ input: |
+    void simplest() { }
+    // void bogus() { }
+ output: *simplest
+# How does Inline handle user-defined types?  Neither of the parsers seem to
+# support it... am I missing something?
+#-
+# input: "void f(UserDefinedType* t) { }"
+# output:
 #    done:
 #      f: 1
 #    function:
@@ -104,7 +123,7 @@ $Inline::cases = q[---
 #        return_type: void
 #    functions:
 #      - f
-# -
+-
  input: int with_return_value() {
  output:
     done:
