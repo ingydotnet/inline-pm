@@ -168,8 +168,8 @@ to the MakeMaker parameter.
 =head2 OPTIMIZE
 
 This controls the MakeMaker OPTIMIZE setting. By setting this value to
-'-g', you can turn on debugging support for your Inline extensions. This
-will allow you to be able to set breakpoints in your C code using a
+C<'-g'>, you can turn on debugging support for your Inline extensions.
+This will allow you to be able to set breakpoints in your C code using a
 debugger like gdb.
 
 =head2 PREFIX

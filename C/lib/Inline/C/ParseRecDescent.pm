@@ -148,7 +148,7 @@ __DATA__
 
 =head1 NAME
 
-Inline::C::ParseRecDescent
+Inline::C::ParseRecDescent - The Classic Inline::C Parser
 
 =head1 SYNOPSIS
 

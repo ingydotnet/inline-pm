@@ -7,6 +7,7 @@ WriteMakefile(
         Data::Dumper => 2.09,
         Digest::MD5 => 2.09,
 	Parse::RecDescent => 1.80,
+        File::Spec => 0.8,
     },
     clean => {FILES => '_Inline_test _Inline .Inline'},
 );

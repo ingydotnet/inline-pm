@@ -151,7 +151,7 @@ __DATA__
 
 =head1 NAME
 
-Inline::C::ParseRegExp
+Inline::C::ParseRegExp - The New and Improved Inline::C Parser
 
 =head1 SYNOPSIS
 
