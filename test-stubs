@@ -2,8 +2,12 @@ use strict;
 
 # "main"
 {
-    fresh_start();
+    my %args = parse_args();
+    install_inline() unless exists $args{shoddy};
+    chdir_to_sample_modules_dir();
     run_develversion_tests();
+    run_releaseversion_tests();
+    print "\nIf you got this far, then the tests passed.\n";
 }
 
 sub system_or_die {
@@ -13,16 +17,37 @@ sub system_or_die {
     system(@command) == 0 or die "Couldn't $command: $!";
 }
 
+sub parse_args {
+    my %args = map { s/^-*//g; $_ => 1 } @ARGV;
+    @ARGV = (); # (This has to happen so "make dist" tries to use your args)
+    %args
+}
+
+sub install_inline {
+    system_or_die "sudo make install";
+}
+
+sub chdir_to_sample_modules_dir {
+    chdir 'modules/Math/Simple' or die;
+}
+
 sub run_develversion_tests {
-    system_or_die "perl Makefile.PL";
-    system_or_die "make";
+    start_over();
     system_or_die "make test";
 }
 
-sub fresh_start {
-    system_or_die "sudo make install";
-    chdir 'modules/Math/Simple' or die;
+sub run_releaseversion_tests {
+    start_over();
+    my $tarball_name = 'Math-Simple-1.23.tar.gz';
+    -e $tarball_name and system_or_die "rm $tarball_name";
+    system_or_die "make dist";
+    -e $tarball_name or die "No tarball!";
+}
+
+sub start_over {
     -e 'Makefile' and system_or_die "make purge";
+    system_or_die "perl Makefile.PL";
+    system_or_die "make";
 }
 
 # vim: ft=perl:
