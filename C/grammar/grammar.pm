@@ -4,13 +4,6 @@ use strict;
 
 $Inline::C::grammar::VERSION = '0.30';
 
-my $hack = sub { # Appease -w using Inline::Files
-    print Parse::RecDescent::IN '';
-    print Parse::RecDescent::IN '';
-    print Parse::RecDescent::TRACE_FILE '';
-    print Parse::RecDescent::TRACE_FILE '';
-};
-
 sub grammar {
     <<'END';
 
@@ -56,40 +49,13 @@ function_declaration:
 	rtype IDENTIFIER '(' <leftop: arg_decl ',' arg_decl>(s?) ')' ';'
 	{[@item[2,1], $item[4]]}
 
-arg:	  type IDENTIFIER {[@item[1,2]]}
-	| '...'
-
-arg_decl: type IDENTIFIER(s?) {[$item[1], $item[2][0] || '']}
-	| '...'
-
-# P::RD is stupid in one case: if you "inline" the type or rtype rules, then
-# if the first fails to match, it gives up on the whole rule. If you use
-# different rules explicitly, as written, it will backtrack to the parent rule
-# and then go on to the next -- exactly the behaviour it _should_ have in the
-# first place.
-type: type2 | type1
-type1:  TYPE star(s?)
-        {
-         $return = $item[1];
-         $return .= join '',' ',@{$item[2]} if @{$item[2]};
-         return undef unless (defined $thisparser->{data}{typeconv}{valid_types}{$return});
-        }
-type2: modifier(s) TYPE star(s?)
-	{
-         $return = $item[2];
-         $return = join ' ',@{$item[1]},$return if @{$item[1]};
-         $return .= join '',' ',@{$item[3]} if @{$item[3]};
-         return undef unless (defined $thisparser->{data}{typeconv}{valid_types}{$return});
-	}
-
-rtype: rtype2 | rtype1
-rtype1: TYPE star(s?)
+rtype:  TYPE star(s?)
         {
          $return = $item[1];
          $return .= join '',' ',@{$item[2]} if @{$item[2]};
          return undef unless (defined $thisparser->{data}{typeconv}{valid_rtypes}{$return});
         }
-rtype2: modifier(s) TYPE star(s?)
+      | modifier(s) TYPE star(s?)
 	{
          $return = $item[2];
          $return = join ' ',@{$item[1]},$return 
@@ -98,7 +64,27 @@ rtype2: modifier(s) TYPE star(s?)
          return undef unless (defined $thisparser->{data}{typeconv}{valid_rtypes}{$return});
 	}
 
-modifier: 'unsigned' | 'long' | 'extern' | 'struct'
+arg:	  type IDENTIFIER {[@item[1,2]]}
+	| '...'
+
+arg_decl: type IDENTIFIER(s?) {[$item[1], $item[2][0] || '']}
+	| '...'
+
+type:   TYPE star(s?)
+        {
+         $return = $item[1];
+         $return .= join '',' ',@{$item[2]} if @{$item[2]};
+         return undef unless (defined $thisparser->{data}{typeconv}{valid_types}{$return});
+        }
+      | modifier(s) TYPE star(s?)
+	{
+         $return = $item[2];
+         $return = join ' ',@{$item[1]},$return if @{$item[1]};
+         $return .= join '',' ',@{$item[3]} if @{$item[3]};
+         return undef unless (defined $thisparser->{data}{typeconv}{valid_types}{$return});
+	}
+
+modifier: 'unsigned' | 'long' | 'extern'
 
 star: '*'
 

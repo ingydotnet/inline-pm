@@ -2,6 +2,7 @@ package Inline::C;
 
 use strict;
 require Inline;
+require Inline::C::grammar;
 use Config;
 use Data::Dumper;
 use Carp;
@@ -267,6 +268,12 @@ sub parse {
     $o->{ILSM}{code} = $o->filter(@{$o->{ILSM}{FILTERS}});
     return if $o->{ILSM}{XSMODE};
 
+    my $hack = sub { # Appease -w using Inline::Files
+	print Parse::RecDescent::IN '';
+        print Parse::RecDescent::IN '';
+	print Parse::RecDescent::TRACE_FILE '';
+        print Parse::RecDescent::TRACE_FILE '';
+    };
     my $parser = $o->{ILSM}{parser} = $o->get_parser;
 
     Inline::Struct::parse($o) if $o->{STRUCT}{'.any'};
@@ -277,7 +284,6 @@ sub parse {
 # Create and initialize a parser
 sub get_parser {
     my $o = shift;
-    require Inline::C::grammar;
     my $grammar = Inline::C::grammar::grammar()
       or croak "Can't find C grammar\n";
     $::RD_HINT++;
@@ -505,10 +511,9 @@ END
     my $parser = $o->{ILSM}{parser};
     my $data = $parser->{data};
 
-    warn(<<END) if ((not defined$data->{functions}) and ($^W));
-Warning: No C functions can be bound to Perl.
-         Check your C function definition(s) for Inline compatibility.
-END
+    warn("Warning. No Inline C functions bound to Perl\n" .
+	 "Check your C function definition(s) for Inline compatibility\n\n")
+      if ((not defined$data->{functions}) and ($^W));
 
     for my $function (@{$data->{functions}}) {
 	my $return_type = $data->{function}->{$function}->{return_type};
@@ -668,7 +673,8 @@ sub compile {
 	    ($cmd) = $cmd =~ /(.*)/ if $o->UNTAINT;
 	    chdir $build_dir;
 	    system($cmd) and do {
-		$o->Croak(<<END);
+#		$o->error_copy;
+		croak <<END;
 
 A problem was encountered while attempting to compile and install your Inline
 $o->{API}{language} code. The command that failed was:

@@ -439,25 +439,15 @@ How do I use Inline with mod_perl?
 
 =item Discussion
 
-This is a fully functional mod_perl handler that prints out the
-factorial values for the numbers 1 to 100. Since we are using Inline
-under mod_perl, there are a few considerations to, um, consider.
+This is a fully functional mod_perl handler that prints out the factorial values for the numbers 1 to 100. Since we are using Inline under mod_perl, there are a few considerations to , um, consider.
 
-First, mod_perl handlers are usually run with C<-T> taint detection.
-Therefore, we need to enable the UNTAINT option. The next thing to deal
-with is the fact that this handler will most likely be loaded after
-Perl's compile time. Since we are using the DATA section, we need to
-use the special C<init()> call. And of course we need to specify a
-DIRECTORY that mod_perl can compile into. I<See the above CGI example
-for more info.>
+First, mod_perl handlers are usually run with C<-T> taint detection. Therefore, we need to enable the UNTAINT option. The next thing to deal with is the fact that this handler will most likely be loaded after Perl's compile time. Since we are using the DATA section, we need to use the special C<init()> call. And of course we need to specify a DIRECTORY that mod_perl can compile into. I<See the above CGI example for more info.>
 
-Other than that, this is a pretty straightforward mod_perl handler,
-tuned for even more speed!
+Other than that, this is a pretty straightforward mod_perl handler, tuned for even more speed! 
 
 =item See Also
 
-See Stas Bekman's upcoming O'Reilly book on mod_perl to which this
-example was contributed.
+See Stas Bekman's upcoming O'Reilly book on mod_perl to which this example was contributed.
 
 =item Credits
 
@@ -733,12 +723,12 @@ How do I deal with complex data types like hashes in Inline C?
     END_OF_C_CODE
     
     my %hash = (
-                Author => "Brian Ingerson",
-                Nickname => "INGY",
-                Module => "Inline.pm",
-                Version => "0.30",
-                Language => "C",
-               );
+	        Author => "Brian Ingerson",
+	        Nickname => "INGY",
+	        Module => "Inline.pm",
+	        Version => "0.30",
+	        Language => "C",
+	       );
     
     dump_hash(\%hash);
 
@@ -920,13 +910,13 @@ How do I use Perl from a regular C program?
     
     int main(void) {
 
-        printf("Using Perl version %s from a C program!\n\n",
+	printf("Using Perl version %s from a C program!\n\n",
                CPR_eval("use Config; $Config{version};"));
 
         CPR_eval("use Data::Dumper;");
         CPR_eval("print Dumper \\%INC;");
 
-        return 0;
+	return 0;
 
     }
 
