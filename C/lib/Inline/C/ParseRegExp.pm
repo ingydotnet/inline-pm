@@ -87,6 +87,7 @@ sub code {
        }xgo)
     {
         my($type, $identifier, $args, $what) = ($2,$3,$4,$5);
+        $args = "" if $args =~ /^\s+$/;
 
         my $is_decl     = $what eq ';';
         my $function    = $identifier;

@@ -2,6 +2,12 @@
 
 ---
 version: 0.44
+date:    Mon Oct 21 16:49:54 PDT 2002
+changes:
+  - Applied Mitchell's patch for Inline::C::ParseRegExp
+
+---
+version: 0.44
 date:    Mon Oct 21 00:17:22 PDT 2002
 changes:
   - Updated pod docs
