@@ -7,15 +7,15 @@ use Carp;
 
 sub import {
     my ($class, $language, $source, %args) = @_;
-    my ($package) = caller;
+    my $package = caller;
     my $version;
-    {no strict 'refs'; $version = ${$package . "::version"}}
+    {no strict 'refs'; $version = ${$package . "::VERSION"}}
+
     if ($class eq 'Inline' and $language eq 'C' and
 	defined $args{NAME} and $args{NAME} eq $package and
 	defined $args{VERSION} and $args{VERSION} eq $version
        ) {
-	dynaload() 
-	  or croak "Couldn't dynaload Inline based module $package";
+	dynaload($package, $version, $args{NAME}) 
     }
     else {    
 	require Inline::devel;
@@ -24,10 +24,21 @@ sub import {
 }
 
 sub dynaload {
-    # put dynaloader stuff here.
-    # this should be refactored to be Inline::devel's load subroutine and be
-    # able to be called both ways.
-    0; 
+    my ($package, $version, $name) = @_;
+    require DynaLoader;
+    @Inline::ISA = qw(DynaLoader);
+
+    eval <<END;
+	package $package;
+	push \@$ {package}::ISA, qw($name)
+          unless \$name eq "$package";
+        local \$$ {name}::VERSION = '$version';
+
+	package $name;
+	push \@$ {name}::ISA, qw(Exporter DynaLoader);
+	${name}::->bootstrap;
+END
+    croak "Couldn't dynaload Inline based module $package.\n$@" if $@;
 }
 
 1;
