@@ -41,6 +41,12 @@ ensure_inline_installed :
 	-e 'eval "use Inline";' \\
 	-e 'if (\$\$@) {' \\
 	-e '    copy("_bootstrap/Inline.pm", "./blib/lib");' \\
+	-e '    mkdir("./blib/lib/Inline");' \\
+	-e '    mkdir("./blib/lib/Inline/C");' \\
+	-e '    copy("_bootstrap/Inline/devel.pm", "./blib/lib/Inline/");' \\
+	-e '    copy("_bootstrap/Inline/C.pm", "./blib/lib/Inline");' \\
+	-e '    copy("_bootstrap/Inline/denter.pm", "./blib/lib/Inline/");' \\
+	-e '    copy("_bootstrap/Inline/C/charity.pm", "./blib/lib/Inline/C");' \\
 	-e '} elsif (\$\$Inline::VERSION lt '0.50') {' \\
 	-e '    die "You need to install the latest Inline.pm or uninstall the current one\\n";' \\
 	-e '}';
@@ -50,8 +56,22 @@ dist :
 	\$(PERL) -pi -e 's/Inline::MakeMaker/_bootstrap::makemaker/' \\
 	\$(DISTVNAME)/Makefile.PL
 	find _bootstrap | cpio -dump \$(DISTVNAME)
+	mkdir \$(DISTVNAME)/_bootstrap/Inline
+	mkdir \$(DISTVNAME)/_bootstrap/Inline/C
 	\$(PERL) -MInline -MFile::Copy \\
 	-e 'copy(\$\$INC{"Inline.pm"}, "\$(DISTVNAME)/_bootstrap")'
+	\$(PERL) -MFile::Copy \\
+	-e 'require Inline::C;' \\
+	-e 'copy(\$\$INC{"Inline/C.pm"}, "\$(DISTVNAME)/_bootstrap/Inline")'
+	\$(PERL) -MFile::Copy \\
+	-e 'require Inline::devel;' \\
+	-e 'copy(\$\$INC{"Inline/devel.pm"}, "\$(DISTVNAME)/_bootstrap/Inline")'
+	\$(PERL) -MFile::Copy \\
+	-e 'require Inline::denter;' \\
+	-e 'copy(\$\$INC{"Inline/denter.pm"}, "\$(DISTVNAME)/_bootstrap/Inline")'
+	\$(PERL) -MFile::Copy \\
+	-e 'require Inline::C::charity;' \\
+	-e 'copy(\$\$INC{"Inline/C/charity.pm"}, "\$(DISTVNAME)/_bootstrap/Inline/C")'
 	tar czf \$(DISTVNAME).tar\$(SUFFIX) \$(DISTVNAME)
 	rm -fr \$(DISTVNAME)
 END

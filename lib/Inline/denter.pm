@@ -2,7 +2,7 @@ package Inline::denter;
 
 use strict;
 use Carp;
-use AutoLoader 'AUTOLOAD';
+#use AutoLoader 'AUTOLOAD';
 
 sub new {
     my $class = shift;
@@ -201,8 +201,8 @@ sub _setup_line {
     }
 }
 
-1;
-__END__
+#1;
+#__END__
 
 sub indent {
     my $o = shift;
