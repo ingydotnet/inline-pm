@@ -531,8 +531,8 @@ sub DESTROY {
 }
 
 # Comment out the next 2 lines to stop autoloading of subroutines (testing)
-1;
-__END__
+#1;
+#__END__
 
 #==============================================================================
 # Get the source code
@@ -691,9 +691,12 @@ sub create_config_file {
 		warn M14_usage_Config();
 		next;
 	    }
-	    next if $mod =~ /^(MakeMaker|denter|messages)$/;
+	    next if $mod =~ /^(MakeMaker|denter|messages|Insh|Files)$/;
 	    eval "require Inline::$mod;\$register=&Inline::${mod}::register";
-	    next if $@;
+	    if ($@) {
+		warn "Warning: Had trouble with Inline::$mod: $@\n";
+		next;
+	    }
 	    my $language = ($register->{language}) 
 	      or warn(M22_usage_register($mod)), next;
 	    for (@{$register->{aliases}}) {
