@@ -1,0 +1,28 @@
+use strict;
+
+# "main"
+{
+    fresh_start();
+    run_develversion_tests();
+}
+
+sub system_or_die {
+    my (@command) = @_;
+    my $command = join " ", @command;
+    print "# $command\n";
+    system(@command) == 0 or die "Couldn't $command: $!";
+}
+
+sub run_develversion_tests {
+    system_or_die "perl Makefile.PL";
+    system_or_die "make";
+    system_or_die "make test";
+}
+
+sub fresh_start {
+    system_or_die "sudo make install";
+    chdir 'modules/Math/Simple' or die;
+    -e 'Makefile' and system_or_die "make purge";
+}
+
+# vim: ft=perl:
