@@ -2,12 +2,11 @@ use ExtUtils::MakeMaker;
 
 WriteMakefile(
     NAME => 'Inline',
-    VERSION => '0.44-RELEASE-CANDIDATE-2',
-    # VERSION_FROM => 'Inline.pm',
+    VERSION_FROM => 'Inline.pm',
     PREREQ_PM => {
         Data::Dumper => 2.09,
         Digest::MD5 => 2.09,
-	Parse::RecDescent => 1.78,
+	Parse::RecDescent => 1.80,
     },
     clean => {FILES => '_Inline_test _Inline .Inline'},
 );

@@ -111,10 +111,10 @@ like Perl.
 
 Finally, Inline supports several programming languages (not just C and
 C++). As of this writing, Inline has support for C, C++, Java, Python,
-Ruby, Tcl, Assembler, Basic, Guile, Octave, Awk, BC, TT (Template
-Toolkit), WebChatx, and even PERL. New Inline Language Support Modules
-(ILSMs) are regularly being added. See L<Inline-API> for details on how
-to create your own ILSM.
+Ruby, Tcl, Assembler, Basic, Guile, Befunge, Octave, Awk, BC, TT
+(Template Toolkit), WebChat and even PERL. New Inline Language Support
+Modules (ILSMs) are regularly being added. See L<Inline-API> for details
+on how to create your own ILSM.
 
 =back
 

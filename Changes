@@ -1,5 +1,13 @@
 # Revision history for Perl extension Inline.
 
+---
+version: 0.44
+date:    Mon Oct 28 10:31:51 PST 2002
+changes:
+  - Doc fixes. Thanks Mitchell.
+  - Put all current ILSMs in doc and Makefile.PL
+
+---
 version: 0.44
 date:    Sun Oct 27 23:34:50 PST 2002
 changes:

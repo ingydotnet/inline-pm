@@ -58,7 +58,6 @@ The following definitions would not be recognized:
 
     Foo(int i) {               # no return type
     int Foo(float f) {         # no (default) typemap for float
-    unsigned int Foo(int i) {  # 'unsigned int' not recognized
     int Foo(num, str) double num; char* str; {
     void Foo(void) {           # void only valid for return type
 
@@ -80,7 +79,7 @@ XS options of the same name. See L<ExtUtils::MakeMaker> and L<perlxs>.
 Specifies extra statements to automatically included. They will be added
 onto the defaults. A newline char will be automatically added.
 
-    use C => Config => AUTO_INCLUDE => '#include "yourheader.h"';
+    use Inline C => Config => AUTO_INCLUDE => '#include "yourheader.h"';
 
 =head2 AUTOWRAP
 
@@ -129,7 +128,7 @@ more information.
 
 Specifies an include path to use. Corresponds to the MakeMaker parameter.
 
-    use C => Config => INC => '-I/inc/path';
+    use Inline C => Config => INC => '-I/inc/path';
 
 =head2 LD
 
@@ -149,11 +148,11 @@ respecify them here.
 Specifies external libraries that should be linked into your code.
 Corresponds to the MakeMaker parameter.
 
-    use C => Config => LIBS => '-lyourlib';
+    use Inline C => Config => LIBS => '-lyourlib';
 
 or 
 
-    use C => Config => LIBS => '-L/your/path -lyourlib';
+    use Inline C => Config => LIBS => '-L/your/path -lyourlib';
 
 =head2 MAKE
 
@@ -164,7 +163,7 @@ Specify the name of the 'make' utility to use.
 Specifies a user compiled object that should be linked in. Corresponds
 to the MakeMaker parameter.
 
-    use C => Config => MYEXTLIB => '/your/path/yourmodule.so';
+    use Inline C => Config => MYEXTLIB => '/your/path/yourmodule.so';
 
 =head2 OPTIMIZE
 
@@ -181,14 +180,14 @@ library API-s, and binding to the original names in Perl. Also useful
 when names conflict with Perl internals. Corresponds to the XS
 parameter.
 
-    use C => Config => PREFIX => 'ZLIB_';
+    use Inline C => Config => PREFIX => 'ZLIB_';
 
 =head2 TYPEMAPS
 
 Specifies extra typemap files to use. These types will modify the
 behaviour of the C parsing. Corresponds to the MakeMaker parameter.
 
-    use C => Config => TYPEMAPS => '/your/path/typemap';
+    use Inline C => Config => TYPEMAPS => '/your/path/typemap';
 
 =head1 C-Perl Bindings
 

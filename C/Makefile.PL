@@ -20,8 +20,11 @@ else {
 print <<END;
 
 Inline::C is packaged with Inline.pm because it is the most commonly used
-Inline language module. See also: Inline::CPP (C++), ::Java, ::Python, 
-::Tcl, ::ASM, and ::CPR.
+Inline Language Support Module (ILSM). 
+
+See also: Inline::ASM, ::Awk, ::BC, ::Basic, ::Befunge, ::CPP (C++), ::CPR,
+          ::Foo, ::Guile, ::Java, ::Octave, ::PERL, ::Python, ::Ruby, ::TT, 
+          ::Tcl and ::WebChat.
 
 Config.pm indicates that your version of Perl was built with this C compiler:
 
@@ -61,9 +64,9 @@ while (1) {
 
 if ($answer =~ /^(y|yes)$/i) {
     WriteMakefile(
-	 	  NAME => 'Inline::C',
-		  clean => {FILES => '_Inline_test'},
-		 )
+                  NAME => 'Inline::C',
+                  clean => {FILES => '_Inline_test'},
+                 )
 }
 else {
     open MF, "> Makefile" or die "Can't open Makefile for output";

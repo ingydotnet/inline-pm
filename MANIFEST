@@ -41,5 +41,3 @@ t/03errors.t
 t/04create.t
 t/05files.t
 t/file
-CPAN/MakeMaker.pm
-C/CPAN/MakeMaker.pm
