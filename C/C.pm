@@ -220,7 +220,8 @@ No information is currently generated when using XSMODE.
 
 END
     my $text = '';
-    $o->parse unless $o->{ILSM}{parser};
+    $o->preprocess;
+    $o->parse;
     if (defined $o->{ILSM}{parser}{data}{functions}) {
 	$text .= "The following Inline $o->{API}{language} function(s) have been successfully bound to Perl:\n";
 	my $parser = $o->{ILSM}{parser};
@@ -301,7 +302,6 @@ sub preprocess {
 # Parse the function definition information out of the C code
 #==============================================================================
 sub parse {
-    print "Called parser from @{[caller]}\n";
     my $o = shift;
     return if $o->{ILSM}{parser};
     return if $o->{ILSM}{XSMODE};

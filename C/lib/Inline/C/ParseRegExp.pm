@@ -145,3 +145,34 @@ sub code {
 }
 
 1;
+
+__DATA__
+
+=head1 NAME
+
+Inline::C::ParseRegExp
+
+=head1 SYNOPSIS
+
+    use Inline C => DATA =>
+               USING => ParseRegExp;
+
+=head1 DESCRIPTION
+
+This module is a much faster version of Inline::C's Parse::RecDescent
+parser. It is based on regular expressions instead.
+
+=head2 AUTHOR
+
+Mitchell N Charity <mcharity@vendian.org>
+
+=head1 COPYRIGHT
+
+Copyright (c) 2002. Brian Ingerson. All rights reserved.
+
+This program is free software; you can redistribute it and/or modify it
+under the same terms as Perl itself.
+
+See http://www.perl.com/perl/misc/Artistic.html
+
+=cut

@@ -123,3 +123,36 @@ my $hack = sub { # Appease -w using Inline::Files
 };
 
 1;
+
+__DATA__
+
+=head1 NAME
+
+Inline::C::ParseRecDescent
+
+=head1 SYNOPSIS
+
+    use Inline C => DATA =>
+               USING => ParseRecDescent
+
+=head1 DESCRIPTION
+
+This module is Inline::C's original Parse::RecDescent based parser. It
+was previously packaged as Inline::C::grammar.
+
+Try Inline::C::ParseRegExp for an alternative.
+
+=head2 AUTHOR
+
+Brian Ingerson <ingy@ttul.org>
+
+=head1 COPYRIGHT
+
+Copyright (c) 2002. Brian Ingerson. All rights reserved.
+
+This program is free software; you can redistribute it and/or modify it
+under the same terms as Perl itself.
+
+See http://www.perl.com/perl/misc/Artistic.html
+
+=cut

@@ -8,7 +8,7 @@ BEGIN {
 	);
 }
 
-use Math::Simple;
+use Math::Simple qw(add subtract);
 
 ok(add(5, 7) == 12);
 ok(subtract(5, 7) == -2);

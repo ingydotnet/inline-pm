@@ -8,11 +8,16 @@ Welcome to the official Inline FAQ. In this case, B<FAQ> means:
 
     Formerly Answered Questions
 
-This is a collection of old, long-winded emails that myself and others have sent to the Inline mailing list. (inline@perl.org) They have been reviewed and edited for general Inline edification. Some of them may be related to a specific language. They are presented here in a traditional FAQ layout.
+This is a collection of old, long-winded emails that myself and others
+have sent to the Inline mailing list. (inline@perl.org) They have been
+reviewed and edited for general Inline edification. Some of them may be
+related to a specific language. They are presented here in a traditional
+FAQ layout.
 
 =head1 General Inline
 
-Since there is only a handful of content so far, all FAQs are currently under this heading.
+Since there is only a handful of content so far, all FAQs are currently
+under this heading.
 
 =head2 How disposable is a .Inline or _Inline directory?
 
@@ -112,7 +117,9 @@ lot) easier.
 So now you have the Perl in one file and the C in the other. The C code
 must be in a subdirectory.
 
-3) Note that I also changed the term 'DATA' to the name of the C file. This will work just as if the C were still inline.
+3) 
+Note that I also changed the term 'DATA' to the name of the C file. This
+will work just as if the C were still inline.
 
 4) Run 'perl Makefile.PL'
 
@@ -120,11 +127,14 @@ must be in a subdirectory.
 
 6) Get the MD5 key from 'blib/arch/auto/Math/Simple/Stuff/Stuff.inl'
 
-7) Edit 'blib/lib/Math/Simple.pm'. Change 'src/Simple.c' to '02c61710cab5b659efc343a9a830aa73' (the MD5 key)
+7) 
+Edit 'blib/lib/Math/Simple.pm'. Change 'src/Simple.c' to
+'02c61710cab5b659efc343a9a830aa73' (the MD5 key)
 
 8) Run 'make ppd'
 
-9) Edit 'Math-Simple.ppd'. Fill in AUTHOR and ABSTRACT if you wish. Then
+9) 
+Edit 'Math-Simple.ppd'. Fill in AUTHOR and ABSTRACT if you wish. Then
 change:
 
     <CODEBASE HREF="" />
@@ -135,7 +145,8 @@ to
 
 10) Run 'tar cvzf Math-Simple.tar.gz blib'
 
-11) Run 'tar cvzf Math-Simple-1.23.tar.gz Math-Simple.ppd
+11) 
+Run 'tar cvzf Math-Simple-1.23.tar.gz Math-Simple.ppd
 Math-Simple.tar.gz'
 
 12) Distribute Math-Simple-1.23.tar.gz with the following instructions:
@@ -163,7 +174,8 @@ This procedure requires 0.40-TRIAL8 (for no-source support).
 For a binary dist *with* C source code, simply omit steps 2, 3, 6, and
 7.
 
-If this seems too hard, then wait for version 0.41 and type:
+If this seems too hard, then in a future version you should be able to
+just type:
 
     perl -MInline=makeppd Simple.pm
 

@@ -1,14 +1,13 @@
 package Math::Simple;
-use strict;
-require Exporter;
-@Math::Simple::ISA = qw(Exporter);
-@Math::Simple::EXPORT = qw(add subtract);
-$Math::Simple::VERSION = '1.23';
+$VERSION = '1.23';
 
-use Inline (C => DATA =>
-	    NAME => 'Math::Simple',
-	    VERSION => '1.23',
-	   );
+use base 'Exporter';
+@EXPORT_OK = qw(add subtract);
+use strict;
+
+use Inline C => 'DATA',
+           VERSION => '1.23',
+           NAME => 'Math::Simple';
 
 1;
 

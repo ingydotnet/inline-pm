@@ -6,6 +6,7 @@ C/Makefile.PL
 C/README
 C/lib/Inline/C/ParseRecDescent.pm
 C/lib/Inline/C/ParseRegExp.pm
+C/rt/grammars.t
 C/t/00init.t
 C/t/01syntax.t
 C/t/02config.t

@@ -17,21 +17,40 @@ Inline-API - How to bind a programming language to Perl using Inline.pm
 
 =head1 DESCRIPTION
 
-So you think Inline C is pretty cool, but what you really need is for Perl to work with the brand new programming language "Foo". Well you're in luck. C<Inline.pm> has support for adding your own Inline Language Support Module (B<ILSM>), like C<Inline::Foo>.
+So you think Inline C is pretty cool, but what you really need is for
+Perl to work with the brand new programming language "Foo". Well you're
+in luck. C<Inline.pm> has support for adding your own Inline Language
+Support Module (B<ILSM>), like C<Inline::Foo>.
 
-Inline has always been intended to work with lots of different programming languages. Many of the details can be shared between implementations, so that C<Inline::Java> has a similar interface to C<Inline::ASM>. All of the common code is in C<Inline.pm>. 
+Inline has always been intended to work with lots of different
+programming languages. Many of the details can be shared between
+implementations, so that C<Inline::Java> has a similar interface to
+C<Inline::ASM>. All of the common code is in C<Inline.pm>.
 
-Language specific modules like C<Inline::Python> are subclasses of C<Inline.pm>. They can inherit as much of the common behaviour as they want, and provide specific behaviour of their own. This usually comes in the form of Configuration Options and language specific compilation.
+Language specific modules like C<Inline::Python> are subclasses of
+C<Inline.pm>. They can inherit as much of the common behaviour as they
+want, and provide specific behaviour of their own. This usually comes in
+the form of Configuration Options and language specific compilation.
 
-The Inline C support is probably the best boilerplate to copy from. Since version 0.30 all C support was isolated into the module C<Inline::C> and the parsing grammar is further broken out into C<Inline::C::grammar>. All of these components come with the Inline distribution.
+The Inline C support is probably the best boilerplate to copy from.
+Since version 0.30 all C support was isolated into the module
+C<Inline::C> and the parsing grammar is further broken out into
+C<Inline::C::grammar>. All of these components come with the Inline
+distribution.
 
-This POD gives you all the details you need for implementing an ILSM. For further assistance, contact inline@perl.org See L<"SEE ALSO"> below.
+This POD gives you all the details you need for implementing an ILSM.
+For further assistance, contact inline@perl.org See L<"SEE ALSO"> below.
 
-We'll examine the joke language Inline::Foo which is distributed with Inline. It actually is a full functioning ILSM. I use it in Inline's test harness to test base Inline functionality. It is very short, and can help you get your head wrapped around the Inline API.
+We'll examine the joke language Inline::Foo which is distributed with
+Inline. It actually is a full functioning ILSM. I use it in Inline's
+test harness to test base Inline functionality. It is very short, and
+can help you get your head wrapped around the Inline API.
 
 =head1 A Skeleton
 
-For the remainder of this tutorial, let's assume we're writing an ILSM for the ficticious language C<Foo>. We'll call it C<Inline::Foo>. Here is the entire (working) implementation.
+For the remainder of this tutorial, let's assume we're writing an ILSM
+for the ficticious language C<Foo>. We'll call it C<Inline::Foo>. Here
+is the entire (working) implementation.
 
     package Inline::Foo;
     use strict;
@@ -141,7 +160,8 @@ For the remainder of this tutorial, let's assume we're writing an ILSM for the f
     
     1;
 
-Except for C<load()>, the subroutines in this code are mandatory for an ILSM. What they do is described below. A few things to note:
+Except for C<load()>, the subroutines in this code are mandatory for an
+ILSM. What they do is described below. A few things to note:
 
 =over 4
 
@@ -153,7 +173,8 @@ C<Inline::Foo> must be a subclass of Inline. This is accomplished with:
 
 =item 2
 
-The line 'C<require Inline;>' is not necessary. But it is there to remind you not to say 'C<use Inline;>'. This will not work.
+The line 'C<require Inline;>' is not necessary. But it is there to
+remind you not to say 'C<use Inline;>'. This will not work.
 
 =item 3
 
@@ -161,27 +182,40 @@ Remember, it is not valid for a user to say:
 
     use Inline::Foo;
 
-C<Inline.pm> will detect such usage for you in its C<import> method, which is automatically inherited since C<Inline::Foo> is a subclass.
+C<Inline.pm> will detect such usage for you in its C<import> method,
+which is automatically inherited since C<Inline::Foo> is a subclass.
 
 =item 4
 
-In the build function, you normally need to parse your source code. Inline::C uses Parse::RecDescent to do this. Inline::Foo simply uses eval. (After we strip out all occurances of 'foo-').
+In the build function, you normally need to parse your source code.
+Inline::C uses Parse::RecDescent to do this. Inline::Foo simply uses
+eval. (After we strip out all occurances of 'foo-').
 
-An alternative parsing method that works well for many ILSMs (like Java and Python) is to use the language's compiler itself to parse for you. This works as long as the compiler can be made to give back parse information.
+An alternative parsing method that works well for many ILSMs (like Java
+and Python) is to use the language's compiler itself to parse for you.
+This works as long as the compiler can be made to give back parse
+information.
 
 =back
 
 =head1 The Inline API
 
-This section is a more formal specification of what functionality you'll need to provide to implement an ILSM.
+This section is a more formal specification of what functionality you'll
+need to provide to implement an ILSM.
 
-When Inline determines that some C<Foo> code needs to be compiled it will automatically load your ILSM module. It will then call various subroutines which you need to supply. We'll call these subroutines "callbacks".
+When Inline determines that some C<Foo> code needs to be compiled it
+will automatically load your ILSM module. It will then call various
+subroutines which you need to supply. We'll call these subroutines
+"callbacks".
 
 You will need to provide the following 5 callback subroutines. 
 
 =head2 The register() Callback
 
-This subroutine receives no arguments. It returns a reference to a hash of ILSM meta-data. Inline calls this routine only when it is trying to detect new ILSM-s that have been installed on a given system. Here is an example of the has ref you would return for Foo:
+This subroutine receives no arguments. It returns a reference to a hash
+of ILSM meta-data. Inline calls this routine only when it is trying to
+detect new ILSM-s that have been installed on a given system. Here is an
+example of the has ref you would return for Foo:
 
     {
      language => 'Foo',
@@ -196,55 +230,86 @@ The meta-data items have the following meanings:
 
 =item language
 
-This is the proper name of the language. It is usually implemented as C<Inline::X> for a given language 'X'.
+This is the proper name of the language. It is usually implemented as
+C<Inline::X> for a given language 'X'.
 
 =item aliases
 
-This is a reference to an array of language name aliases. The proper name of a language can only contain word characters. [A-Za-z0-9_] An alias can contain any characters except whitespace and quotes. This is useful for names like 'C++' and 'C#'.
+This is a reference to an array of language name aliases. The proper
+name of a language can only contain word characters. [A-Za-z0-9_] An
+alias can contain any characters except whitespace and quotes. This is
+useful for names like 'C++' and 'C#'.
 
 =item type
 
-Must be set to 'compiled' or 'interpreted'. Indicates the category of the language.
+Must be set to 'compiled' or 'interpreted'. Indicates the category of
+the language.
 
 =item suffix
 
-This is the file extension for the cached object that will be created. For 'compiled' languages, it will probably be 'so' or 'dll'. The appropriate value is in C<Config.pm>.
+This is the file extension for the cached object that will be created.
+For 'compiled' languages, it will probably be 'so' or 'dll'. The
+appropriate value is in C<Config.pm>.
 
-For interpreted languages, this value can be whatever you want. Python uses C<pydat>. Foo uses C<foo>.
+For interpreted languages, this value can be whatever you want. Python
+uses C<pydat>. Foo uses C<foo>.
 
 =back
 
 =head2 The validate() Callback
 
-This routine gets passed all configuration options that were not already handled by the base Inline module. The options are passed as key/value pairs. It is up to you to validate each option and store its value in the Inline object (which is also passed in). If a particular option is invalid, you should croak with an appropriate error message.
+This routine gets passed all configuration options that were not already
+handled by the base Inline module. The options are passed as key/value
+pairs. It is up to you to validate each option and store its value in
+the Inline object (which is also passed in). If a particular option is
+invalid, you should croak with an appropriate error message.
 
 =head2 The build() Callback
 
-This subroutine is responsible for doing the parsing and compilation of the Foo source code. The Inline object is passed as the only argument. All pertinent information will be stored in this object. C<build()> is required to create a cache object of a specific name, or to croak with an appropriate error message. 
+This subroutine is responsible for doing the parsing and compilation of
+the Foo source code. The Inline object is passed as the only argument.
+All pertinent information will be stored in this object. C<build()> is
+required to create a cache object of a specific name, or to croak with
+an appropriate error message.
 
-This is the meat of your ILSM. Since it will most likely be quite complicated, it is probably best that you study an existing ILSM like C<Inline::C>.
+This is the meat of your ILSM. Since it will most likely be quite
+complicated, it is probably best that you study an existing ILSM like
+C<Inline::C>.
 
 =head2 The load() Callback
 
-This method only needs to be provided for interpreted languages. It's responsibility is to start the interpreter.
+This method only needs to be provided for interpreted languages. It's
+responsibility is to start the interpreter.
 
-For compiled languages, the load routine from C<Inline.pm> is called which uses C<DynaLoader> to load the shared object or DLL. 
+For compiled languages, the load routine from C<Inline.pm> is called
+which uses C<DynaLoader> to load the shared object or DLL.
 
 =head2 The info() Callback
 
-This method is called when the user makes use of the C<INFO> shortcut. You should return a string containing a small report about the Inlined code.
+This method is called when the user makes use of the C<INFO>
+shortcut. You should return a string containing a small report about
+the Inlined code.
 
 =head1 The Inline Object
 
-C<Inline.pm> creates a hash based Perl object for each section of Inlined source code it receives. This object contains lots of information about the code, the environment, and the configuration options used.
+C<Inline.pm> creates a hash based Perl object for each section of
+Inlined source code it receives. This object contains lots of
+information about the code, the environment, and the configuration
+options used.
 
-This object is a hash that is broken into several subhashes. The only two subhashes that an ILSM should use at all are $o->{API} and $o->{ILSM}. The first one contains all of the information that Inline has gather for you in order for you to create/load a cached object of your design. The second one is a repository where your ILSM can freely store data that it might need later on.
+This object is a hash that is broken into several subhashes. The only
+two subhashes that an ILSM should use at all are $o->{API} and
+$o->{ILSM}. The first one contains all of the information that Inline
+has gather for you in order for you to create/load a cached object of
+your design. The second one is a repository where your ILSM can freely
+store data that it might need later on.
 
 This section will describe all of the Inline object "API" attributes.
 
 =head2 The code Attribute
 
-This the actual source code passed in by the user. It is stored as one long string.
+This the actual source code passed in by the user. It is stored as one
+long string.
 
 =head2 The language Attribute
 
@@ -280,7 +345,8 @@ This is the directory to write the shared object into.
 
 =head2 The build_dir Attribute
 
-This is the directory under which you should write all of your build related files.
+This is the directory under which you should write all of your build
+related files.
 
 =head2 The script Attribute
 
@@ -300,13 +366,26 @@ This is the shared library extension name. (Usually 'so' or 'dll').
 
 =head1 The Inline Namespace
 
-C<Inline.pm> has been set up so that anyone can write their own language support modules. It further allows anyone to write a different implementation of an existing Inline language, like C for instance. You can distribute that module on the CPAN. 
+C<Inline.pm> has been set up so that anyone can write their own language
+support modules. It further allows anyone to write a different
+implementation of an existing Inline language, like C for instance. You
+can distribute that module on the CPAN.
 
-If you have plans to implement and distribute an Inline module, I would ask that you please work with the Inline community. We can be reached at the Inline mailing list: inline@perl.org (Send mail to inline-subscribe@perl.org to subscribe). Here you should find the advice and assistance needed to make your module a success.
+If you have plans to implement and distribute an Inline module, I would
+ask that you please work with the Inline community. We can be reached at
+the Inline mailing list: inline@perl.org (Send mail to
+inline-subscribe@perl.org to subscribe). Here you should find the advice
+and assistance needed to make your module a success.
 
-The Inline community will decide if your implementation of COBOL will be distributed as the official C<Inline::COBOL> or should use an alternate namespace. In matters of dispute, I (Brian Ingerson) retain final authority. (and I hope not to need use of it :-) Actually modules@perl.org retains the B<final> authority.
+The Inline community will decide if your implementation of COBOL will be
+distributed as the official C<Inline::COBOL> or should use an alternate
+namespace. In matters of dispute, I (Brian Ingerson) retain final
+authority. (and I hope not to need use of it :-) Actually
+modules@perl.org retains the B<final> authority.
 
-But even if you want to work alone, you are free and welcome to write and distribute Inline language support modules on CPAN. You'll just need to distribute them under a different package name.
+But even if you want to work alone, you are free and welcome to write
+and distribute Inline language support modules on CPAN. You'll just need
+to distribute them under a different package name.
 
 =head1 SEE ALSO
 
@@ -314,7 +393,8 @@ For generic information about Inline, see L<Inline>.
 
 For information about using Inline with C see L<Inline::C>.
 
-For information on supported languages and platforms see L<Inline-Support>.
+For information on supported languages and platforms see
+L<Inline-Support>.
 
 Inline's mailing list is inline@perl.org
 
@@ -326,9 +406,10 @@ Brian Ingerson <INGY@cpan.org>
 
 =head1 COPYRIGHT
 
-Copyright (c) 2000, 2001. Brian Ingerson. All rights reserved.
+Copyright (c) 2000, 2001, 2002. Brian Ingerson. All rights reserved.
 
-This program is free software; you can redistribute it and/or modify it under the same terms as Perl itself.
+This program is free software; you can redistribute it and/or modify it
+under the same terms as Perl itself.
 
 See http://www.perl.com/perl/misc/Artistic.html
 
