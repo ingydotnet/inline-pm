@@ -18,7 +18,14 @@ sub import {
     }
     else {
 	$_INSTALL_ = 1 if $language eq '_INSTALL_';
-	require Inline::devel;
+	eval "require Inline::devel";
+	if ($@) {
+	    eval "use Carp";
+	    Carp::croak(<<ERROR);
+Can't find module Inline::devel. 
+Try installing the 'Inline' distribution from the CPAN.
+ERROR
+	}
 	goto &import_devel;
     }
 }

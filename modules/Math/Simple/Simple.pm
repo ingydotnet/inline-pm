@@ -3,11 +3,11 @@ use strict;
 require Exporter;
 @Math::Simple::ISA = qw(Exporter);
 @Math::Simple::EXPORT = qw(add subtract);
-$Math::Simple::VERSION = '1.23'; 
+$Math::Simple::VERSION = '1.24'; 
 
 use Inline (C => DATA =>
 	    NAME => 'Math::Simple',
-	    VERSION => '1.23',
+	    VERSION => '1.24',
 	   );
 
 1;

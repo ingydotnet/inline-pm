@@ -2,13 +2,16 @@ package Inline::MakeMaker;
 
 my (undef, $bootstrap_code) = (<<__EOVIMTRICK__, <<'__EOCODE__');
 __EOVIMTRICK__
+package _bootstrap::makemaker;
+*_bootstrap::makemaker::import = \&Inline::MakeMaker::import;
+*_bootstrap::makemaker::VERSION = \$Inline::MakeMaker::VERSION;
 package Inline::MakeMaker;
 use strict;
 use Carp;
 use Config;
-$Inline::MakeMaker::VERSION = '0.41';
+$Inline::MakeMaker::VERSION = '0.50';
 
-my ($package, $filename, @modules, @versions);
+my (@modules, @versions);
 
 sub usage_postamble {
     return "\n\nWhen using Inline::MakeMaker, it is illegal to define &MY::postamble.\n\n";
@@ -31,11 +34,26 @@ sub postamble {
 .pm.inl:
 	\$(PERL) -Mblib -MInline=_INSTALL_ -M$name -e1 $version \$(INST_ARCHLIB)
 
-pure_all :: $object.inl
+pure_all :: ensure_inline_installed $object.inl
 
-inline_dist :
-	perl -e 'die "foo"'
+ensure_inline_installed :
+	\@\$(PERL) -Mblib -MFile::Copy \\
+	-e 'eval "use Inline";' \\
+	-e 'if (\$\$@) {' \\
+	-e '    copy("_bootstrap/Inline.pm", "./blib/lib");' \\
+	-e '} elsif (\$\$Inline::VERSION lt '0.50') {' \\
+	-e '    die "You need to install the latest Inline.pm or uninstall the current one\\n";' \\
+	-e '}';
 
+dist :
+	tar xzf \$(DISTVNAME).tar\$(SUFFIX)
+	\$(PERL) -pi -e 's/Inline::MakeMaker/_bootstrap::makemaker/' \\
+	\$(DISTVNAME)/Makefile.PL
+	find _bootstrap | cpio -dump \$(DISTVNAME)
+	\$(PERL) -MInline -MFile::Copy \\
+	-e 'copy(\$\$INC{"Inline.pm"}, "\$(DISTVNAME)/_bootstrap")'
+	tar czf \$(DISTVNAME).tar\$(SUFFIX) \$(DISTVNAME)
+	rm -fr \$(DISTVNAME)
 END
 }
 
@@ -49,7 +67,7 @@ END
 }
 
 sub import {
-    ($package, $filename) = caller;
+    my $package = caller;
     require ExtUtils::MakeMaker;
     no strict 'refs';
     *MY::postamble = \&Inline::MakeMaker::postamble;
@@ -88,26 +106,20 @@ END
     }
 
     # Provide a convenience rule to clean up Inline's messes
-    $args{clean} = { FILES => "_Inline $object.inl _bootstrap" } 
+    $args{clean} = { FILES => "_Inline $object.inl" } 
     unless defined $args{clean};
-    # Add Inline to the dependencies
-    $args{PREREQ_PM}{Inline} = '0.50' unless defined $args{PREREQ_PM}{Inline};
 
     &ExtUtils::MakeMaker::WriteMakefile(%args);
+    system q{perl -pi -e 's/^(dist\s*:)/$1:/' Makefile} and die;
 }
 
 1;
 __EOCODE__
 
 #==============================================================================
-sub mkdir_or_die {
-    my ($dir) = @_;
-    -d $dir or mkdir($dir) or die "Couldn't mkdir('$dir'): $!";
-}
-
-mkdir_or_die('_bootstrap');
-
-my $bootstrap_pm = "_bootstrap/makemaker.pm";
+my $dir = '_bootstrap';
+-d $dir or mkdir($dir) or die "Couldn't mkdir('$dir'): $!";
+my $bootstrap_pm = "$dir/makemaker.pm";
 open(BOOTSTRAP, ">$bootstrap_pm") or die "Couldn't open $bootstrap_pm: $!";
 print BOOTSTRAP $bootstrap_code;
 close(BOOTSTRAP);
