@@ -57,7 +57,7 @@ sub WriteInlineMakefile {
     my %args = @_;
     croak "Inline::MakeMaker::WriteMakefile requires the NAME parameter\n"
       unless $args{NAME};
-    croak <<END unless ($args{NAME} || $args{VERSION_NAME});
+    croak <<END unless ($args{VERSION} || $args{VERSION_FROM});
 Inline::MakeMaker::WriteMakefile requires either the VERSION or
 VERSION_FROM parameter.
 END
@@ -87,56 +87,6 @@ END
     $args{PREREQ_PM}{Inline} = '0.41' unless defined $args{PREREQ_PM}{Inline};
 
     &ExtUtils::MakeMaker::WriteMakefile(%args);
-}
-
-###############################################################################
-# Inline utilities - Stubs for future development.
-###############################################################################
-my $i;
-sub utils {
-    print "->@_<-\n";
-    require Inline;
-    $i = bless {}, 'Inline';
-    shift if $_[0] eq 'Inline';
-    my $util = shift;
-    no strict 'refs';
-    goto &{uc($util)};
-}
-
-sub INSTALL {
-    print <<END;
-
-The INSTALL command has not yet been implemented.
-Stay tuned...
-
-@_
-
-END
-    exit 0;
-}
-
-sub MAKEPPD {
-    print <<END;
-
-The MAKEPPD command has not yet been implemented.
-Stay tuned...
-
-@_
-
-END
-    exit 0;
-}
-
-sub MAKEDIST {
-    print <<END;
-
-The MAKEDIST command has not yet been implemented.
-Stay tuned...
-
-@_
-
-END
-    exit 0;
 }
 
 1;
