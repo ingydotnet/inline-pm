@@ -3,3 +3,4 @@ MANIFEST
 Makefile.PL
 Simple.pm
 test.pl
+Inline/MakeMaker/Bootstrap.pm
