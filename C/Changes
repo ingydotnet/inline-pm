@@ -1,0 +1,86 @@
+Revision history for Perl extension Inline::C.
+
+0.43  Sun Jul 22 08:15:26 PDT 2001
+	- Auto add script directory to INC path (-I)..
+
+0.43  Sat Jul 21 12:38:37 PDT 2001
+	- Added support for XSMODE.
+
+0.43  Fri Jul 20 03:29:08 PDT 2001
+	- Added OPTIMIZE config parameter for gdb debugging
+
+0.43  Thu Jul 19 17:29:17 PDT 2001
+	- Use $Config{dlext} instead of $Config{so}
+
+0.43  Sat Jul  7 13:18:36 PDT 2001
+	- Move the creation of a parser from parse() to get_parser(). This
+	  allows Inline::CPP to override only get_parser(). (NEILW)
+
+0.43  Sat Jul  7 12:53:33 PDT 2001
+	- Break up the generation of XS code into smaller stages which can 
+	  be overridden in Inline::CPP. Makes the code somewhat longer, but
+	  more clear. (NEILW)
+
+0.42  Sun Jun 10 23:50:27 PDT 2001
+	- Patch that fixes STRUCTS config option being used for explicit
+	  structs.
+
+0.42  Sun Jun 10 18:34:36 PDT 2001
+	- Patch that prevents Inline from creating a nonexistent sitelib
+	  Thanks Joey Hess.
+
+0.41  Tue Jun  5 01:49:32 PDT 2001
+	- Added AUTOWRAP config option
+
+0.40  Sat May 26 13:47:16 PDT 2001
+	- Added hack to make work with Inline::Files and +w
+
+0.40  Wed May 23 20:21:32 PDT 2001
+	- 0.40 integration
+	  Changed object references
+	  Account for no trailing '/' in paths
+
+0.34  Sun May  6 16:56:53 PDT 2001
+	- Changed the generated Makefile.PL to not create any dependencies 
+	  between Makefile and Makefile.PL. This was creating a problem on
+	  an HP-UX system using AFS. Inline users should never need this 
+	  dependency anyways.
+
+0.34  Tue May  1 00:05:58 PDT 2001
+	- Fixed compiler detection bugs in Makefile.PL
+
+0.33  Sat Apr 28 20:20:29 PDT 2001
+	- Made Inline::C a base class for Inline::CPP
+
+0.33  Sat Apr 28 20:20:29 PDT 2001
+	- Added support for Inline::Filters. FILTERS config option.
+
+0.33  Sat Apr 28 20:20:29 PDT 2001
+	- Made installation of Inline::C optional. For those people without 
+	  a C compiler who may wish to use Java.
+
+0.33  Sat Apr 28 20:20:29 PDT 2001
+	- Rearranged test harness. Moved all C tests from Inline to Inline::C
+
+0.32  Mon Feb 26 15:36:56 PST 2001
+	- Added MAKE config option
+	- Changed LDFLAGS to proper name LDDLFLAGS. (MakeMaker)
+
+0.32  Fri Feb 23 03:17:42 PST 2001
+	- Fixed Debian bug with $Config{installprivlib}. Also added warning if no default typemap, and croak if no typemaps at all.
+
+0.32  Fri Feb 23 03:16:27 PST 2001
+	- Special case for AIX ($Config{so})
+
+0.31  Thu Jan 18 22:02:17 PST 2001
+	- Added the following configuration options: 'CC', 'LD', 'CCFLAGS, 'LDFLAGS'. These are proxies for the MakeMaker options of the same names.
+
+0.31  Sat Jan 13 14:44:28 PST 2001
+	- Allow relative paths in TYPEMAPS files.
+	- Added a test 't/typemap.t' for this
+
+0.31  Sat Jan 13 12:41:38 PST 2001
+	- Changed over to new Inline DIRECTORY structure.
+
+0.30  Fri Dec  8 01:55:43 PST 2000
+	- Created Inline::C. Separated C code from Inline 0.26

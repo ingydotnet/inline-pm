@@ -1,0 +1,5 @@
+# Inline Foo file
+
+foo-sub test1 {
+    foo-return $_[0] foo-eq 'test1';
+}
