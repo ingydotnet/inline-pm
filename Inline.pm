@@ -765,7 +765,9 @@ sub create_config_file {
 		next;
 	    }
 	    next if $mod =~ /^(MakeMaker|denter|messages)$/;
-	    eval "require Inline::$mod;\$register=&Inline::${mod}::register";
+	    eval "require Inline::$mod;";
+            warn($@), next if $@;
+	    eval "\$register=&Inline::${mod}::register";
 	    next if $@;
 	    my $language = ($register->{language}) 
 	      or warn(M22_usage_register($mod)), next;

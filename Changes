@@ -1,5 +1,12 @@
 # Revision history for Perl extension Inline.
 
+version: 0.44
+date:    Sun Oct 27 23:34:50 PST 2002
+changes:
+  - Applied some patches from Patrick LeBoutillier, including one to make
+    things work out of the box on Win95 and friends. Rob helped too.
+  - Added a warning to help debug why certain ILSMs might be failing.
+
 ---
 version: 0.44
 date:    Fri Oct 25 10:12:16 PDT 2002
