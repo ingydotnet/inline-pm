@@ -1,10 +1,11 @@
 use strict;
+use Carp;
 
 # "main"
 {
     my %args = parse_args();
     install_inline() unless exists $args{shoddy};
-    chdir_to_sample_modules_dir();
+    chdir_or_die('modules/Math/Simple');
     start_over();
     run_develversion_tests();
     run_releaseversion_tests();
@@ -18,6 +19,16 @@ sub system_or_die {
     system(@command) == 0 or die "Couldn't $command: $!";
 }
 
+sub chdir_or_die {
+    my ($dir) = @_;
+    chdir($dir) or Carp::croak "Couldn't chdir to $dir: $!\n";
+}
+
+sub mkdir_or_die {
+    my ($dir) = @_;
+    -d $dir or mkdir($dir) or Carp::croak "Couldn't mkdir $dir: $!\n";
+}
+
 sub parse_args {
     my %args = map { s/^-*//g; $_ => 1 } @ARGV;
     @ARGV = (); # (This has to happen so "make dist" tries to use your args)
@@ -28,24 +39,23 @@ sub install_inline {
     system_or_die "sudo make install";
 }
 
-sub chdir_to_sample_modules_dir {
-    chdir 'modules/Math/Simple' or die;
-}
-
 sub run_develversion_tests {
     system_or_die "make test";
 }
 
 sub run_releaseversion_tests {
-    my $tarball_name = 'Math-Simple-1.23.tar.gz';
+    my $module_dashy_name = 'Math-Simple-1.23';
+    my $tarball_name = "$module_dashy_name.tar.gz";
     -e $tarball_name and system_or_die "rm $tarball_name";
     system_or_die "make dist";
     -e $tarball_name or die "No tarball!";
 
     my $untar_to_dir_name = '../dist';
-    mkdir $untar_to_dir_name or die;
-    chdir $untar_to_dir_name or die;
+    mkdir_or_die $untar_to_dir_name or die;
+    chdir_or_die $untar_to_dir_name;
 
+    system_or_die "tar xvzf ../Simple/$tarball_name";
+    chdir_or_die $module_dashy_name;
     my $bootstrap_pm_name = 'Inline/MakeMaker/Bootstrap.pm';
     -e $bootstrap_pm_name or die "No $bootstrap_pm_name";
     system_or_die "rm -rf $untar_to_dir_name";
