@@ -34,7 +34,7 @@ sub parse_args {
 }
 
 sub install_inline {
-    system_or_die "sudo make install";
+    system_or_die "sudo make install UNINST=1";
 }
 
 sub run_develversion_tests {
@@ -72,7 +72,12 @@ sub run_releaseversion_tests {
 }
 
 sub run_perl_tests {
-    -e 'Makefile' and system_or_die "make purge";
+    -e 'Makefile' and do {
+	system_or_die "make purge";
+	system_or_die "rm -fr Math-Simple-*";
+	system_or_die "rm -fr Inline";
+	system_or_die "rm -f _inline_check.PL";
+    };
     system_or_die "perl Makefile.PL";
     system_or_die "make";
     system_or_die "make test";
