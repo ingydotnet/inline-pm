@@ -1184,11 +1184,11 @@ sub rmpath {
     use strict;
     my ($o, $prefix, $rmpath) = @_;
 # Nuke the target directory
-    _rmtree(File::Spec->catdir($prefix,$rmpath));
+    _rmtree(File::Spec->catdir($prefix ? ($prefix,$rmpath) : ($rmpath)));
 # Remove any empty directories underneath the requested one
     my @parts = File::Spec->splitdir($rmpath);
     while (@parts){
-        $rmpath = File::Spec->catdir($prefix,@parts);
+        $rmpath = File::Spec->catdir($prefix ? ($prefix,@parts) : @parts);
         rmdir $rmpath
 	  or last; # rmdir failed because dir was not empty
 	pop @parts;
