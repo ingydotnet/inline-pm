@@ -44,7 +44,7 @@ sub run_develversion_tests {
 
 sub run_releaseversion_tests {
     # Create the tarball...
-    my $module_dashy_name = 'Math-Simple-1.23';
+    my $module_dashy_name = 'Math-Simple-1.25';
     my $tarball_name = "$module_dashy_name.tar.gz";
     -e $tarball_name and system_or_die "rm $tarball_name";
     system_or_die "make dist";
@@ -59,7 +59,7 @@ sub run_releaseversion_tests {
 
     # Verify contents...
     chdir_or_die $module_dashy_name;
-    my $bootstrap_pm_name = 'Inline/MakeMaker/Bootstrap.pm';
+    my $bootstrap_pm_name = '_bootstrap/makemaker.pm';
     -e $bootstrap_pm_name or die "No $bootstrap_pm_name";
     run_perl_tests();
 
