@@ -1,5 +1,14 @@
 # Revision history for Perl extension Inline.
 
+---
+version: 0.44
+date:    Thu Oct 17 20:00:46 PDT 2002
+changes:
+  - Shortened BUILD_TIMER precision, per Leon Brocard's suggestion.
+  - Applied Mitchell Charity's patch to fix Piers Harding's CPP problem.
+  - Fixed bug with USING keyword
+
+---
 version: 0.44
 date:    Fri Oct 11 18:09:03 PDT 2002
 changes:

@@ -264,7 +264,7 @@ sub build {
     $o->call('compile', 'Build Compile');
     if ($o->{CONFIG}{BUILD_TIMERS}) {
         $total_build_time = Time::HiRes::time() - $total_build_time;
-        print STDERR "Total Build Time: $total_build_time secs\n", 
+        printf STDERR "Total Build Time: %5.4f secs\n", $total_build_time;
     }
 }
 
@@ -273,13 +273,15 @@ sub call {
     my $time; 
     my $i = ' ' x $indent;
     print STDERR "${i}Starting $header Stage\n" if $o->{CONFIG}{BUILD_NOISY};
-    $time = Time::HiRes::time() if $o->{CONFIG}{BUILD_TIMERS};
+    $time = Time::HiRes::time() 
+      if $o->{CONFIG}{BUILD_TIMERS};
     
     $o->$method();
 
-    $time = Time::HiRes::time() - $time if $o->{CONFIG}{BUILD_TIMERS};
+    $time = Time::HiRes::time() - $time 
+      if $o->{CONFIG}{BUILD_TIMERS};
     print STDERR "${i}Finished $header Stage\n" if $o->{CONFIG}{BUILD_NOISY};
-    print STDERR "${i}Time for $header Stage: $time secs\n"
+    printf STDERR "${i}Time for $header Stage: %5.4f secs\n", $time 
       if $o->{CONFIG}{BUILD_TIMERS};
     print STDERR "\n" if $o->{CONFIG}{BUILD_NOISY};
 }
@@ -299,6 +301,7 @@ sub preprocess {
 # Parse the function definition information out of the C code
 #==============================================================================
 sub parse {
+    print "Called parser from @{[caller]}\n";
     my $o = shift;
     return if $o->{ILSM}{parser};
     return if $o->{ILSM}{XSMODE};

@@ -4,7 +4,7 @@ use strict;
 require 5.005;
 $Inline::VERSION = '0.44-TRIAL5';
 
-use AutoLoader 'AUTOLOAD';
+# use XXX AutoLoader 'AUTOLOAD';
 use Inline::denter;
 use Config;
 use Carp;
@@ -288,12 +288,12 @@ sub push_overrides {
     my ($o) = @_;
     my ($language_id) = $o->{API}{language_id};
     my ($ilsm) = $o->{INLINE}{ILSM_module};
-    for my $submodule (@{$o->{CONFIG}{USING}}) {
-        my $using_module = /\w+::/
-                           ? $submodule
-                           : /^::/
-                             ? "Inline::$language_id$submodule"
-                             : "Inline::${language_id}::$submodule";
+    for (@{$o->{CONFIG}{USING}}) {
+        my $using_module = /^::/
+                           ? "Inline::$language_id$_"
+                           : /::/
+                             ? $_
+                             : "Inline::${language_id}::$_";
         eval "require $using_module";
         croak "Invalid module '$using_module' in USING list:\n$@" if $@;
         my $register;
@@ -597,8 +597,8 @@ sub DESTROY {
 }
 
 # Comment out the next 2 lines to stop autoloading of subroutines (testing)
-1;
-__END__
+#1; XXX
+#__END__
 
 #==============================================================================
 # Get the source code
