@@ -1,3 +1,0 @@
-flintstones fred barney
-jetsons     george jane elroy
-simpsons    homer marge bart

@@ -4,6 +4,13 @@ use strict;
 
 $Inline::C::grammar::VERSION = '0.30';
 
+my $hack = sub { # Appease -w using Inline::Files
+    print Parse::RecDescent::IN '';
+    print Parse::RecDescent::IN '';
+    print Parse::RecDescent::TRACE_FILE '';
+    print Parse::RecDescent::TRACE_FILE '';
+};
+
 sub grammar {
     <<'END';
 
