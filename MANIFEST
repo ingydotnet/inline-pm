@@ -6,8 +6,6 @@ C/Makefile.PL
 C/README
 C/grammar/Changes
 C/grammar/Makefile.PL
-C/grammar/grammar.pm
-C/grammar/test.pl
 C/t/00init.t
 C/t/01syntax.t
 C/t/02config.t
