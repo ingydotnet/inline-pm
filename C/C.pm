@@ -1,4 +1,5 @@
 package Inline::C;
+$VERSION = '0.44';
 
 use strict;
 require Inline;
@@ -6,8 +7,8 @@ use Config;
 use Data::Dumper;
 use Carp;
 use Cwd qw(cwd abs_path);
+use File::Spec;
 
-$Inline::C::VERSION = '0.43';
 @Inline::C::ISA = qw(Inline);
 
 #==============================================================================
@@ -16,7 +17,8 @@ $Inline::C::VERSION = '0.43';
 sub register {
     return {
 	    language => 'C',
-	    aliases => ['c'],
+            # XXX Breaking this on purpose; let's see who screams
+            # aliases => ['c'], 
 	    type => 'compiled',
 	    suffix => $Config{dlext},
 	   };
@@ -63,7 +65,7 @@ END
 	my ($key, $value) = (shift, shift);
 	if ($key eq 'MAKE' or
 	    $key eq 'AUTOWRAP' or
-	    $key eq 'XSMODE'
+            $key eq 'XSMODE'
 	   ) {
 	    $o->{ILSM}{$key} = $value;
 	    next;
@@ -88,9 +90,7 @@ END
 	if ($key eq 'TYPEMAPS') {
 	    croak "TYPEMAPS file '$value' not found"
 	      unless -f $value;
-	    my ($path, $file) = ($value =~ m|^(.*)[/\\](.*)$|) ?
-	      ($1, $2) : ('.', $value);
-	    $value = abs_path($path) . '/' . $file;
+	    $value = File::Spec->rel2abs($value);
 	    $o->add_list($o->{ILSM}{MAKEFILE}, $key, $value, []);
 	    next;
 	}
@@ -211,18 +211,6 @@ sub add_text {
 }
 
 #==============================================================================
-# Parse and compile C code
-#==============================================================================
-sub build {
-    my $o = shift;
-    $o->parse;
-    $o->write_XS;
-    $o->write_Inline_headers;
-    $o->write_Makefile_PL;
-    $o->compile;
-}
-
-#==============================================================================
 # Return a small report about the C code..
 #==============================================================================
 sub info {
@@ -257,31 +245,78 @@ sub config {
 }
 
 #==============================================================================
-# Parse the function definition information out of the C code
+# Parse and compile C code
 #==============================================================================
-sub parse {
+my $total_build_time;
+sub build {
+    my $o = shift;
+
+    if ($o->{CONFIG}{BUILD_TIMERS}) {
+        eval {require Time::HiRes};
+        croak "You need Time::HiRes for BUILD_TIMERS option:\n$@" if $@;
+        $total_build_time = Time::HiRes::time();
+    }
+    $o->call('preprocess', 'Build Prepocess');
+    $o->call('parse', 'Build Parse');
+    $o->call('write_XS', 'Build Glue 1');
+    $o->call('write_Inline_headers', 'Build Glue 2');
+    $o->call('write_Makefile_PL', 'Build Glue 3');
+    $o->call('compile', 'Build Compile');
+    if ($o->{CONFIG}{BUILD_TIMERS}) {
+        $total_build_time = Time::HiRes::time() - $total_build_time;
+        print STDERR "Total Build Time: $total_build_time secs\n", 
+    }
+}
+
+sub call {
+    my ($o, $method, $header, $indent) = (@_, 0);
+    my $time; 
+    my $i = ' ' x $indent;
+    print STDERR "${i}Starting $header Stage\n" if $o->{CONFIG}{BUILD_NOISY};
+    $time = Time::HiRes::time() if $o->{CONFIG}{BUILD_TIMERS};
+    
+    $o->$method();
+
+    $time = Time::HiRes::time() - $time if $o->{CONFIG}{BUILD_TIMERS};
+    print STDERR "${i}Finished $header Stage\n" if $o->{CONFIG}{BUILD_NOISY};
+    print STDERR "${i}Time for $header Stage: $time secs\n"
+      if $o->{CONFIG}{BUILD_TIMERS};
+    print STDERR "\n" if $o->{CONFIG}{BUILD_NOISY};
+}
+
+#==============================================================================
+# Apply any 
+#==============================================================================
+sub preprocess {
     my $o = shift;
     return if $o->{ILSM}{parser};
     $o->get_maps;
     $o->get_types;
     $o->{ILSM}{code} = $o->filter(@{$o->{ILSM}{FILTERS}});
+}
+
+#==============================================================================
+# Parse the function definition information out of the C code
+#==============================================================================
+sub parse {
+    my $o = shift;
+    return if $o->{ILSM}{parser};
     return if $o->{ILSM}{XSMODE};
     my $parser = $o->{ILSM}{parser} = $o->get_parser;
+    $parser->{data}{typeconv} = $o->{ILSM}{typeconv};
+    $parser->{data}{AUTOWRAP} = $o->{ILSM}{AUTOWRAP};
     Inline::Struct::parse($o) if $o->{STRUCT}{'.any'};
     $parser->code($o->{ILSM}{code})
-      or croak "Bad $o->{API}{language} code passed to Inline at @{[caller(2)]}\n";
+      or croak <<END;
+Bad $o->{API}{language} code passed to Inline at @{[caller(2)]}
+END
 }
 
 # Create and initialize a parser
 sub get_parser {
     my $o = shift;
-#    require Inline::C::recdescent;
-#    my $parser = Inline::C::recdescent->new();
-    require Inline::C::charity;
-    my $parser = Inline::C::charity->new();
-    $parser->{data}{typeconv} = $o->{ILSM}{typeconv};
-    $parser->{data}{AUTOWRAP} = $o->{ILSM}{AUTOWRAP};
-    return $parser;
+    require Inline::C::ParseRecDescent;
+    Inline::C::ParseRecDescent::get_parser($o);
 }
 
 #==============================================================================
@@ -291,10 +326,12 @@ sub get_maps {
     my $o = shift;
 
     my $typemap = '';
-    $typemap = "$Config::Config{installprivlib}/ExtUtils/typemap"
-      if -f "$Config::Config{installprivlib}/ExtUtils/typemap";
-    $typemap = "$Config::Config{privlibexp}/ExtUtils/typemap"
-      if (not $typemap and -f "$Config::Config{privlibexp}/ExtUtils/typemap");
+    my $file;
+    $file = File::Spec->catfile($Config::Config{installprivlib},"ExtUtils","typemap");
+    $typemap = $file if -f $file;
+    $file = File::Spec->catfile($Config::Config{privlibexp}    ,"ExtUtils","typemap");
+    $typemap = $file
+      if (not $typemap and -f $file);
     warn "Can't find the default system typemap file"
       if (not $typemap and $^W);
 
@@ -302,9 +339,8 @@ sub get_maps {
 
     if (not $o->UNTAINT) {
 	require FindBin;
-	if (-f "$FindBin::Bin/typemap") {
-	    push @{$o->{ILSM}{MAKEFILE}{TYPEMAPS}}, "$FindBin::Bin/typemap";
-	}
+	$file = File::Spec->catfile($FindBin::Bin,"typemap");
+	push(@{$o->{ILSM}{MAKEFILE}{TYPEMAPS}}, $file) if -f $file;
     }
 }
 
@@ -418,7 +454,7 @@ sub write_XS {
     my $modfname = $o->{API}{modfname};
     my $module = $o->{API}{module};
     $o->mkpath($o->{API}{build_dir});
-    open XS, "> $o->{API}{build_dir}/$modfname.xs"
+    open XS, "> ".File::Spec->catfile($o->{API}{build_dir},"$modfname.xs")
       or croak $!;
     if ($o->{ILSM}{XSMODE}) {
 	warn <<END if $^W and  $o->{ILSM}{code} !~ /MODULE\s*=\s*$module\b/;
@@ -563,7 +599,7 @@ END
 sub write_Inline_headers {
     my $o = shift;
 
-    open HEADER, "> $o->{API}{build_dir}/INLINE.h"
+    open HEADER, "> ".File::Spec->catfile($o->{API}{build_dir},"INLINE.h")
       or croak;
 
     print HEADER <<'END';
@@ -614,7 +650,7 @@ sub write_Makefile_PL {
 		   NAME => $o->{API}{module},
 		  );
     
-    open MF, "> $o->{API}{build_dir}/Makefile.PL"
+    open MF, "> ".File::Spec->catfile($o->{API}{build_dir},"Makefile.PL")
       or croak;
     
     print MF <<END;
@@ -640,31 +676,84 @@ END
 # Run the build process.
 #==============================================================================
 sub compile {
-    my ($o, $perl, $make, $cmd, $cwd);
-    $o = shift;
-    my ($module, $modpname, $modfname, $build_dir, $install_lib) = 
-      @{$o->{API}}{qw(module modpname modfname build_dir install_lib)};
+    my $o = shift;
 
-    -f ($perl = $Config::Config{perlpath})
-      or croak "Can't locate your perl binary";
-    $make = $o->{ILSM}{MAKE} || $Config::Config{make}
-      or croak "Can't locate your make binary";
-    $cwd = &cwd;
+    my $build_dir = $o->{API}{build_dir};
+    my $cwd = &cwd;
     ($cwd) = $cwd =~ /(.*)/ if $o->UNTAINT;
-    for $cmd ("$perl Makefile.PL > out.Makefile_PL 2>&1",
-	      \ &fix_make,   # Fix Makefile problems
-	      "$make > out.make 2>&1",
-	      "$make pure_install > out.make_install 2>&1",
-	     ) {
-	if (ref $cmd) {
-	    $o->$cmd();
-	}
-	else {
-	    ($cmd) = $cmd =~ /(.*)/ if $o->UNTAINT;
-	    chdir $build_dir;
-	    system($cmd) and do {
-#		$o->error_copy;
-		croak <<END;
+    
+    chdir $build_dir;
+    $o->call('makefile_pl', '"perl Makefile.PL"', 2);
+    $o->call('make', '"make"', 2);
+    $o->call('make_install', '"make install"', 2);
+    chdir $cwd;
+    $o->call('cleanup', 'Cleaning Up', 2);
+}
+
+sub makefile_pl {
+    my ($o) = @_;
+    my $perl;
+    -f ($perl = $Config::Config{perlpath})
+      or ($perl = $^X)
+      or croak "Can't locate your perl binary";
+    $o->system_call("$perl Makefile.PL", 'out.Makefile_PL');
+    $o->fix_make;
+}
+sub make {
+    my ($o) = @_;
+    my $make = $o->{ILSM}{MAKE} || $Config::Config{make}
+      or croak "Can't locate your make binary";
+    $o->system_call("$make", 'out.make');
+}
+sub make_install {
+    my ($o) = @_;
+    my $make = $o->{ILSM}{MAKE} || $Config::Config{make}
+      or croak "Can't locate your make binary";
+    $o->system_call("$make pure_install", 'out.make_install');
+}
+sub cleanup {
+    my ($o) = @_;
+    my ($modpname, $modfname, $install_lib) = 
+      @{$o->{API}}{qw(modpname modfname install_lib)};
+    if ($o->{API}{cleanup}) {
+        $o->rmpath(File::Spec->catdir($o->{API}{directory},'build'),
+                   $modpname);
+        my $autodir = File::Spec->catdir($install_lib,'auto',$modpname);
+        unlink (File::Spec->catfile($autodir,'.packlist'),
+                File::Spec->catfile($autodir,'$modfname.bs'),
+                File::Spec->catfile($autodir,'$modfname.exp'), #MSWin32
+                File::Spec->catfile($autodir,'$modfname.lib'), #MSWin32
+               );
+    }
+}
+
+sub system_call {
+    my ($o, $cmd, $output_file) = @_;
+    my $build_noisy = 
+      defined $ENV{PERL_INLINE_BUILD_NOISY}
+      ? $ENV{PERL_INLINE_BUILD_NOISY}
+      : $o->{CONFIG}{BUILD_NOISY};
+    if (not $build_noisy) {
+        $cmd = "$cmd > $output_file 2>&1";
+    }
+    ($cmd) = $cmd =~ /(.*)/ if $o->UNTAINT;
+    system($cmd) == 0 
+      or croak($o->build_error_message($cmd, $output_file, $build_noisy));
+}
+
+sub build_error_message {
+    my ($o, $cmd, $output_file, $build_noisy) = @_;
+    my $build_dir = $o->{API}{build_dir};
+    my $output = '';
+    if (not $build_noisy and
+        open(OUTPUT, $output_file)
+       ) {
+        local $/;
+        $output = <OUTPUT>;
+        close OUTPUT;
+    }
+    
+    return $output . <<END;
 
 A problem was encountered while attempting to compile and install your Inline
 $o->{API}{language} code. The command that failed was:
@@ -676,18 +765,6 @@ $build_dir
 To debug the problem, cd to the build directory, and inspect the output files.
 
 END
-	    };
-	    chdir $cwd;
-	}
-    }
-
-    if ($o->{API}{cleanup}) {
-	$o->rmpath($o->{API}{directory} . '/build/', $modpname);
-	unlink "$install_lib/auto/$modpname/.packlist";
-	unlink "$install_lib/auto/$modpname/$modfname.bs";
-	unlink "$install_lib/auto/$modpname/$modfname.exp"; #MSWin32 VC++
-	unlink "$install_lib/auto/$modpname/$modfname.lib"; #MSWin32 VC++
-    }
 }
 
 #==============================================================================
@@ -708,12 +785,12 @@ sub fix_make {
     $o->{ILSM}{install_lib} = $o->{API}{install_lib};
     $o->{ILSM}{installdirs} = 'site';
     
-    open(MAKEFILE, "< $o->{API}{build_dir}/Makefile")
+    open(MAKEFILE, '< Makefile')
       or croak "Can't open Makefile for input: $!\n";
     @lines = <MAKEFILE>;
     close MAKEFILE;
     
-    open(MAKEFILE, "> $o->{API}{build_dir}/Makefile")
+    open(MAKEFILE, '> Makefile')
       or croak "Can't open Makefile for output: $!\n";
     for (@lines) {
 	if (/^(\w+)\s*=\s*\S+.*$/ and
@@ -729,4 +806,5 @@ sub fix_make {
 }
 
 1;
+
 __END__

@@ -1,4 +1,5 @@
-use lib qw(./blib/lib .);
+use File::Spec;
+use lib (File::Spec->catdir(File::Spec->curdir(),'blib','lib'), File::Spec->curdir());
 use strict;
 use Test;
 use diagnostics;

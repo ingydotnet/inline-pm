@@ -1,5 +1,17 @@
 Revision history for Perl extension Inline::MakeMaker.
 
+---
+version: 0.44
+date:    Tue Oct  8 11:54:10 PDT 2002
+changes:
+  - Made Inline module builds be noisy (show all compiler messages).
+
+---
+version: 0.44
+date:    Tue Oct  8 11:54:10 PDT 2002
+changes:
+  - Rewrote the whole module. Much simpler and flexible now.
+
 0.41  Tue Jun  5 02:59:53 PDT 2001
 	- Made dependencies more make like. Works very nice in trees.
 

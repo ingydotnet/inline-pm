@@ -1,18 +1,19 @@
 use strict;
 use ExtUtils::MakeMaker;
 use Config;
+use File::Spec;
 
 my ($cc, $exe) = @Config{'cc', '_exe'};
 $cc =~ s/\s+-.+$//; #remove possible trailing options
 
 my $found = 0;
 my $delim = $^O eq 'MSWin32' ? ';' : ':';
-if ($cc =~ m|/|) {
+if ($cc =~ m|/:\[|) {
     $found = -f "$cc$exe";
 }
 else {
     for my $lib (split $delim, $ENV{PATH}) {
-	$found = -f "$lib/$cc$exe" and last;
+	$found = -f File::Spec->catfile($lib,"$cc$exe") and last;
     }
 }
 
@@ -61,8 +62,7 @@ while (1) {
 if ($answer =~ /^(y|yes)$/i) {
     WriteMakefile(
 	 	  NAME => 'Inline::C',
-		  VERSION_FROM => 'C.pm',
-		  clean => {FILES => '_Inline_test/'},
+		  clean => {FILES => '_Inline_test'},
 		 )
 }
 else {

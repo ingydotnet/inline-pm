@@ -1,8 +1,9 @@
-use lib qw(./blib/lib .);
+use File::Spec;
+use lib (File::Spec->catdir(File::Spec->curdir(),'blib','lib'), File::Spec->curdir());
 use strict;
 use Test;
 use diagnostics;
-use Inline Config => DIRECTORY => './_Inline_test';
+use Inline Config => DIRECTORY => '_Inline_test';
 
 BEGIN {
     eval "require Inline::Files";
@@ -18,7 +19,7 @@ BEGIN {
 	);
 }
 
-use Inline Config => DIRECTORY => './_Inline_test';
+use Inline Config => DIRECTORY => '_Inline_test';
 
 # test 1
 # Make sure that Inline::Files support works

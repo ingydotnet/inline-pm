@@ -1,8 +1,9 @@
-use lib qw(../blib/lib ./blib/lib);
+use File::Spec;
+use lib (File::Spec->catdir(File::Spec->updir(),'blib','lib'), File::Spec->catdir(File::Spec->curdir(),'blib','lib'));
 use strict;
 use Test;
 use diagnostics;
-use Inline Config => DIRECTORY => './_Inline_test';
+use Inline Config => DIRECTORY => '_Inline_test';
 
 BEGIN {
     plan(tests => 3,

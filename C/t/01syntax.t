@@ -1,8 +1,9 @@
-use lib qw(../blib/lib ./blib/lib);
+use File::Spec;
+use lib (File::Spec->catdir(File::Spec->updir(),'blib','lib'), File::Spec->catdir(File::Spec->curdir(),'blib','lib'));
 use strict;
 use Test;
 use diagnostics;
-use Inline Config => DIRECTORY => './_Inline_test';
+use Inline Config => DIRECTORY => '_Inline_test';
 
 BEGIN {
     plan(tests => 5, 
@@ -11,7 +12,7 @@ BEGIN {
 	);
 }
 use Inline Config => 
-           DIRECTORY => './_Inline_test';
+           DIRECTORY => '_Inline_test';
 
 # test 1 - Check string syntax
 ok(add(3, 7) == 10);

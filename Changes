@@ -1,205 +1,290 @@
-Revision history for Perl extension Inline.
+# Revision history for Perl extension Inline.
+
+version: 0.44
+date:    Fri Oct 11 18:09:03 PDT 2002
+changes:
+  - Added the USING keyword. This allows you to specify a list of modules
+    which can override certain parts of the Inline process.
+  - Added Inline::C::ParseRecDescent and Inline::C::ParseRegExp to
+    provide two (hopefully) functionally identical C parsers. You use
+    one of these by saying 'use Inline C => DATA => USING => "ParseRegExp"'.
+    Big thanks to Mitchell Charity for ParseRegExp. It's over two orders
+    of magnitude faster than ParseRecDescent.
+  - Added the more diagnostics to BUILD_NOISY.
+  - Added BUILD_TIMERS for benchmarking the Inline build process.
+
+---
+version: 0.44
+date:    Wed Oct  9 19:03:34 PDT 2002
+changes:
+  - Applied a (BIG) patch to the Inline distribution to use File::Spec
+    to manipulate all file paths. Thanks Mitchell Charity!
+
+---
+version: 0.44
+date:    Tue Oct  8 11:47:39 PDT 2002
+changes:
+  - Fixed a bug in OS X. Inline::C was being required even if the object was
+    cached. That's because Inline.pm wasn't checking for .bundle.
+
+---
+version: 0.44
+date:    Tue Oct  8 10:33:13 PDT 2002
+changes:
+  - Added an option to Inline::C called BUILD_NOISY. Setting this to
+    true will cause the build process to dump output to the screen
+    instead of to a file. You can set it with 'BUILD_NOISY => 1,' or
+    'ENABLE => "BUILD_NOISY"'.
+  - Honor the PERL_INLINE_BUILD_NOISY environment variable, to do the
+    same as above. Environment variable has higher precedence.
+  - Print the contents of 'out.make' to the screen on failure. This will
+    happen when BUILD_NOISY is off. When its on, you'll see the messages
+    in real time, but they won't go to 'out.make'.
+  - Provide the NOISY shortcut so you can say 
+    'perl -MInline=force,noisy foo.pl'.
+  - Inline::MakeMaker uses the NOISY shortcut for its build command.
+    This way module builds are noisy like they should be.
+
+---
+version: 0.44
+date:    Thu Oct  3 17:40:27 PDT 2002
+changes:
+  - Integrated the new improved Inline::MakeMaker
+  - WriteInlineMakefile is deprecated for WriteMakefile
+
+---
+version: 0.44
+date:    Thu Oct  3 17:09:20 PDT 2002
+changes:
+  - Added a patch by Rafael Garcia-Suarez to use $^X when
+    $Config::Config{perlpath} is wrong. (It happens)
+
+---
+version: 0.44
+date:    Thu Oct  3 16:51:39 PDT 2002
+changes:
+  - Refactored the Parse::RecDescent grammar
+  - Moved grammar module to Inline::C::recdescent
+  - Support 'const' in types. Requested by Nicholas Clark
+  - Other modifiers seemed to be busted. Like 'unsigned'. Got them working.
+  - Started integrating Mitchell Charity's parser. Don't know how to
+    turn it on yet. It's currently in Inline::C::charity
+
+---
+version: 0.44  
+date:    Thu Oct  3 16:20:56 PDT 2002
+changes:
+  - Allow C++ based modules to be installed as well as C ones. Requested
+    by Piers Harding.
+
+---
+version: 0.44
+date:    Wed Oct  2 21:04:13 PDT 2002
+changes:
+  - Call validate() for interpreted ILSMs even on load(). This patch is
+    dedicated to the very patient Mark Fowler who waited almost a year
+    for it. I hope that never happens again.
 
 0.43  Sat Jul 21 14:58:46 PDT 2001
-	- Removed *old* deprecated functionality.
+        - Removed *old* deprecated functionality.
 
 0.43  Sat Jul 21 14:53:33 PDT 2001
-	- Inline now works with *all* Perl release versions 5.005 and above.
+        - Inline now works with *all* Perl release versions 5.005 and above.
 
 0.43  Thu Jul 19 17:29:17 PDT 2001
-	- I was comparing a version number to a md5 hash. Oops. Thanks Marcel.
+        - I was comparing a version number to a md5 hash. Oops. Thanks Marcel.
 
 0.43  Thu Jul 19 17:29:17 PDT 2001
-	- Changed M51 error message which was causing confusion. It would
-	  often come up in places I didn't anticipate.
+        - Changed M51 error message which was causing confusion. It would
+          often come up in places I didn't anticipate.
 
 0.43  Thu Jul 19 17:29:17 PDT 2001
-	- Use $Config{dlext} instead of $Config{so}. Thanks Marcel.
+        - Use $Config{dlext} instead of $Config{so}. Thanks Marcel.
 
 0.42  Sun Jun 10 18:21:06 PDT 2001
-	- Re-fixed config generator path bug prevents ILSMs like I::Python
-	  and I::Tcl from installing. (NEILW)
+        - Re-fixed config generator path bug prevents ILSMs like I::Python
+          and I::Tcl from installing. (NEILW)
 
 0.41  Tue Jun  5 00:23:46 PDT 2001
-	- Don't install .inline or .inl files with Inline::MakeMaker.
-	  Require object name to be same as package name for installation.
-	  Put hack in INIT block to fix Sarathy's patch ;)
+        - Don't install .inline or .inl files with Inline::MakeMaker.
+          Require object name to be same as package name for installation.
+          Put hack in INIT block to fix Sarathy's patch ;)
 
 0.41  Sat Jun  2 19:53:58 PDT 2001
-	- Fixed config generator path bug that would prevent other ILSMs
-	  from installing. Thanks Patrick.
+        - Fixed config generator path bug that would prevent other ILSMs
+          from installing. Thanks Patrick.
 
 0.41  Sat Jun  2 19:53:58 PDT 2001
-	- Applied patch to (hopefully) handle CRLF variations properly.
-	  Thanks Binkley
+        - Applied patch to (hopefully) handle CRLF variations properly.
+          Thanks Binkley
 
 0.40  Sun May 27 18:59:59 PDT 2001
-	- Bugfix. NAME not set right without AUTONAME.
+        - Bugfix. NAME not set right without AUTONAME.
 
 0.40  Sat May 26 13:41:18 PDT 2001
-	- TRIAL8 of Inline-0.40
-	  Added option to distribute binary PPM modules with or without source.
-	  Got UNTAINT to work again.
+        - TRIAL8 of Inline-0.40
+          Added option to distribute binary PPM modules with or without source.
+          Got UNTAINT to work again.
 
 0.40  Wed May 23 18:19:16 PDT 2001
-	- TRIAL7 of Inline-0.40
-	  Fixed path bus for MacOS. Thanks Marcel.
-	  'with' works again (with Event)
-	  Inline::MakeMaker adds WriteMakefile dependency for Inline 0.40
+        - TRIAL7 of Inline-0.40
+          Fixed path bus for MacOS. Thanks Marcel.
+          'with' works again (with Event)
+          Inline::MakeMaker adds WriteMakefile dependency for Inline 0.40
 
 0.40  Wed May 23 01:14:23 PDT 2001
-	- TRIAL6 of Inline-0.40
- 	  Made Denter YAML compliant
-	  Croak on usage of SITE_INSTALL
-	  Update Inline.pod for 0.40 features
-	  Detect and croak on old config files
+        - TRIAL6 of Inline-0.40
+          Made Denter YAML compliant
+          Croak on usage of SITE_INSTALL
+          Update Inline.pod for 0.40 features
+          Detect and croak on old config files
 
 0.40  Mon May 21 18:06:30 PDT 2001
-	- TRIAL5 of Inline-0.40
-	  Added alpha support for Inline::Files
-	  Made all internal path names canonical
+        - TRIAL5 of Inline-0.40
+          Added alpha support for Inline::Files
+          Made all internal path names canonical
 
 0.40  Sun May 13 23:38:26 PDT 2001
-	- Finished TRIAL1 version of Inline-0.40
-	  Short object names
+        - Finished TRIAL1 version of Inline-0.40
+          Short object names
           Safer config generation
           AUTONAME support
           Reinstituted AutoLoading
           Put all messages into subroutines inside Inline.pm
 
 0.40  Wed May  9 11:14:47 PDT 2001
-	- Completely reorganized the Inline internal object into major groups:
-	  API - Contract space for the ILSMs. Guaranteed backwards compatible
-	        after Inline 1.00.
-	  ILSM - Private space for ILSMs
-	  INLINE - Private Inline space. Subject to constant change.
-	  CONFIG - Config options. Not for use by ILSMs
-	  MATCH - Matching criteria for the object.
-	  STRUCT - Reserved for Inline::Struct	  
+        - Completely reorganized the Inline internal object into major groups:
+          API - Contract space for the ILSMs. Guaranteed backwards compatible
+                after Inline 1.00.
+          ILSM - Private space for ILSMs
+          INLINE - Private Inline space. Subject to constant change.
+          CONFIG - Config options. Not for use by ILSMs
+          MATCH - Matching criteria for the object.
+          STRUCT - Reserved for Inline::Struct    
 
 0.40  Wed May  9 11:14:47 PDT 2001
-	- Added command proxy logic for Inline::MakeMaker utilities:
-	  INSTALL, MAKEDIST, MAKEPPD
+        - Added command proxy logic for Inline::MakeMaker utilities:
+          INSTALL, MAKEDIST, MAKEPPD
 
 0.40  Wed May  9 11:14:47 PDT 2001
-	- Got _INSTALL_ option working with Inline::MakeMaker
+        - Got _INSTALL_ option working with Inline::MakeMaker
 
 0.40  Sun Apr 29 13:58:40 PDT 2001
-	- Replaced Inline's use of Data::Dumper with Inline::Denter.
- 	  This is a stripped down version of Data::Denter. This change
-	  makes Inline more secure because it doesn't need to eval()
-	  untrusted code. Also removes the dependency on Safe.pm which has
-	  known security flaws. Yay!
+        - Replaced Inline's use of Data::Dumper with Inline::Denter.
+          This is a stripped down version of Data::Denter. This change
+          makes Inline more secure because it doesn't need to eval()
+          untrusted code. Also removes the dependency on Safe.pm which has
+          known security flaws. Yay!
 
 0.33  Sat Apr 28 20:20:29 PDT 2001
-	- 'require FindBin' instead of 'use FindBin' for mod_perl.
+        - 'require FindBin' instead of 'use FindBin' for mod_perl.
 
 0.33  Sat Apr 28 20:20:29 PDT 2001
-	- Fixed Win32 bug. Drive letter 'c:' can be lower case.
+        - Fixed Win32 bug. Drive letter 'c:' can be lower case.
 
 0.33  Sat Apr 28 20:20:29 PDT 2001
-	- Changed 'make install' to 'make pure_install'
+        - Changed 'make install' to 'make pure_install'
 
 0.33  Sat Apr 28 20:20:29 PDT 2001
-	- Fixed bug of assuminh ':' for PATH separator. (Windows bug)
+        - Fixed bug of assuminh ':' for PATH separator. (Windows bug)
 
 0.33  Sat Apr 28 20:20:29 PDT 2001
-	- Rearranged test harness. Removed dependency on C for tests.
-	  Invented Inline::Foo for testing.
+        - Rearranged test harness. Removed dependency on C for tests.
+          Invented Inline::Foo for testing.
 
 0.33  Sat Apr 28 20:20:29 PDT 2001
-	- Added ENABLE and DISABLE config modifiers.
+        - Added ENABLE and DISABLE config modifiers.
 
 0.33  Sat Apr 28 20:20:29 PDT 2001
-	- Changed the way ILSMs are detected.
+        - Changed the way ILSMs are detected.
 
 0.32  Mon Feb 26 07:44:34 PST 2001
-	- Add DIRECTORY path to applicable warnings and error msgs
+        - Add DIRECTORY path to applicable warnings and error msgs
 
 0.32  Mon Feb 26 07:42:32 PST 2001
-	- Warn if UNTAINT && SAFEMODE && ! DIRECTORY (croak if root)
+        - Warn if UNTAINT && SAFEMODE && ! DIRECTORY (croak if root)
 
 0.32  Mon Feb 26 01:07:15 PST 2001
-	- Added GLOBAL_LOAD option with GLOBAL shortcut.
+        - Added GLOBAL_LOAD option with GLOBAL shortcut.
 
 0.32  Mon Feb 26 01:00:00 PST 2001
-	- Added SAFEMODE option.
-	- Safe->reval(DIRECTORY/config) if SAFE.
-	- Blindly untaint all %ENV variables for UNTAINT.
+        - Added SAFEMODE option.
+        - Safe->reval(DIRECTORY/config) if SAFE.
+        - Blindly untaint all %ENV variables for UNTAINT.
 
 0.32  Fri Feb 23 03:20:19 PST 2001
-	- Fixed MSWin32 bug of getting full path parts in dll name.
+        - Fixed MSWin32 bug of getting full path parts in dll name.
 
 0.32  Thu Feb 22 02:35:04 PST 2001
-	- Fixed the "cut & paste" bug. (DOS line endings in Unix.)
+        - Fixed the "cut & paste" bug. (DOS line endings in Unix.)
 
 0.32  Thu Feb 22 02:10:07 PST 2001
-	- Fixed detection of using Inline::Config.
+        - Fixed detection of using Inline::Config.
 
 0.32  Wed Feb 21 23:40:33 PST 2001
-	- Added UNTAINT option, which lets you use Inline with Perl's -T flag.
+        - Added UNTAINT option, which lets you use Inline with Perl's -T flag.
 
 0.31  Fri Jan 19 00:13:31 PST 2001
-	- Changed doc instances of 'C<Inline>' to 'Inline'.
+        - Changed doc instances of 'C<Inline>' to 'Inline'.
 
 0.31  Sat Jan 13 11:49:14 PST 2001
-	- Reorganized the internal structure of the Inline DIRECTORY
-	- Shortened install path to .Inline/lib/auto/...
+        - Reorganized the internal structure of the Inline DIRECTORY
+        - Shortened install path to .Inline/lib/auto/...
         - Lengthened the build path to .Inline/build/...
 
 0.31  Sat Jan 13 11:18:22 PST 2001
-	- Changed BLIB option to DIRECTORY
-	- Changed default DIRECTORY from blib_I to _Inline or .Inline
+        - Changed BLIB option to DIRECTORY
+        - Changed default DIRECTORY from blib_I to _Inline or .Inline
 
 0.30  Fri Dec  8 02:00:17 PST 2000
-	- Major reworking of Inline.pm
-	Sweeping changes to:
-	- Configuaration
-	- Syntax
-	- Language integration
-	Too much to list here. See ToDo
+        - Major reworking of Inline.pm
+        Sweeping changes to:
+        - Configuaration
+        - Syntax
+        - Language integration
+        Too much to list here. See ToDo
 
 0.26  Thu Sep 14 20:51:11 PDT 2000
-	- localize $/ and $\ to shield them from things like 'perl -l'.
-	Thanks Michael Schwern.
+        - localize $/ and $\ to shield them from things like 'perl -l'.
+        Thanks Michael Schwern.
 
 0.25  Fri Sep  1 10:07:33 PDT 2000
-	- Use MD5 on unmodified code only. User must force recompile if 
-	auto_headers change. This would have caused existing installs to break.
+        - Use MD5 on unmodified code only. User must force recompile if 
+        auto_headers change. This would have caused existing installs to break.
 
 0.25  Fri Sep  1 10:04:14 PDT 2000
-	- Don't determine build path unless really needed, since a blib_I might
-	be created. This might be annoying for someone who is only *using* an
-	Inline extension module.
+        - Don't determine build path unless really needed, since a blib_I might
+        be created. This might be annoying for someone who is only *using* an
+        Inline extension module.
 
 0.25  Fri Sep  1 08:35:53 PDT 2000
         - Mangle $VERSION into object name for modules
 
 0.25  Thu Aug 31 22:46:25 PDT 2000
-	- Support Inline->import(C=><DATA>); syntax
+        - Support Inline->import(C=><DATA>); syntax
 
 0.25  Sun Aug 20 20:52:24 PDT 2000
-	- Return an empty list when the C function is of type void and doesn't
-	use any stack manipulating macros. (ie dXSARGS) It used to return 
-	whatever was passed in on the stack. :-(
+        - Return an empty list when the C function is of type void and doesn't
+        use any stack manipulating macros. (ie dXSARGS) It used to return 
+        whatever was passed in on the stack. :-(
 
 0.25  Fri Aug 18 18:45:24 PDT 2000
-	- Force rebuild when SITE_INSTALL option is set.
+        - Force rebuild when SITE_INSTALL option is set.
 
 0.25  Fri Aug 18 18:15:34 PDT 2000
-	- Figured out what was actually causing the 0.23 AutoLoader bug.
-	Can't autoload from "./blib" (relative path) when chdir() has been
-	used. Fixed properly now. Can AutoLoad fix_make() again. :-)
+        - Figured out what was actually causing the 0.23 AutoLoader bug.
+        Can't autoload from "./blib" (relative path) when chdir() has been
+        used. Fixed properly now. Can AutoLoad fix_make() again. :-)
 
 0.24  Fri Aug 18 03:03:06 PDT 2000
-	- Fixed Autoload bug found during "make test" of Inline installation.
+        - Fixed Autoload bug found during "make test" of Inline installation.
 
 0.23  Wed Aug 16 18:10:07 PDT 2000
         - Added support for MSWin32 operating systems which use the Microsoft 
-	Visual C++ compiler.
+        Visual C++ compiler.
 
 0.22  Wed Aug  9 18:55:54 PDT 2000
-	- First alpha release to CPAN
+        - First alpha release to CPAN
 
 0.01  Mon Jul 24 11:23:25 2000
-	- original version; created by h2xs 1.19
+        - original version; created by h2xs 1.19

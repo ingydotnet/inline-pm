@@ -4,6 +4,7 @@ require Inline;
 @ISA = qw(Inline);
 use strict;
 use Carp;
+use File::Spec;
 
 sub register {
     return {
@@ -55,7 +56,7 @@ sub build {
 	eval $code;
     }
     croak "Foo build failed:\n$@" if $@;
-    my $path = "$o->{API}{install_lib}/auto/$o->{API}{modpname}";
+    my $path = File::Spec->catdir($o->{API}{install_lib},'auto',$o->{API}{modpname});
     my $obj = $o->{API}{location};
     $o->mkpath($path) unless -d $path;
     open FOO_OBJ, "> $obj"

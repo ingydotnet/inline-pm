@@ -8,5 +8,5 @@ WriteMakefile(
 			    Digest::MD5 => 2.09,
 			    Parse::RecDescent => 1.78,
 			   },
-	      clean => {FILES => '_Inline_test/ _Inline/ .Inline/'},
+	      clean => {FILES => '_Inline_test _Inline .Inline'},
 	     );

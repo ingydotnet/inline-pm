@@ -2,27 +2,27 @@
 use strict;
 use Test;
 use YAML;
+use File::Spec;
 
-# Note: These are unqualified so that they use the copies from the immediate
-# parent dir.
-use recdescent;
-use charity;
+use blib;
+require Inline::C::ParseRecDescent;
+require Inline::C::ParseRegExp;
 
 # Do all the typemap foo that Inline::C does
 require Inline::C;
 use Config;
-my $typemap = "$Config::Config{installprivlib}/ExtUtils/typemap"
-  if -f "$Config::Config{installprivlib}/ExtUtils/typemap";
+my $typemap = File::Spec->catfile($Config::Config{installprivlib},"ExtUtils","typemap")
+  if -f File::Spec->catfile($Config::Config{installprivlib},"ExtUtils","typemap");
 my $o = bless {}, 'Inline::C';
 push @{$o->{ILSM}{MAKEFILE}{TYPEMAPS}}, $typemap;
 $o->get_types;
 
 # Create new instances of each parser
-my $recdescent = Inline::C::recdescent->new();
-my $charity = Inline::C::charity->new();
+my $recdescent = Inline::C::ParseRecDescent->get_parser();
+my $regexp = Inline::C::ParseRegExp->get_parser();
 
 $recdescent->{data}{typeconv} = $o->{ILSM}{typeconv};
-$charity->{data}{typeconv} = $o->{ILSM}{typeconv};
+$regexp->{data}{typeconv} = $o->{ILSM}{typeconv};
 
 my @test_objects = @{YAML::Load($Inline::cases)};
 plan(tests=>scalar @test_objects);
@@ -31,7 +31,7 @@ for my $case (@test_objects) {
     my $input = $case->{input};
 
     my @outputs;
-    for ($recdescent, $charity) {
+    for ($recdescent, $regexp) {
         # Without a fresh copy of these objects, the same stuff is parsed over
         # and over.  However, because Parse::RecDescent is sllloooww, we can't
         # just construct a new object over and over. Hence, new() 'em up top,
@@ -43,8 +43,8 @@ for my $case (@test_objects) {
     }
 
     my $expected = YAML::Store($case->{output});
-    ok($outputs[0], $outputs[1], "RecDescent didn't match Charity for $input");
-    ok($outputs[1], $expected, "Charity structure mismatch for $input");
+    ok($outputs[0], $outputs[1], "RecDescent didn't match RegExp for $input");
+    ok($outputs[1], $expected, "RegExp structure mismatch for $input");
 }
 
 use Data::Dumper;

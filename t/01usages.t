@@ -1,8 +1,9 @@
-use lib qw(./blib/lib .);
+use File::Spec;
+use lib (File::Spec->catdir(File::Spec->curdir(),'blib','lib'), File::Spec->curdir());
 use strict;
 use Test;
 use diagnostics;
-use Inline Config => DIRECTORY => './_Inline_test';
+use Inline Config => DIRECTORY => '_Inline_test';
 
 BEGIN {
     plan(tests => 7,
@@ -11,11 +12,11 @@ BEGIN {
 	);
 }
 
-use Inline Config => DIRECTORY => './_Inline_test';
+use Inline Config => DIRECTORY => '_Inline_test';
 
 # test 1
 # Make sure that the syntax for reading external files works.
-use Inline Foo => './t/file';
+use Inline Foo => File::Spec->catfile(File::Spec->curdir(),'t','file');
 ok(test1('test1'));
 
 # test 2 & 3

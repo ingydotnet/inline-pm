@@ -1,8 +1,9 @@
-use lib qw(../blib/lib ./blib/lib);
+use File::Spec;
+use lib (File::Spec->catdir(File::Spec->updir(),'blib','lib'), File::Spec->catdir(File::Spec->curdir(),'blib','lib'));
 use strict;
 use Test;
 use diagnostics;
-use Inline Config => DIRECTORY => './_Inline_test';
+use Inline Config => DIRECTORY => '_Inline_test';
 
 plan(tests => 1,
      todo => [],
@@ -10,7 +11,7 @@ plan(tests => 1,
     );
 
 use Inline C => DATA =>
-           TYPEMAPS => './t/typemap';
+           TYPEMAPS => File::Spec->catfile(File::Spec->curdir(),'t','typemap');
 
 # test 1
 ok(int((add_em_up(1.2, 3.4) + 0.001) * 10) == 46);
