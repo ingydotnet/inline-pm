@@ -50,14 +50,18 @@ sub run_releaseversion_tests {
     system_or_die "make dist";
     -e $tarball_name or die "No tarball!";
 
-    my $untar_to_dir_name = '../dist';
+    chdir_or_die '..';
+    my $untar_to_dir_name = 'dist';
     mkdir_or_die $untar_to_dir_name or die;
     chdir_or_die $untar_to_dir_name;
 
     system_or_die "tar xvzf ../Simple/$tarball_name";
+
     chdir_or_die $module_dashy_name;
     my $bootstrap_pm_name = 'Inline/MakeMaker/Bootstrap.pm';
     -e $bootstrap_pm_name or die "No $bootstrap_pm_name";
+    chdir_or_die '../..';
+
     system_or_die "rm -rf $untar_to_dir_name";
 }
 
