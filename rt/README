@@ -1,8 +1,0 @@
-This is the regression test suite. 
-
-It is not run by 'make test'. 
-
-It requires the following non-standard modules:
-
-    - Test::More
-    - YAML v0.35
