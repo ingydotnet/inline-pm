@@ -729,15 +729,14 @@ sub create_config_file {
 	local $ENV{PERL5LIB} if defined $ENV{PERL5LIB};
 	local $ENV{PERL5OPT} if defined $ENV{PERL5OPT};
 	my $inline = $INC{'Inline.pm'};
-        $inline ||= File::Spec->curdir();
-        my($v,$d,$f) = File::Spec->splitpath($inline);
-        $f = "" if $f eq 'Inline.pm';
-        $inline = File::Spec->catpath($v,$d,$f);
-        my $INC = "-I$inline -I" . 
-                  join(" -I", grep {(-d File::Spec->catdir($_,"Inline") or 
-                                     -d File::Spec->catdir($_,"auto","Inline")
-			            )} @INC);
-	system "$perl $INC -MInline=_CONFIG_ -e1 $dir"
+    $inline ||= File::Spec->curdir();
+    my($v,$d,$f) = File::Spec->splitpath($inline);
+    $f = "" if $f eq 'Inline.pm';
+    $inline = File::Spec->catpath($v,$d,$f);
+    my @INC = map { "-I$_" }
+               ($inline,
+                grep {(-d File::Spec->catdir($_,"Inline") or -d File::Spec->>catdir($_,"auto","Inline"))} @INC);
+    system( $perl, @INC, "-MInline=_CONFIG_", "-e1", "$dir"
 	  and croak M20_config_creation_failed($dir);
 	return;
     }

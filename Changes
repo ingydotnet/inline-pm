@@ -1,6 +1,14 @@
 # Revision history for Perl extension Inline.
 
 ---
+version: 0.45
+date:    Mon Nov 17 17:55:21 CET 2006
+changes:
+  - Apply Tony Cook's patch from RT #4150.
+    Fix issue with spaces in path.
+    Refer to https://rt.cpan.org/Ticket/Display.html?id=4150
+
+---
 version: 0.44
 date:    Mon Oct 28 10:31:51 PST 2002
 changes:
