@@ -1,0 +1,75 @@
+# 0.44 To Do List
+
+done:
+  - Mark Fowler fix: >
+      This fix involves calling validate() even when build() is not
+      called. It affects only the interpreted ILSMs
+  - Fix grammars to handle 'const' etc.
+  - Allow other module languages besides C. (Esp C++)
+  - Inline::MakeMaker replacement: >
+      This rewrite is completed for the core Inline. Should be easy to
+      bring over.
+  - Add a patch from Rafael Garcia-Suarez that uses $^X when
+    $Config{perlpath} is wrong. (0.44/patch4)
+  - Test the recursive build suite
+  - Change the way that error output is displayed.
+  - use File::Spec: >
+      It is top priority to turn all file path operations under the
+      control of File::Spec, so that Inline can be ported to other
+      platforms.
+  - Apply Mitchell's File::Spec patch
+  - Copy Regex::Common regexps to charity.pm
+  - Mitchell Charity patch: >
+      Mitchell wrote a drop in replacement for the Parse::RecDescent
+      one. This needs to be moved to Inline::C::ParserRegexp
+  - Add USING parameter to specify a list of classes for Inline to inherit
+    replacement functionality to.
+  - Add a WARNINGS option (default to 1)
+  - Add more build warnings for NOISY
+  - Add BUILD_TIMERS (TIMERS)
+  - Email Mark Fowler with typemap idea
+  - Change the precision of Time::HiRes messages.
+  - INFO option causes parse to fail
+  - Documentation review
+
+High priority:
+  * Fix installation problem with lesser ILSMs reported by Mitchell.
+  - Patch perlcall example in Cookbook to be safer. This requires calls
+    outside the Inline Stack Macros.
+  - Allow *.h typemap *.c from cwd() to work without full pathnames
+    - Support COPY_TO_BUILD => [ '*.c', 'typemap', 'foo.h' ]
+  - Warn when non-static functions don't bind.
+  - Warn if no functions were bound at all
+  - int foo(...) hack
+  - add 'int foo(void) {'
+  - Support the types that Nicholas reported
+  - Allow spaces in path names
+
+Medium Priority:
+  - Add an Inline typemap to replace the Ext::Utils one
+  - Redo the test suite to be faster. Eliminate duplicate tests.
+  - Apply user patches
+  - Regression tests: >
+      These can be run outside of make test. They can use YAML, etc.
+  - Investigate not needing the .inl files for dummy targets in
+    Inline::MakeMaker
+  - Try to support lib/ in Inline::MakeMaker
+  - Eliminate Inline::denter with a simple regexp parser and heredoc emitter
+
+Lower Priority:
+  - Relative paths need to be resolved in relation to the cwd rather
+    than the Inline build directory.
+  - Inline/Inline::Devel/Inline::Build split:
+      This needs to happen soon. Maybe in 0.45.
+  - Remove the 'config' complexity
+  - Make #line numbers resolve to Perl code.
+
+Bugs:
+
+Next Release:
+  - Rewrite the Inline API macros:
+    - Possible cross-compatibility with Python/Ruby
+  - Support Attribute::Handlers
+  - Inline::TT/WebChat have install probs:
+      The following fixes it:
+        #local $ENV{PERL5LIB} if defined $ENV{PERL5LIB};

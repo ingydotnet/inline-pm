@@ -1,5 +1,0 @@
-#!/usr/local/ActivePerl-5.6/bin/cpr
-int main(void) {
-    printf("Hello, world\n");
-    return 0;
-}

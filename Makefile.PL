@@ -1,21 +1,16 @@
-use inc::Module::Install;
+use ExtUtils::MakeMaker;
 
-name('Inline');
-author('Ingy döt Net <ingy@cpan.org>');
-abstract('Write Perl subroutines in other programming languages');
-license('perl');
-version_from('lib/Kwiki.pm');
-
-requires(qw(
-    perl 5.5.3
-    Data::Dumper 2.09
-    Digest::MD5 2.09
-    File::Spec 0.8
-));
-
-check_nmake();
-
-&WriteAll();
+WriteMakefile(
+    NAME => 'Inline',
+    VERSION_FROM => 'Inline.pm',
+    PREREQ_PM => {
+        Data::Dumper => 2.09,
+        Digest::MD5 => 2.09,
+	Parse::RecDescent => 1.80,
+        File::Spec => 0.8,
+    },
+    clean => {FILES => '_Inline_test _Inline .Inline'},
+);
 
 if ($^O =~ /Win32/i) {
     print "Fixing Makefile for MSWin32\n";
