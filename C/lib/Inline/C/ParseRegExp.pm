@@ -21,9 +21,9 @@ sub code {
     my $RE_comment_Cpp = q{(?:\/\*(?:(?!\*\/)[\s\S])*\*\/|\/\/[^\n]*\n)};
     my $RE_quoted      = (q{(?:(?:\")(?:[^\\\"]*(?:\\.[^\\\"]*)*)(?:\")}
                          .q{|(?:\')(?:[^\\\']*(?:\\.[^\\\']*)*)(?:\'))});
-    our $RE_balanced_brackets =
+    our $RE_balanced_brackets; $RE_balanced_brackets =
         qr'(?:[{]((?:(?>[^{}]+)|(??{$RE_balanced_brackets}))*)[}])';
-    our $RE_balanced_parens   =
+    our $RE_balanced_parens; $RE_balanced_parens   =
         qr'(?:[(]((?:(?>[^()]+)|(??{$RE_balanced_parens}))*)[)])';
 
     # First, we crush out anything potentially confusing.
@@ -31,7 +31,7 @@ sub code {
     $code =~ s/$RE_comment_C/ /go;
     $code =~ s/$RE_comment_Cpp/ /go;
     $code =~ s/^\#.*(\\\n.*)*//mgo;
-    $code =~ s/$RE_quoted/\"\"/go;
+    #$code =~ s/$RE_quoted/\"\"/go; # Buggy, if included.
     $code =~ s/$RE_balanced_brackets/{ }/go;
     
     $self->{_the_code_most_recently_parsed} = $code; # Simplifies debugging.
