@@ -575,48 +575,51 @@ How do I implement Object Oriented programming in Perl using C objects?
     
     #---------------------------------------------------------
     
-    package Soldier;
-    
     use Inline C => <<'END';
     
     typedef struct {
-        char* name;
-        char* rank;
-        long  serial;
-    } Soldier;
-    
+      char* name;
+      char* rank;
+      long  serial;
+      } Soldier;
+ 
+
+   
     SV* new(char* class, char* name, char* rank, long serial) {
-        Soldier* soldier = malloc(sizeof(Soldier));
+        Soldier* soldier;
         SV*      obj_ref = newSViv(0);
         SV*      obj = newSVrv(obj_ref, class);
 
-        soldier->name = strdup(name);
-        soldier->rank = strdup(rank);
+        New(42, soldier, 1, Soldier);
+
+        soldier->name = savepv(name);
+        soldier->rank = savepv(rank);
         soldier->serial = serial;
         
         sv_setiv(obj, (IV)soldier);
         SvREADONLY_on(obj);
         return obj_ref;
-    }
+     }
     
-    char* get_name(SV* obj) {
-        return ((Soldier*)SvIV(SvRV(obj)))->name;
-    }
+     char* get_name(SV* obj) {
+           return ((Soldier*)SvIV(SvRV(obj)))->name;
+     }
     
-    char* get_rank(SV* obj) {
-        return ((Soldier*)SvIV(SvRV(obj)))->rank;
-    }
+     char* get_rank(SV* obj) {
+           return ((Soldier*)SvIV(SvRV(obj)))->rank;
+     }
     
-    long get_serial(SV* obj) {
-        return ((Soldier*)SvIV(SvRV(obj)))->serial;
+     long get_serial(SV* obj) {
+          return ((Soldier*)SvIV(SvRV(obj)))->serial;
+     }
+
+     void DESTROY(SV* obj) {
+          Soldier* soldier = (Soldier*)SvIV(SvRV(obj));
+          Safefree(soldier->name);
+          Safefree(soldier->rank);
+          Safefree(soldier);
     }
 
-    void DESTROY(SV* obj) {
-        Soldier* soldier = (Soldier*)SvIV(SvRV(obj));
-        free(soldier->name);
-        free(soldier->rank);
-        free(soldier);
-    }
     END
 
 =item Discussion
@@ -1295,16 +1298,16 @@ an Inline C function.
     __DATA__
     __C__
     
-    void c_func_1(SV* text) {
-        c_func_2(text);
-    }
-    
     void c_func_2(SV* text) {
         Inline_Stack_Vars;
         Inline_Stack_Push(newSVpvf("Plus an extra line"));
         Inline_Stack_Done;
         perl_call_pv("main::perl_sub_1", 0);
         Inline_Stack_Void;
+    }
+
+    void c_func_1(SV* text) {
+        c_func_2(text);
     }
 
 
@@ -1382,24 +1385,6 @@ If you know such a person, have them drop me a line.
 
 =back
 
-=cut --------------------------------------------------------------------------
-#
-#=head2 xxxxxxxxxxxxxxxxxxxxxxxx
-#
-#=over 4
-#
-#=item Problem
-#
-#=item Solution
-#
-#=item Discussion
-#
-#=item See Also
-#
-#=item Credits
-#
-#=back
-#
 =cut --------------------------------------------------------------------------
 
 =head1 SEE ALSO
