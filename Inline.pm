@@ -2,7 +2,7 @@ package Inline;
 
 use strict;
 require 5.005;
-$Inline::VERSION = '0.44';
+$Inline::VERSION = '0.44_01';
 
 use AutoLoader 'AUTOLOAD';
 use Inline::denter;
@@ -20,6 +20,8 @@ my $version_printed = 0;
 my $untaint = 0;
 my $safemode = 0;
 $Inline::languages = undef; #needs to be global for AutoLoaded error messages
+
+our $did = '_Inline'; # Default Inline Directory
 
 my %shortcuts = 
   (
@@ -315,12 +317,14 @@ sub push_overrides {
 # Restore the modules original methods
 #==============================================================================
 sub pop_overrides {
-    my ($o) = @_;
+    my $nowarn = $] >= 5.006 ? "no warnings 'redefine';" : '';
+    eval ($nowarn .
+    'my ($o) = @_;
     for my $override (keys %{$o->{OVERRIDDEN}}) {
-        no strict 'refs';
+        no strict "refs";
         *{$override} = $o->{OVERRIDDEN}{$override};
     }
-    delete $o->{OVERRIDDEN};
+    delete $o->{OVERRIDDEN};')
 }
 
 #==============================================================================
@@ -674,7 +678,7 @@ sub check_config_file {
 	  if $o->{CONFIG}{DIRECTORY};
 	my $cwd = Cwd::cwd();
         $DIRECTORY = 
-          $o->{INLINE}{DIRECTORY} = File::Spec->catdir($cwd,"_Inline");
+          $o->{INLINE}{DIRECTORY} = File::Spec->catdir($cwd, $did);
 	if (not -d $DIRECTORY) {
 	    _mkdir($DIRECTORY, 0777)
 	      or croak M16_DIRECTORY_mkdir_failed($DIRECTORY);
@@ -740,11 +744,15 @@ sub create_config_file {
         my($v,$d,$f) = File::Spec->splitpath($inline);
         $f = "" if $f eq 'Inline.pm';
         $inline = File::Spec->catpath($v,$d,$f);
-        my $INC = "-I$inline -I" . 
-                  join(" -I", grep {(-d File::Spec->catdir($_,"Inline") or 
-                                     -d File::Spec->catdir($_,"auto","Inline")
-			            )} @INC);
-	system "$perl $INC -MInline=_CONFIG_ -e1 $dir"
+        #my $INC = "-I$inline -I" . 
+        #          join(" -I", grep {(-d File::Spec->catdir($_,"Inline") or 
+        #                             -d File::Spec->catdir($_,"auto","Inline")
+	  #		            )} @INC);
+	#system "$perl $INC -MInline=_CONFIG_ -e1 $dir"
+        my @INC = map { "-I$_" }
+       ($inline,
+        grep {(-d File::Spec->catdir($_,"Inline") or -d File::Spec->catdir($_,"auto","Inline"))} @INC);
+       system $perl, @INC, "-MInline=_CONFIG_", "-e1", "$dir"
 	  and croak M20_config_creation_failed($dir);
 	return;
     }
@@ -829,7 +837,7 @@ sub check_module {
     while ($auto_level <= 5) {
 	if ($o->{CONFIG}{AUTONAME}) {
 	    $module2 = 
-	      $module . '_' . substr($o->{INLINE}{md5}, 0, 2**$auto_level);
+	      $module . '_' . substr($o->{INLINE}{md5}, 0, 2 + $auto_level);
 	    $auto_level++;
 	} else {
 	    $module2 = $module;
@@ -858,6 +866,8 @@ sub check_module {
 	}
 	next unless ($o->{INLINE}{md5} eq $inl{md5});
 	next unless ($inl{inline_version} ge '0.40');
+      next unless ($inl{Config}{version} eq $Config::Config{version});
+      next unless ($inl{Config}{archname} eq $Config::Config{archname});
 	unless (-f $o->{API}{location}) {
 	    warn <<END if $^W;
 Missing object file: $o->{API}{location}
@@ -880,7 +890,7 @@ sub install {
     my $o = shift;
 
     croak M64_install_not_c($o->{API}{language_id})
-      unless uc($o->{API}{language_id}) =~ /^(C|CPP)$/ ;
+      unless uc($o->{API}{language_id}) =~ /^(C|CPP|Java|Python|Ruby|Lisp|Pdlpp)$/ ;
     croak M36_usage_install_main()
       if ($o->{API}{pkg} eq 'main');
     croak M37_usage_install_auto()
@@ -929,7 +939,7 @@ sub write_inl_file {
       File::Spec->catfile($o->{API}{install_lib},"auto",$o->{API}{modpname},
                           "$o->{API}{modfname}.inl");
     open INL, "> $inl"
-      or croak "Can't create Inline validation file $inl";
+      or croak "Can't create Inline validation file $inl: $!";
     my $apiversion = $Config{apiversion} || $Config{xs_apiversion};
     print INL Inline::denter->new()
       ->indent(*md5, $o->{INLINE}{md5},
@@ -980,7 +990,7 @@ sub env_untaint {
 	($ENV{$_}) = $ENV{$_} =~ /(.*)/;
     }
     my $delim = $^O eq 'MSWin32' ? ';' : ':';
-    $ENV{PATH} = join $delim, grep {not /^\./ and
+    $ENV{PATH} = join $delim, grep {not /^\./ and -d $_ and
 				      not ((stat($_))[2] & 0022)
 				  } split $delim, $ENV{PATH};
     map {($_) = /(.*)/} @INC;
@@ -1267,26 +1277,26 @@ sub find_temp_dir {
         $temp_dir = File::Spec->catdir($home,".Inline");
     } 
     elsif (defined $cwd and $cwd and
-           -d File::Spec->catdir($cwd,"_Inline") and
-           -w File::Spec->catdir($cwd,"_Inline")) {
-        $temp_dir = File::Spec->catdir($cwd,"_Inline");
+           -d File::Spec->catdir($cwd, $did) and
+           -w File::Spec->catdir($cwd, $did)) {
+        $temp_dir = File::Spec->catdir($cwd, $did);
     }
     elsif (defined $bin and $bin and
-           -d File::Spec->catdir($bin,"_Inline") and
-           -w File::Spec->catdir($bin,"_Inline")) {
-        $temp_dir = File::Spec->catdir($bin,"_Inline");
+           -d File::Spec->catdir($bin, $did) and
+           -w File::Spec->catdir($bin, $did)) {
+        $temp_dir = File::Spec->catdir($bin, $did);
     } 
     elsif (defined $cwd and $cwd and
 	   -d $cwd and
 	   -w $cwd and
-           _mkdir(File::Spec->catdir($cwd,"_Inline"), 0777)) {
-        $temp_dir = File::Spec->catdir($cwd,"_Inline");
+           _mkdir(File::Spec->catdir($cwd, $did), 0777)) {
+        $temp_dir = File::Spec->catdir($cwd, $did);
     }
     elsif (defined $bin and $bin and
 	   -d $bin and
 	   -w $bin and
-           _mkdir(File::Spec->catdir($bin,"_Inline"), 0777)) {
-        $temp_dir = File::Spec->catdir($bin,"_Inline");
+           _mkdir(File::Spec->catdir($bin, $did), 0777)) {
+        $temp_dir = File::Spec->catdir($bin, $did);
     }
 
     croak M56_no_DIRECTORY_found()
@@ -1809,7 +1819,7 @@ Either use the DIRECTORY option or turn off SAFEMODE.
 
 END
       ($terminate ? <<END : "");
-Since you are running as the a privledged user, Inline.pm is terminating.
+Since you are running as a privileged user, Inline.pm is terminating.
 
 END
 }
