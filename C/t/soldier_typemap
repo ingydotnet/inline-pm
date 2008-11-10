@@ -1,0 +1,16 @@
+Soldier *	SOLDIER
+
+INPUT
+SOLDIER
+       
+        $var = INT2PTR($type, SvIV(SvRV($arg)))
+
+OUTPUT
+SOLDIER
+
+        $arg     = newSViv(0);
+        SV * obj = newSVrv($arg, \"Soldier\");
+
+        sv_setiv(obj, (IV)$var);
+        SvREADONLY_on(obj);
+        $arg;
