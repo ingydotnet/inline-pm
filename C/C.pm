@@ -1,5 +1,5 @@
 package Inline::C;
-$VERSION = '0.44';
+$VERSION = '0.44_01';
 
 use strict;
 require Inline;
@@ -88,9 +88,18 @@ END
 	    next;
 	}
 	if ($key eq 'TYPEMAPS') {
-	    croak "TYPEMAPS file '$value' not found"
-	      unless -f $value;
-	    $value = File::Spec->rel2abs($value);
+          unless(ref($value) eq 'ARRAY') {
+	      croak "TYPEMAPS file '$value' not found"
+	        unless -f $value;
+	      $value = File::Spec->rel2abs($value);
+          }
+          else {
+          for (my $i = 0; $i < scalar(@$value); $i++) {
+	      croak "TYPEMAPS file '${$value}[$i]' not found"
+	        unless -f ${$value}[$i];
+            ${$value}[$i] = File::Spec->rel2abs(${$value}[$i]);
+            }
+          }
 	    $o->add_list($o->{ILSM}{MAKEFILE}, $key, $value, []);
 	    next;
 	}
@@ -257,7 +266,7 @@ sub build {
         croak "You need Time::HiRes for BUILD_TIMERS option:\n$@" if $@;
         $total_build_time = Time::HiRes::time();
     }
-    $o->call('preprocess', 'Build Prepocess');
+    $o->call('preprocess', 'Build Preprocess');
     $o->call('parse', 'Build Parse');
     $o->call('write_XS', 'Build Glue 1');
     $o->call('write_Inline_headers', 'Build Glue 2');
@@ -540,7 +549,7 @@ END
     my $parser = $o->{ILSM}{parser};
     my $data = $parser->{data};
 
-    warn("Warning. No Inline C functions bound to Perl\n" .
+    warn("Warning. No Inline C functions bound to Perl in ", $o->{API}{script}, "\n" .
 	 "Check your C function definition(s) for Inline compatibility\n\n")
       if ((not defined$data->{functions}) and ($^W));
 
