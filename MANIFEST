@@ -13,6 +13,9 @@ C/t/02config.t
 C/t/03typemap.t
 C/t/04perlapi.t
 C/t/05xsmode.t
+C/t/06parseregexp.t
+C/t/07typemap_multi.t
+C/t/soldier_typemap
 C/t/typemap
 Changes
 Inline-API.pod
