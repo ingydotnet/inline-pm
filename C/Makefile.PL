@@ -7,9 +7,12 @@ my ($cc, $exe) = @Config{'cc', '_exe'};
 $cc =~ s/\s+-.+$//; #remove possible trailing options
 
 my $found = 0;
-my $delim = $^O eq 'MSWin32' ? ';' : ':';
+my $delim = $Config::Config{path_sep};
 if ($cc =~ m|/:\[|) {
     $found = -f "$cc$exe";
+}
+elsif ($cc =~ m|/|) {
+    $found = -f "$cc$exe" || -l $cc;
 }
 else {
     for my $lib (split $delim, $ENV{PATH}) {
