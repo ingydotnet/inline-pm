@@ -9,8 +9,6 @@ OUTPUT
 SOLDIER
 
         $arg     = newSViv(0);
-        SV * obj = newSVrv($arg, \"Soldier\");
-
-        sv_setiv(obj, (IV)$var);
-        SvREADONLY_on(obj);
+        sv_setiv(newSVrv($arg, \"Soldier\"), (IV)$var);
+        SvREADONLY_on(SvRV($arg));
         $arg;
