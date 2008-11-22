@@ -494,6 +494,8 @@ filename C<'symbols.perl'>. Avoid using these in your code.
 
 Brian Ingerson <INGY@cpan.org>
 
+Sisyphus <sisyphus@cpan.org> fixed some bugs and is current co-maintainer.
+
 =head1 COPYRIGHT
 
 Copyright (c) 2000, 2001, 2002. Brian Ingerson. All rights reserved.

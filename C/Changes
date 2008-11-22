@@ -1,5 +1,13 @@
 Revision history for Perl extension Inline::C.
 
+0.45  Sat Nov 22 2008
+      - No changes from 0.44_01
+
+0.44_01 Tues Oct 11 2008
+      - In C/C.pm, allow for the calling of multiple typemaps (RT ticket 5639),
+        and have the "No Inline C functions bound to Perl" warning specify the
+        file for which no bindings were found (RT ticket 17774).
+
 0.43  Sun Jul 22 08:15:26 PDT 2001
 	- Auto add script directory to INC path (-I)..
 

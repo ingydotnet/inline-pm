@@ -1044,6 +1044,8 @@ C<Inline::Python>, C<Inline::Ruby>, C<Inline::ASM>, C<Inline::Struct>
 and C<Inline::Filters>. He is known in the innermost Inline circles as
 the "Boy Wonder".
 
+Sisyphus <sisyphus@cpan.org> fixed some bugs and is current co-maintainer.
+
 =head1 COPYRIGHT
 
 Copyright (c) 2000, 2001, 2002. Brian Ingerson. All rights reserved.
