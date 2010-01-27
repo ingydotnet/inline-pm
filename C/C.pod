@@ -127,6 +127,7 @@ more information.
 =head2 INC
 
 Specifies an include path to use. Corresponds to the MakeMaker parameter.
+Expects a fully qualified path.
 
     use Inline C => Config => INC => '-I/inc/path';
 
@@ -136,9 +137,9 @@ Specify which linker to use.
 
 =head2 LDDLFLAGS
 
-Specify which linker flags to use. 
+Specify which linker flags to use.
 
-NOTE: 
+NOTE:
 These flags will completely override the existing flags, instead of
 just adding to them. So if you need to use those too, you must
 respecify them here.
@@ -147,10 +148,12 @@ respecify them here.
 
 Specifies external libraries that should be linked into your code.
 Corresponds to the MakeMaker parameter.
+Provide a fully qualified path with the -L switch if the library is
+in a location where it won't be found automatically.
 
     use Inline C => Config => LIBS => '-lyourlib';
 
-or 
+or
 
     use Inline C => Config => LIBS => '-L/your/path -lyourlib';
 
@@ -162,6 +165,7 @@ Specify the name of the 'make' utility to use.
 
 Specifies a user compiled object that should be linked in. Corresponds
 to the MakeMaker parameter.
+Expects a fully qualified path.
 
     use Inline C => Config => MYEXTLIB => '/your/path/yourmodule.so';
 
@@ -186,6 +190,7 @@ parameter.
 
 Specifies extra typemap files to use. These types will modify the
 behaviour of the C parsing. Corresponds to the MakeMaker parameter.
+Expects a fully qualified path.
 
     use Inline C => Config => TYPEMAPS => '/your/path/typemap';
 
@@ -269,7 +274,7 @@ few local variables: C<sp>, C<items>, C<ax> and C<mark>, for use by the
 other macros. It's not important to know what they do, but I mention
 them to avoid possible name conflicts.
 
-NOTE: 
+NOTE:
 Since this macro declares variables, you'll need to put it with your
 other variable declarations at the top of your function. It must
 come before any executable statements and before any other
@@ -308,7 +313,7 @@ anything. Same as:
 
     Inline_Stack_Return(0);
 
-Please note that this macro actually B<returns> from your function. 
+Please note that this macro actually B<returns> from your function.
 
 =back
 
@@ -415,7 +420,7 @@ standard C header files for you.
     use Inline C;
     greet('Ingy');
     greet(42);
-    __END__    
+    __END__
     __C__
     void greet(char* name) {
       printf("Hello %s!\n", name);
@@ -437,7 +442,7 @@ guts of Perl.
     use Inline C;
     greet('Ingy');
     greet(42);
-    __END__    
+    __END__
     __C__
     void greet(SV* sv_name) {
       printf("Hello %s!\n", SvPVX(sv_name));
