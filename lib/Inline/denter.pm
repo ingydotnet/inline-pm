@@ -179,7 +179,7 @@ sub _undent_undef {
 sub _next_line {
     my $o = shift;
     $o->{done}++, $o->{level} = -1, return unless @{$o->{lines}};
-    $_ = shift @{$o->{lines}};
+    local $_ = shift @{$o->{lines}};
     $o->{line}++;
 }
 
@@ -188,7 +188,7 @@ sub _setup_line {
     $o->{done}++, $o->{level} = -1, return unless @{$o->{lines}};
     my ($width, $tabwidth) = @{$o}{qw(width tabwidth)};
     while (1) {
-	$_ = $o->{lines}[0];
+	local $_ = $o->{lines}[0];
 	# expand tabs in leading whitespace;
 	$o->next_line, next if /^(\s*$|\#)/; # skip comments and blank lines
 	while (s{^( *)(\t+)}
@@ -211,7 +211,7 @@ sub indent {
     my $stream = '';
     $o->{key} = '';
     while (@_) {
-	$_ = shift;
+	local $_ = shift;
 	$stream .= $o->indent_name($_, shift), next
 	  if (/^\*$package\::\w+$/);
 	$stream .= $o->indent_data($_);
@@ -221,7 +221,7 @@ sub indent {
 
 sub indent_data {
     my $o = shift;
-    $_ = shift;
+    local $_ = shift;
     return $o->indent_undef($_)
       if not defined;
     return $o->indent_value($_) 
