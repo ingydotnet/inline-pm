@@ -1,5 +1,5 @@
 package Inline::C;
-$VERSION = '0.44_01';
+$VERSION = '0.45_01';
 
 use strict;
 require Inline;
@@ -18,7 +18,7 @@ sub register {
     return {
 	    language => 'C',
             # XXX Breaking this on purpose; let's see who screams
-            # aliases => ['c'], 
+            # aliases => ['c'],
 	    type => 'compiled',
 	    suffix => $Config{dlext},
 	   };
@@ -57,7 +57,7 @@ END
     $o->{STRUCT} ||= {
 		      '.macros' => '',
 		      '.xs' => '',
-		      '.any' => 0, 
+		      '.any' => 0,
 		      '.all' => 0,
 		     };
 
@@ -133,7 +133,7 @@ END
 		    %filters = Inline::Filters::get_filters($o->{API}{language})
 		      unless keys %filters;
 		    if (defined $filters{$val}) {
-			my $filter = Inline::Filters->new($val, 
+			my $filter = Inline::Filters->new($val,
 							  $filters{$val});
 			$o->add_list($o->{ILSM}, $key, $filter, []);
 		    }
@@ -280,24 +280,24 @@ sub build {
 
 sub call {
     my ($o, $method, $header, $indent) = (@_, 0);
-    my $time; 
+    my $time;
     my $i = ' ' x $indent;
     print STDERR "${i}Starting $header Stage\n" if $o->{CONFIG}{BUILD_NOISY};
-    $time = Time::HiRes::time() 
+    $time = Time::HiRes::time()
       if $o->{CONFIG}{BUILD_TIMERS};
-    
+
     $o->$method();
 
-    $time = Time::HiRes::time() - $time 
+    $time = Time::HiRes::time() - $time
       if $o->{CONFIG}{BUILD_TIMERS};
     print STDERR "${i}Finished $header Stage\n" if $o->{CONFIG}{BUILD_NOISY};
-    printf STDERR "${i}Time for $header Stage: %5.4f secs\n", $time 
+    printf STDERR "${i}Time for $header Stage: %5.4f secs\n", $time
       if $o->{CONFIG}{BUILD_TIMERS};
     print STDERR "\n" if $o->{CONFIG}{BUILD_NOISY};
 }
 
 #==============================================================================
-# Apply any 
+# Apply any
 #==============================================================================
 sub preprocess {
     my $o = shift;
@@ -365,21 +365,21 @@ sub get_types {
     my $o = shift;
     croak "No typemaps specified for Inline C code"
       unless @{$o->{ILSM}{MAKEFILE}{TYPEMAPS}};
-    
+
     my $proto_re = "[" . quotemeta('\$%&*@;') . "]";
     foreach my $typemap (@{$o->{ILSM}{MAKEFILE}{TYPEMAPS}}) {
 	next unless -e $typemap;
 	# skip directories, binary files etc.
-	warn("Warning: ignoring non-text typemap file '$typemap'\n"), next 
+	warn("Warning: ignoring non-text typemap file '$typemap'\n"), next
 	  unless -T $typemap;
-	open(TYPEMAP, $typemap) 
+	open(TYPEMAP, $typemap)
 	  or warn ("Warning: could not open typemap file '$typemap': $!\n"), next;
 	my $mode = 'Typemap';
 	my $junk = "";
 	my $current = \$junk;
 	while (<TYPEMAP>) {
 	    next if /^\s*\#/;
-	    my $line_no = $. + 1; 
+	    my $line_no = $. + 1;
 	    if (/^INPUT\s*$/)   {$mode = 'Input';   $current = \$junk;  next}
 	    if (/^OUTPUT\s*$/)  {$mode = 'Output';  $current = \$junk;  next}
 	    if (/^TYPEMAP\s*$/) {$mode = 'Typemap'; $current = \$junk;  next}
@@ -389,14 +389,14 @@ sub get_types {
 		TrimWhitespace($_);
 		# skip blank lines and comment lines
 		next if /^$/ or /^\#/;
-		my ($type,$kind, $proto) = 
+		my ($type,$kind, $proto) =
 		  /^\s*(.*?\S)\s+(\S+)\s*($proto_re*)\s*$/ or
 		    warn("Warning: File '$typemap' Line $. '$line' TYPEMAP entry needs 2 or 3 columns\n"), next;
 		$type = TidyType($type);
 		$type_kind{$type} = $kind;
 		# prototype defaults to '$'
 		$proto = "\$" unless $proto;
-		warn("Warning: File '$typemap' Line $. '$line' Invalid prototype '$proto'\n") 
+		warn("Warning: File '$typemap' Line $. '$line' Invalid prototype '$proto'\n")
 		  unless ValidProtoString($proto);
 		$proto_letter{$type} = C_string($proto);
 	    }
@@ -417,12 +417,12 @@ sub get_types {
 	close(TYPEMAP);
     }
 
-    my %valid_types = 
+    my %valid_types =
       map {($_, 1)}
     grep {defined $input_expr{$type_kind{$_}}}
     keys %type_kind;
 
-    my %valid_rtypes = 
+    my %valid_rtypes =
       map {($_, 1)}
     (grep {defined $output_expr{$type_kind{$_}}}
     keys %type_kind), 'void';
@@ -558,7 +558,7 @@ END
 	my @arg_names = @{$data->{function}->{$function}->{arg_names}};
 	my @arg_types = @{$data->{function}->{$function}->{arg_types}};
 
-	$XS .= join '', ("\n$return_type\n$function (", 
+	$XS .= join '', ("\n$return_type\n$function (",
 		  join(', ', @arg_names), ")\n");
 
 	for my $arg_name (@arg_names) {
@@ -568,7 +568,7 @@ END
 	}
 
 	my $listargs = '';
-	$listargs = pop @arg_names if (@arg_names and 
+	$listargs = pop @arg_names if (@arg_names and
 				       $arg_names[-1] eq '...');
 	my $arg_name_list = join(', ', @arg_names);
 
@@ -661,13 +661,13 @@ sub write_Makefile_PL {
 		   %{$o->{ILSM}{MAKEFILE}},
 		   NAME => $o->{API}{module},
 		  );
-    
+
     open MF, "> ".File::Spec->catfile($o->{API}{build_dir},"Makefile.PL")
       or croak;
-    
+
     print MF <<END;
 use ExtUtils::MakeMaker;
-my %options = %\{       
+my %options = %\{
 END
 
     local $Data::Dumper::Terse = 1;
@@ -693,7 +693,7 @@ sub compile {
     my $build_dir = $o->{API}{build_dir};
     my $cwd = &cwd;
     ($cwd) = $cwd =~ /(.*)/ if $o->UNTAINT;
-    
+
     chdir $build_dir;
     $o->call('makefile_pl', '"perl Makefile.PL"', 2);
     $o->call('make', '"make"', 2);
@@ -725,7 +725,7 @@ sub make_install {
 }
 sub cleanup {
     my ($o) = @_;
-    my ($modpname, $modfname, $install_lib) = 
+    my ($modpname, $modfname, $install_lib) =
       @{$o->{API}}{qw(modpname modfname install_lib)};
     if ($o->{API}{cleanup}) {
         $o->rmpath(File::Spec->catdir($o->{API}{directory},'build'),
@@ -741,7 +741,7 @@ sub cleanup {
 
 sub system_call {
     my ($o, $cmd, $output_file) = @_;
-    my $build_noisy = 
+    my $build_noisy =
       defined $ENV{PERL_INLINE_BUILD_NOISY}
       ? $ENV{PERL_INLINE_BUILD_NOISY}
       : $o->{CONFIG}{BUILD_NOISY};
@@ -749,7 +749,7 @@ sub system_call {
         $cmd = "$cmd > $output_file 2>&1";
     }
     ($cmd) = $cmd =~ /(.*)/ if $o->UNTAINT;
-    system($cmd) == 0 
+    system($cmd) == 0
       or croak($o->build_error_message($cmd, $output_file, $build_noisy));
 }
 
@@ -764,7 +764,7 @@ sub build_error_message {
         $output = <OUTPUT>;
         close OUTPUT;
     }
-    
+
     return $output . <<END;
 
 A problem was encountered while attempting to compile and install your Inline
@@ -793,15 +793,15 @@ sub fix_make {
     use strict;
     my (@lines, $fix);
     my $o = shift;
-    
+
     $o->{ILSM}{install_lib} = $o->{API}{install_lib};
     $o->{ILSM}{installdirs} = 'site';
-    
+
     open(MAKEFILE, '< Makefile')
       or croak "Can't open Makefile for input: $!\n";
     @lines = <MAKEFILE>;
     close MAKEFILE;
-    
+
     open(MAKEFILE, '> Makefile')
       or croak "Can't open Makefile for output: $!\n";
     for (@lines) {
