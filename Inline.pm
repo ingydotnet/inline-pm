@@ -308,7 +308,7 @@ sub push_overrides {
             $o->{OVERRIDDEN}{$ilsm . "::$override"} =
               \&{$ilsm . "::$override"};
             *{$ilsm . "::$override"} =
-              *{$using_module . "::$override"};
+              \&*{$using_module . "::$override"};
         }
     }
 }
