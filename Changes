@@ -1,6 +1,17 @@
 # Revision history for Perl extension Inline.
 
 ---
+version: 0.45_01
+C/C.pod - document that *fully qualified* paths for LIBS, INC, TYPEMAPS and MYEXTLIB
+          are meeded. (RT ticket 5207)
+Inline.pm - fix sub push_overrides (RT ticket 49669)
+            This change responsible for "Subroutine Inline::C::get_parser redefined"
+            warnings that can occur under certain circumstances.
+denter.pm - local()ise $_ (in four places) (RT ticket 16801)
+C/Makefile.PL - accommodate 'ccache cc' (RT ticket 40140)
+C/Cookbook.pod - typo fixes (thanks Barber,Brad)
+
+---
 version: 0.45
 date:    Sat Nov 22 2008
 No changes from 0.44_01
@@ -9,12 +20,12 @@ No changes from 0.44_01
 version: 0.44_01
 date:    Tues Oct 11 2008
 changes:
-  - Apply patch to Inline.pm that addresses a problem with whitespace occurring 
+  - Apply patch to Inline.pm that addresses a problem with whitespace occurring
     in the name of the build directory. (RT ticket 4150)
   - Fix ParseRegExp.pm. (RT ticket 6327)
-  - Fix (in Inline.pm) problem regarding the calling of the same script from 
+  - Fix (in Inline.pm) problem regarding the calling of the same script from
     different builds of perl. (RT ticket 29326)
-  - Allow Inline::install() subroutine to apply to languages other than C and 
+  - Allow Inline::install() subroutine to apply to languages other than C and
     CPP. (RT ticket 35517)
   - Fix C/Makefile.PL so that the C compiler can still be found when $Config{cc}
     reports something like /some/place/cc. (RT ticket 8251)
@@ -119,7 +130,7 @@ changes:
   - Print the contents of 'out.make' to the screen on failure. This will
     happen when BUILD_NOISY is off. When its on, you'll see the messages
     in real time, but they won't go to 'out.make'.
-  - Provide the NOISY shortcut so you can say 
+  - Provide the NOISY shortcut so you can say
     'perl -MInline=force,noisy foo.pl'.
   - Inline::MakeMaker uses the NOISY shortcut for its build command.
     This way module builds are noisy like they should be.
@@ -150,7 +161,7 @@ changes:
     turn it on yet. It's currently in Inline::C::charity
 
 ---
-version: 0.44  
+version: 0.44
 date:    Thu Oct  3 16:20:56 PDT 2002
 changes:
   - Allow C++ based modules to be installed as well as C ones. Requested
@@ -239,7 +250,7 @@ changes:
           INLINE - Private Inline space. Subject to constant change.
           CONFIG - Config options. Not for use by ILSMs
           MATCH - Matching criteria for the object.
-          STRUCT - Reserved for Inline::Struct    
+          STRUCT - Reserved for Inline::Struct
 
 0.40  Wed May  9 11:14:47 PDT 2001
         - Added command proxy logic for Inline::MakeMaker utilities:
@@ -328,7 +339,7 @@ changes:
         Thanks Michael Schwern.
 
 0.25  Fri Sep  1 10:07:33 PDT 2000
-        - Use MD5 on unmodified code only. User must force recompile if 
+        - Use MD5 on unmodified code only. User must force recompile if
         auto_headers change. This would have caused existing installs to break.
 
 0.25  Fri Sep  1 10:04:14 PDT 2000
@@ -344,7 +355,7 @@ changes:
 
 0.25  Sun Aug 20 20:52:24 PDT 2000
         - Return an empty list when the C function is of type void and doesn't
-        use any stack manipulating macros. (ie dXSARGS) It used to return 
+        use any stack manipulating macros. (ie dXSARGS) It used to return
         whatever was passed in on the stack. :-(
 
 0.25  Fri Aug 18 18:45:24 PDT 2000
@@ -359,7 +370,7 @@ changes:
         - Fixed Autoload bug found during "make test" of Inline installation.
 
 0.23  Wed Aug 16 18:10:07 PDT 2000
-        - Added support for MSWin32 operating systems which use the Microsoft 
+        - Added support for MSWin32 operating systems which use the Microsoft
         Visual C++ compiler.
 
 0.22  Wed Aug  9 18:55:54 PDT 2000
