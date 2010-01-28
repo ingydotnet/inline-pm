@@ -1,6 +1,6 @@
 =head1 NAME
 
-C Cookbook - A Cornucopia of Inline C Recipes
+Inline::C-Cookbook - A Cornucopia of Inline C Recipes
 
 =cut --------------------------------------------------------------------------
 
@@ -44,7 +44,7 @@ do this using Inline?
 =item Solution
 
     use Inline C => <<'END_C';
-    
+
     void greet() {
         printf("Hello, world\n");
     }
@@ -124,15 +124,15 @@ like strings, numbers and integers?
 
     # vowels.pl
     use Inline C;
-    
+
     $filename = $ARGV[0];
     die "Usage: perl vowels.pl filename\n" unless -f $filename;
-    
+
     $text = join '', <>;           # slurp input file
     $vp = vowel_scan($text);       # call our function
     $vp = sprintf("%03.1f", $vp * 100);  # format for printing
     print "The letters in $filename are $vp% vowels.\n";
-    
+
     __END__
     __C__
 
@@ -150,9 +150,9 @@ like strings, numbers and integers?
         char O = normalize | 'o';
         char U = normalize | 'u';
         char Z = normalize | 'z';
-    
+
         while(c = str[i++]) {
-            c |= normalize; 
+            c |= normalize;
             if (c >= A && c <= Z) {
                  letters++;
                  if (c == A || c == E || c == I || c == O || c == U)
@@ -174,7 +174,7 @@ It is also quite fast.
 
 Running this script produces:
 
-    > perl vowels.pl /usr/dict/words 
+    > perl vowels.pl /usr/dict/words
     The letters in /usr/dict/words are 37.5% vowels.
 
 =item See Also
@@ -201,19 +201,19 @@ How do I pass a variable-sized list of arguments to an Inline C function?
 =item Solution
 
     greet(qw(Sarathy Jan Sparky Murray Mike));
-    
+
     use Inline C => <<'END_OF_C_CODE';
-    
+
     void greet(SV* name1, ...) {
         Inline_Stack_Vars;
         int i;
-    
-        for (i = 0; i < Inline_Stack_Items; i++) 
+
+        for (i = 0; i < Inline_Stack_Items; i++)
             printf("Hello %s!\n", SvPV(Inline_Stack_Item(i), PL_na));
-    
+
         Inline_Stack_Void;
     }
-    
+
     END_OF_C_CODE
 
 
@@ -266,15 +266,15 @@ How do I return a list of values from a C function?
 =item Solution
 
     print map {"$_\n"} get_localtime(time);
-    
-    use Inline C => <<'END_OF_C_CODE'; 
-    
+
+    use Inline C => <<'END_OF_C_CODE';
+
     #include <time.h>
-    
+
     void get_localtime(int utc) {
       struct tm *ltime = localtime(&utc);
       Inline_Stack_Vars;
-    
+
       Inline_Stack_Reset;
       Inline_Stack_Push(sv_2mortal(newSViv(ltime->tm_year)));
       Inline_Stack_Push(sv_2mortal(newSViv(ltime->tm_mon)));
@@ -301,7 +301,7 @@ each stack push, we are creating a new Perl integer (SVIV) and
 mortalizing it. The sv_2mortal() call makes sure that the reference
 count is set properly. Without it, the program would leak memory.
 
-NOTE: 
+NOTE:
 The C<#include> statement is not really needed, because Inline
 automatically includes the Perl headers which include almost all
 standard system calls.
@@ -331,15 +331,15 @@ How can I pass back more than one value without using the Perl Stack?
 
     use Inline::Files;
     use Inline C;
-    
+
     my ($foo, $bar);
     change($foo, $bar);
-    
+
     print "\$foo = $foo\n";
     print "\$bar = $bar\n";
-    
+
     __C__
-    
+
     int change(SV* var1, SV* var2) {
         sv_setpvn(var1, "Perl Rocks!", 11);
         sv_setpvn(var2, "Inline Rules!", 13);
@@ -386,13 +386,13 @@ How should I allocate buffers in my Inline C code?
 =item Solution
 
     print greeting('Ingy');
-    
+
     use Inline C => <<'END_OF_C_CODE';
-    
+
     SV* greeting(SV* sv_name) {
         return (newSVpvf("Hello %s!\n", SvPV(sv_name, PL_na)));
     }
-    
+
     END_OF_C_CODE
 
 =item Discussion
@@ -443,18 +443,18 @@ How do I use Inline securely in a CGI environment?
 =item Solution
 
     #!/usr/bin/perl
-    
+
     use CGI qw(:standard);
-    use Inline (Config => 
+    use Inline (Config =>
                 DIRECTORY => '/usr/local/apache/Inline',
                );
-    
-    print (header, 
+
+    print (header,
            start_html('Inline CGI Example'),
            h1(JAxH('Inline')),
            end_html
           );
-    
+
     use Inline C => <<END;
     SV* JAxH(char* x) {
         return newSVpvf("Just Another %s Hacker", x);
@@ -504,12 +504,12 @@ How do I use Inline with mod_perl?
 
     package Factorial;
     use strict;
-    use Inline Config => 
+    use Inline Config =>
                DIRECTORY => '/usr/local/apache/Inline',
                ENABLE => 'UNTAINT';
     use Inline 'C';
     Inline->init;
-  
+
     sub handler {
         my $r = shift;
         $r->send_http_header('text/plain');
@@ -566,25 +566,25 @@ How do I implement Object Oriented programming in Perl using C objects?
     my $obj1 = Soldier->new('Benjamin', 'Private', 11111);
     my $obj2 = Soldier->new('Sanders', 'Colonel', 22222);
     my $obj3 = Soldier->new('Matt', 'Sergeant', 33333);
-    
+
     for my $obj ($obj1, $obj2, $obj3) {
-        print ($obj->get_serial, ") ", 
-               $obj->get_name, " is a ", 
+        print ($obj->get_serial, ") ",
+               $obj->get_name, " is a ",
                $obj->get_rank, "\n");
     }
-    
+
     #---------------------------------------------------------
-    
+
     use Inline C => <<'END';
-    
+
     typedef struct {
       char* name;
       char* rank;
       long  serial;
       } Soldier;
- 
 
-   
+
+
     SV* new(char* class, char* name, char* rank, long serial) {
         Soldier* soldier;
         SV*      obj_ref = newSViv(0);
@@ -595,20 +595,20 @@ How do I implement Object Oriented programming in Perl using C objects?
         soldier->name = savepv(name);
         soldier->rank = savepv(rank);
         soldier->serial = serial;
-        
+
         sv_setiv(obj, (IV)soldier);
         SvREADONLY_on(obj);
         return obj_ref;
      }
-    
+
      char* get_name(SV* obj) {
            return ((Soldier*)SvIV(SvRV(obj)))->name;
      }
-    
+
      char* get_rank(SV* obj) {
            return ((Soldier*)SvIV(SvRV(obj)))->rank;
      }
-    
+
      long get_serial(SV* obj) {
           return ((Soldier*)SvIV(SvRV(obj)))->serial;
      }
@@ -688,33 +688,33 @@ it with Perl.
 =item Solution
 
     print get('http://www.axkit.org');
-    
-    use Inline C => Config => 
+
+    use Inline C => Config =>
                LIBS => '-lghttp';
     use Inline C => <<'END_OF_C_CODE';
-    
+
     #include <ghttp.h>
-    
+
     char *get(SV* uri) {
        SV* buffer;
        ghttp_request* request;
-       
+
        buffer = NEWSV(0,0);
        request = ghttp_request_new();
        ghttp_set_uri(request, SvPV(uri, PL_na));
-       
+
        ghttp_set_header(request, http_hdr_Connection, "close");
-       
+
        ghttp_prepare(request);
        ghttp_process(request);
-       
+
        sv_catpv(buffer, ghttp_get_body(request));
-       
+
        ghttp_request_destroy(request);
-       
+
        return SvPV(buffer, PL_na);
     }
-    
+
     END_OF_C_CODE
 
 =item Discussion
@@ -732,7 +732,7 @@ libraries easily with something like this:
     use Inline C => Config => LIBS => '-lghttp';
     use Inline C => "code ...";
 
-or 
+or
 
     use Inline C => "code ...", LIBS => '-lghttp';
 
@@ -742,7 +742,7 @@ To specify a specific library path, use:
 
 To specify an include path use:
 
-    use Inline C => "code ...", 
+    use Inline C => "code ...",
                LIBS => '-lghttp',
                INC => '-I/your/inc/path';
 
@@ -844,17 +844,17 @@ How do I deal with complex data types like hashes in Inline C?
 =item Solution
 
     use Inline C => <<'END_OF_C_CODE';
-    
+
     void dump_hash(SV* hash_ref) {
         HV* hash;
         HE* hash_entry;
         int num_keys, i;
         SV* sv_key;
         SV* sv_val;
-    
+
         if (! SvROK(hash_ref))
             croak("hash_ref is not a reference");
-    
+
         hash = (HV*)SvRV(hash_ref);
         num_keys = hv_iterinit(hash);
         for (i = 0; i < num_keys; i++) {
@@ -865,9 +865,9 @@ How do I deal with complex data types like hashes in Inline C?
         }
         return;
     }
-    
+
     END_OF_C_CODE
-    
+
     my %hash = (
                 Author => "Brian Ingerson",
                 Nickname => "INGY",
@@ -875,7 +875,7 @@ How do I deal with complex data types like hashes in Inline C?
                 Version => "0.30",
                 Language => "C",
                );
-    
+
     dump_hash(\%hash);
 
 =item Discussion
@@ -918,21 +918,21 @@ How do I create a Hash of Lists from C?
 
     use Inline C;
     use Data::Dumper;
-  
+
     $hash_ref = load_data("./cartoon.txt");
     print Dumper $hash_ref;
-  
+
     __END__
     __C__
-  
+
     static int next_word(char**, char*);
-  
+
     SV* load_data(char* file_name) {
         char buffer[100], word[100], * pos;
         AV* array;
         HV* hash = newHV();
         FILE* fh = fopen(file_name, "r");
-  
+
         while (fgets(pos = buffer, sizeof(buffer), fh)) {
             if (next_word(&pos, word)) {
                 hv_store(hash, word, strlen(word),
@@ -944,7 +944,7 @@ How do I create a Hash of Lists from C?
         fclose(fh);
         return newRV_noinc((SV*) hash);
     }
-  
+
     static int next_word(char** text_ptr, char* word) {
         char* text = *text_ptr;
         while(*text != '\0' &&
@@ -959,7 +959,7 @@ How do I create a Hash of Lists from C?
         *word = '\0';
         *text_ptr = text;
         return 1;
-    }  
+    }
 
 =item Discussion
 
@@ -1023,16 +1023,16 @@ How do I access Win32 DLL-s using Inline?
 
     use Inline C => DATA =>
                LIBS => '-luser32';
-    
+
     $text = "@ARGV" || 'Inline.pm works with MSWin32. Scary...';
-    
+
     WinBox('Inline Text Box', $text);
-    
+
     __END__
     __C__
-    
+
     #include <windows.h>
-    
+
     int WinBox(char* Caption, char* Text) {
       return MessageBoxA(0, Text, Caption, 0);
     }
@@ -1073,7 +1073,7 @@ How do I use Perl from a regular C program?
 =item Solution
 
     #!/usr/bin/cpr
-    
+
     int main(void) {
 
         printf("Using Perl version %s from a C program!\n\n",
@@ -1148,24 +1148,24 @@ done more easily with Inline?
 =item Solution
 
     use Inline with => 'Event';
-    
+
     Event->timer(desc     => 'Timer #1',
                  interval => 2,
                  cb       => \&my_callback,
                 );
-    
+
     Event->timer(desc     => 'Timer #2',
                  interval => 3,
                  cb       => \&my_callback,
                 );
-    
+
     print "Starting...\n";
     Event::loop;
-    
+
     use Inline C => <<'END';
     void my_callback(pe_event* event) {
         pe_timer * watcher = event->up;
-    
+
         printf("%s\n\tEvent priority = %d\n\tWatcher priority = %d\n\n",
                SvPVX(watcher->base.desc),
                event->prio,
@@ -1233,7 +1233,7 @@ How do I do that?
     print "9 + 5 = ", add(9, 5), "\n";
     print "SQRT(9^2 + 5^2) = ", pyth(9, 5), "\n";
     print "9 * 5 = ", mult(9, 5), "\n";
-    
+
     use Inline C => <<'END_C';
     int add(int x, int y) {
         return x + y;
@@ -1287,17 +1287,17 @@ an Inline C function.
 =item Solution
 
     use Inline C;
-    
+
     c_func_1('This is the first line');
     c_func_2('This is the second line');
-    
+
     sub perl_sub_1 {
         print map "$_\n", @_;
     }
-    
+
     __DATA__
     __C__
-    
+
     void c_func_2(SV* text) {
         Inline_Stack_Vars;
         Inline_Stack_Push(newSVpvf("Plus an extra line"));
@@ -1355,17 +1355,17 @@ and C<eval> it into Perl. How do I do this?
 
     use Inline;
     use Code::Generator;
-    
+
     my $c_code = generate('foo_function');
-    
+
     Inline->bind(C => $c_code);
-    
+
     foo_function(1, 2, 3);
 
 =item Discussion
 
 I can't think of a real life application where you would want to
-generate C code on the fly, but at least I know know how I would do it.
+generate C code on the fly, but at least I know how I would do it.
 :)
 
 The C<bind()> function of Inline let's you bind (compile/load/execute) C
@@ -1409,7 +1409,7 @@ Brian Ingerson <INGY@cpan.org>
 
 =head1 COPYRIGHT
 
-Copyright (c) 2001, 2002, Brian Ingerson. 
+Copyright (c) 2001, 2002, Brian Ingerson.
 
 All Rights Reserved. This module is free software. It may be
 used, redistributed and/or modified under the terms of the Perl
