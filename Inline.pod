@@ -5,16 +5,16 @@ Inline - Write Perl subroutines in other programming languages.
 =head1 SYNOPSIS
 
     use Inline C;
-    
+
     print "9 + 16 = ", add(9, 16), "\n";
     print "9 - 16 = ", subtract(9, 16), "\n";
- 
+
     __END__
     __C__
     int add(int x, int y) {
       return x + y;
     }
- 
+
     int subtract(int x, int y) {
       return x - y;
     }
@@ -145,9 +145,9 @@ following syntaxes:
 =item The DATA Keyword.
 
     use Inline Java => 'DATA';
-    
+
     # Perl code goes here ...
-    
+
     __DATA__
     __Java__
     /* Java code goes here ... */
@@ -179,9 +179,9 @@ idea they exist during compile time.
 
     use Inline::Files;
     use Inline Java => 'FILE';
-    
+
     # Perl code goes here ...
-    
+
     __JAVA__
     /* Java code goes here ... */
 
@@ -220,10 +220,10 @@ distributed/CPAN code.
 =item Strings
 
     use Inline Java => <<'END';
-    
+
     /* Java code goes here ... */
     END
-    
+
     # Perl code goes here ...
 
 You also just specify the source code as a single string. A handy way to
@@ -240,12 +240,12 @@ Inline' statement. Here is one way to do it:
     my $code;
     BEGIN {
         $code = <<END;
-    
+
     /* Java code goes here ... */
     END
     }
     use Inline Java => $code;
-    
+
     # Perl code goes here ...
 
 =item The bind() Function
@@ -256,10 +256,10 @@ interface exceptions mentioned above) The C<bind()> method takes the
 same arguments as C<'use Inline ...'>.
 
     my $code = <<END;
-    
+
     /* Java code goes here ... */
     END
-    
+
     Inline->bind(Java => $code);
 
 You can think of C<bind()> as a way to C<eval()> code in other
@@ -273,8 +273,11 @@ modules. See instructions below for creating modules with Inline.
 
 The source code for Inline can also be specified as an external
 filename, a reference to a subroutine that returns source code, or a
-reference to an array that contains lines of source code. These methods
-are less frequently used but may be useful in some situations.
+reference to an array that contains lines of source code. (Note that
+if the external source file is in the current directory it must be
+specified with a leading './' - ie './file.ext' instead of simply
+'file.ext'.) These methods are less frequently used but may be useful
+in some situations.
 
 =item Shorthand
 
@@ -283,9 +286,9 @@ there are no extra parameters, you can omit the keyword altogether.
 For example:
 
     use Inline 'Java';
-    
+
     # Perl code goes here ...
-    
+
     __DATA__
     __Java__
     /* Java code goes here ... */
@@ -294,9 +297,9 @@ or
 
     use Inline::Files;
     use Inline 'Java';
-    
+
     # Perl code goes here ...
-    
+
     __JAVA__
     /* Java code goes here ... */
 
@@ -316,34 +319,34 @@ programming languages. Here is another example:
     # The module Foo.pm
     package Foo;
     use AutoLoader;
-    
+
     use Inline C;
     use Inline C => DATA => FILTERS => 'Strip_POD';
     use Inline Python;
-    
+
     1;
-    
+
     __DATA__
-    
+
     sub marine {
         # This is an autoloaded subroutine
     }
-    
+
     =head1 External subroutines
-    
+
     =cut
-    
+
     __C__
     /* First C section */
-    
+
     __C__
     /* Second C section */
     =head1 My C Function
-    
+
     Some POD doc.
-    
+
     =cut
-    
+
     __Python__
     """A Python Section"""
 
@@ -396,7 +399,7 @@ different code sections. When a source code section is passed in,
 Inline will apply whichever options have been specified up to that
 point. Here is a complex configuration example:
 
-    use Inline (Config => 
+    use Inline (Config =>
                 DIRECTORY => './inline_dir',
                );
     use Inline (C => Config =>
@@ -405,7 +408,7 @@ point. Here is a complex configuration example:
     use Inline (C => 'DATA',         # First C Section
                 LIBS => ['-llocal1', '-llocal2'],
                );
-    use Inline (Config => 
+    use Inline (Config =>
                 WARNINGS => 0,
                );
     use Inline (Python => 'DATA',    # First Python Section
@@ -434,7 +437,7 @@ do, see C<Inline::C>.
 If a particular config option has value options of 1 and 0, you can use
 the ENABLE and DISABLE modifiers. In other words, this:
 
-    use Inline Config => 
+    use Inline Config =>
                FORCE_BUILD => 1,
                CLEAN_AFTER_BUILD => 0;
 
@@ -711,7 +714,7 @@ Inline scripts.
 
     perl -MInline=NOCLEAN inline_script.pl
 
-or 
+or
 
     perl -MInline=Info,force,NoClean inline_script.pl
 
@@ -721,7 +724,7 @@ like this:
 
     use Inline 'Info', 'Force', 'Noclean';
 
-NOTE: 
+NOTE:
 If a C<'use Inline'> statement is used to set shortcuts, it can not be
 used for additional purposes.
 
@@ -817,24 +820,24 @@ the options do) Next, modify the C<Simple.pm> file to look like this:
     use base 'Exporter';
     @EXPORT_OK = qw(add subtract);
     use strict;
-    
+
     use Inline C => 'DATA',
                VERSION => '1.23',
                NAME => 'Math::Simple';
-    
+
     1;
-    
+
     __DATA__
-    
+
     =pod
-    
+
     =cut
-    
+
     __C__
     int add(int x, int y) {
       return x + y;
     }
-    
+
     int subtract(int x, int y) {
       return x - y;
     }
@@ -844,7 +847,7 @@ and C<VERSION> parameter. The C<NAME> must match your module's package
 name. The C<VERSION> parameter must match your module's C<$VERSION>
 variable and they must be of the form C</^\d\.\d\d$/>.
 
-NOTE: 
+NOTE:
 These are Inline's sanity checks to make sure you know what you're doing
 before uploading your code to CPAN. They insure that once the module has
 been installed on someone's system, the module would not get
@@ -874,7 +877,7 @@ Now all you need to do is:
 That will generate the file C<Math-Simple-0.20.tar.gz> which is a
 distributable package. That's all there is to it.
 
-IMPORTANT NOTE: 
+IMPORTANT NOTE:
 Although the above steps will produce a workable module, you still have
 a few more responsibilities as a budding new CPAN author. You need to
 write lots of documentation and write lots of tests. Take a look at some
