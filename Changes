@@ -3,12 +3,12 @@
 ---
 version: 0.45_01
 C/C.pod - document that *fully qualified* paths for LIBS, INC, TYPEMAPS and MYEXTLIB
-          are meeded. (RT ticket 5207)
+          are needed. (RT ticket 5207)
 Inline.pm - remove "defined" from "defined %main::Inline::Config::" as that usage
             causes a deprecation warning with perl-5.11 and later. (RT ticket 53227)
 Inline.pm - fix sub push_overrides (RT ticket 49669)
             This change responsible for "Subroutine Inline::C::get_parser redefined"
-            warnings that can occur under certain circumstances.
+            warnings that can occur during build stage under certain circumstances.
 denter.pm - local()ise $_ (in four places) (RT ticket 16801)
 Inline.pod - doc correction (thanks Alejandro Ochoa).
 C/Makefile.PL - accommodate 'ccache cc' (RT ticket 40140)
