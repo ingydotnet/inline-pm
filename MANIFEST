@@ -15,6 +15,7 @@ C/t/04perlapi.t
 C/t/05xsmode.t
 C/t/06parseregexp.t
 C/t/07typemap_multi.t
+C/t/08taint.t
 C/t/soldier_typemap
 C/t/typemap
 Changes
