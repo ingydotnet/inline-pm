@@ -644,16 +644,25 @@ platforms. See the C<GLOBAL> shortcut below.
 
 =head2 UNTAINT
 
-You must use this option whenever you use Perl's C<-T> switch, for taint
+You can use this option whenever you use Perl's C<-T> switch, for taint
 checking. This option tells Inline to blindly untaint all tainted
-variables. It also turns on SAFEMODE by default. See the C<UNTAINT>
+variables. (This is generally considerd to be an appallingly insecure
+thing to do, and not to be recommended - but the option is there for
+you to use if you want. Please consider using something other than
+Inline for scripts that need taint checking.)
+It also turns on SAFEMODE by default. See the C<UNTAINT>
 shortcut below.
+You will see warnings about blindly untainting fields in both %ENV
+and Inline objects. If you want to silence these warnings, set the
+Config option NO_UNTAINT_WARN => 1.
 
 =head2 SAFEMODE
 
 Perform extra safety checking, in an attempt to thwart malicious code.
 This option cannot guarantee security, but it does turn on all the
-currently implemented checks.
+currently implemented checks. (Currently, the only "currently
+implemented check" is to ensure that the C<DIRECTORY> option has also
+been used.)
 
 There is a slight startup penalty by using SAFEMODE. Also, using UNTAINT
 automatically turns this option on. If you need your code to start
@@ -795,6 +804,9 @@ environment is safe.
 =item UNTAINT
 
 Turn the UNTAINT option on. Used with C<-T> switch.
+In terms of secure practices, this is definitely *not* a recommended
+way of dealing with taint checking, but it's the *only* option
+currently available with Inline. Use it at your own risk.
 
 =item VERSION
 
