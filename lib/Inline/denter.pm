@@ -13,6 +13,11 @@ sub new {
 	  }, $class;
 }
 
+# Prevent a taint exception being thrown by AutoLoader.pm.
+# Serves no other purpose.
+sub DESTROY {
+}
+
 sub undent {
     local $/ = "\n";
     my ($o, $text) = @_;
@@ -58,13 +63,13 @@ sub _undent_data {
 	$class = $2 || '';
 	if ($1 eq '%') {
 	    %$obj = $o->_undent_hash;
-	} 
+	}
 	elsif ($1 eq '@') {
 	    @$obj = $o->_undent_array;
-	} 
+	}
 	else {
 	    $$obj = $o->_undent_scalar;
-	} 
+	}
 	bless $obj, $class if length $class;
     }
     elsif ($o->{content} =~ /^\?\s*$/) {
@@ -192,7 +197,7 @@ sub _setup_line {
 	# expand tabs in leading whitespace;
 	$o->next_line, next if /^(\s*$|\#)/; # skip comments and blank lines
 	while (s{^( *)(\t+)}
-	       {' ' x (length($1) + length($2) * $tabwidth - 
+	       {' ' x (length($1) + length($2) * $tabwidth -
 		       length($1) % $tabwidth)}e){}
 	croak $o->M01_invalid_indent_width unless /^(( {$width})*)(\S.*)$/;
 	$o->{level} = length($1) / $width;
@@ -224,7 +229,7 @@ sub indent_data {
     local $_ = shift;
     return $o->indent_undef($_)
       if not defined;
-    return $o->indent_value($_) 
+    return $o->indent_value($_)
       if (not ref);
     return $o->indent_hash($_)
       if (ref eq 'HASH' and not /=/ or /=HASH/);
@@ -335,7 +340,7 @@ sub indent_name {
 
 sub _print_ref {
     my ($o, $data, $symbol, $type) = @_;
-    $data =~ /^(([\w:]+)=)?$type\(0x([0-9a-f]+)\)$/ 
+    $data =~ /^(([\w:]+)=)?$type\(0x([0-9a-f]+)\)$/
       or croak "Invalid reference: $data\n";
     my $stream = $symbol;
     $stream .= $2 if defined $2;
@@ -348,7 +353,7 @@ sub _print_ref {
 }
 
 # Undent error messages
-sub M01_invalid_indent_width { 
+sub M01_invalid_indent_width {
     my $o = shift;
     "Invalid indent width detected at line $o->{line}\n";
 }
