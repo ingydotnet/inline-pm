@@ -2,7 +2,7 @@ package Inline;
 
 use strict;
 require 5.005;
-$Inline::VERSION = '0.45_01';
+$Inline::VERSION = '0.45_02';
 
 use AutoLoader 'AUTOLOAD';
 use Inline::denter;
@@ -58,6 +58,7 @@ my $default_config =
    PRINT_VERSION => 0,
    REPORTBUG => 0,
    UNTAINT => 0,
+   NO_UNTAINT_WARN => 0,
    SAFEMODE => -1,
    GLOBAL_LOAD => 0,
    BUILD_NOISY => 0,
@@ -395,6 +396,28 @@ sub check_config {
 #==============================================================================
 sub fold_options {
     my $o = shift;
+
+# The following small section of code seems, to me, to be unnecessary - which is the
+# reason that I've commented it out. I've left it here (including its associated comments)
+# in case it later becomes evident that there *is* good reason to include it. --sisyphus
+#
+## This bit tries to enable UNTAINT automatically if required when running the test suite.
+#    my $env_ha = $ENV{HARNESS_ACTIVE} || 0 ;
+#    my ($harness_active) = $env_ha =~ /(.*)/ ;
+#    if (($harness_active)&&(! $o->{CONFIG}{UNTAINT})){
+#            eval {
+#                    require Scalar::Util;
+#                    $o->{CONFIG}{UNTAINT} =
+#                      (Scalar::Util::tainted(Cwd::cwd()) ? 1 : 0) ;
+## Disable SAFEMODE in the test suite, we know what we are doing...
+#                    $o->{CONFIG}{SAFEMODE} = 0 ;
+#                    warn "\n-[tT] enabled for test suite.
+#Automatically setting UNTAINT=1 and SAFEMODE=0.\n"
+#                     unless $Inline::_TAINT_WARNING_ ;
+#                    $Inline::_TAINT_WARNING_ = 1 ;
+#            } ;
+#   }
+##
     $untaint = $o->{CONFIG}{UNTAINT} || 0;
     $safemode = (($o->{CONFIG}{SAFEMODE} == -1) ?
 		 ($untaint ? 1 : 0) :
@@ -981,18 +1004,23 @@ sub with_configs {
 }
 
 #==============================================================================
-# Blindly untaint tainted fields in Inline object.
+# Blindly untaint tainted fields in %ENV.
 #==============================================================================
 sub env_untaint {
     my $o = shift;
+    warn "In Inline::env_untaint() : Blindly untainting tainted fields in %ENV.\n" unless $o->{CONFIG}{NO_UNTAINT_WARN};
 
     for (keys %ENV) {
 	($ENV{$_}) = $ENV{$_} =~ /(.*)/;
     }
-    my $delim = $^O eq 'MSWin32' ? ';' : ':';
-    $ENV{PATH} = join $delim, grep {not /^\./ and -d $_ and
+
+    $ENV{PATH} = $^O eq 'MSWin32' ?
+                 join ';', grep {not /^\./ and -d $_
+				  } split /;/, $ENV{PATH}
+                 :
+                 join ':', grep {not /^\./ and -d $_ and
 				      not ((stat($_))[2] & 0022)
-				  } split $delim, $ENV{PATH};
+				  } split /:/, $ENV{PATH};
     map {($_) = /(.*)/} @INC;
 }
 #==============================================================================
@@ -1000,7 +1028,7 @@ sub env_untaint {
 #==============================================================================
 sub obj_untaint {
     my $o = shift;
-
+    warn "In Inline::obj_untaint() : Blindly untainting tainted fields in Inline object.\n" unless $o->{CONFIG}{NO_UNTAINT_WARN};
     ($o->{INLINE}{ILSM_module}) = $o->{INLINE}{ILSM_module} =~ /(.*)/;
     ($o->{API}{build_dir}) = $o->{API}{build_dir} =~ /(.*)/;
     ($o->{CONFIG}{DIRECTORY}) = $o->{CONFIG}{DIRECTORY} =~ /(.*)/;
@@ -1201,6 +1229,7 @@ sub rmpath {
     my @parts = File::Spec->splitdir($rmpath);
     while (@parts){
         $rmpath = File::Spec->catdir($prefix ? ($prefix,@parts) : @parts);
+        ($rmpath) = $rmpath =~ /(.*)/ if UNTAINT;
         rmdir $rmpath
 	  or last; # rmdir failed because dir was not empty
 	pop @parts;
@@ -1265,39 +1294,41 @@ sub find_temp_dir {
            -w File::Spec->catdir($cwd,".Inline")) {
         $temp_dir = File::Spec->catdir($cwd,".Inline");
     }
-    elsif (require FindBin and
-           $bin = $FindBin::Bin and
-           -d File::Spec->catdir($bin,".Inline") and
-           -w File::Spec->catdir($bin,".Inline")) {
-        $temp_dir = File::Spec->catdir($bin,".Inline");
-    }
-    elsif ($home and
-           -d File::Spec->catdir($home,".Inline") and
-           -w File::Spec->catdir($home,".Inline")) {
-        $temp_dir = File::Spec->catdir($home,".Inline");
-    }
-    elsif (defined $cwd and $cwd and
-           -d File::Spec->catdir($cwd, $did) and
-           -w File::Spec->catdir($cwd, $did)) {
-        $temp_dir = File::Spec->catdir($cwd, $did);
-    }
-    elsif (defined $bin and $bin and
-           -d File::Spec->catdir($bin, $did) and
-           -w File::Spec->catdir($bin, $did)) {
-        $temp_dir = File::Spec->catdir($bin, $did);
-    }
-    elsif (defined $cwd and $cwd and
-	   -d $cwd and
-	   -w $cwd and
-           _mkdir(File::Spec->catdir($cwd, $did), 0777)) {
-        $temp_dir = File::Spec->catdir($cwd, $did);
-    }
-    elsif (defined $bin and $bin and
-	   -d $bin and
-	   -w $bin and
-           _mkdir(File::Spec->catdir($bin, $did), 0777)) {
-        $temp_dir = File::Spec->catdir($bin, $did);
-    }
+       else {
+               require FindBin ;
+        if ($bin = $FindBin::Bin and
+               -d File::Spec->catdir($bin,".Inline") and
+               -w File::Spec->catdir($bin,".Inline")) {
+            $temp_dir = File::Spec->catdir($bin,".Inline");
+        }
+        elsif ($home and
+               -d File::Spec->catdir($home,".Inline") and
+               -w File::Spec->catdir($home,".Inline")) {
+            $temp_dir = File::Spec->catdir($home,".Inline");
+        }
+        elsif (defined $cwd and $cwd and
+               -d File::Spec->catdir($cwd, $did) and
+               -w File::Spec->catdir($cwd, $did)) {
+            $temp_dir = File::Spec->catdir($cwd, $did);
+        }
+        elsif (defined $bin and $bin and
+               -d File::Spec->catdir($bin, $did) and
+               -w File::Spec->catdir($bin, $did)) {
+            $temp_dir = File::Spec->catdir($bin, $did);
+        }
+        elsif (defined $cwd and $cwd and
+          -d $cwd and
+          -w $cwd and
+               _mkdir(File::Spec->catdir($cwd, $did), 0777)) {
+            $temp_dir = File::Spec->catdir($cwd, $did);
+        }
+        elsif (defined $bin and $bin and
+          -d $bin and
+          -w $bin and
+               _mkdir(File::Spec->catdir($bin, $did), 0777)) {
+            $temp_dir = File::Spec->catdir($bin, $did);
+        }
+       }
 
     croak M56_no_DIRECTORY_found()
       unless $temp_dir;
