@@ -1,6 +1,13 @@
 # Revision history for Perl extension Inline.
 
 ---
+version: 0.45_02
+ Changes to Inline.pm, denter.pm, and Inline.pod relating to "fixing" untainting
+ (to the extent that untainting of -T inline scripts works as documented).
+ Also added C/t/08core.t (which contains -T on the shebang line) as a basic test
+ of untainting.
+
+---
 version: 0.45_01
 C/C.pod - document that *fully qualified* paths for LIBS, INC, TYPEMAPS and MYEXTLIB
           are needed. (RT ticket 5207)
