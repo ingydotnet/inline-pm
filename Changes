@@ -1,14 +1,22 @@
 # Revision history for Perl extension Inline.
 
 ---
+version: 0.46
+date:    Fri Feb 12 2010
+ Same as 0.45_02 (plus some minor doc alterations in Inline.pod).
+
+---
 version: 0.45_02
+date:    Fri Feb 5 2010
  Changes to Inline.pm, denter.pm, and Inline.pod relating to "fixing" untainting
  (to the extent that untainting of -T inline scripts works as documented).
+ Many thanks to Patrick LeBoutillier.
  Also added C/t/08core.t (which contains -T on the shebang line) as a basic test
- of untainting.
+ of untainting. (RT ticket 13084)
 
 ---
 version: 0.45_01
+date:    Thurs Jan 28 2010
 C/C.pod - document that *fully qualified* paths for LIBS, INC, TYPEMAPS and MYEXTLIB
           are needed. (RT ticket 5207)
 Inline.pm - remove "defined" from "defined %main::Inline::Config::" as that usage
@@ -19,7 +27,10 @@ Inline.pm - fix sub push_overrides (RT ticket 49669)
 denter.pm - local()ise $_ (in four places) (RT ticket 16801)
 Inline.pod - doc correction (thanks Alejandro Ochoa).
 C/Makefile.PL - accommodate 'ccache cc' (RT ticket 40140)
+              - accommodate ActivePerl-5.10.1 and later (RT ticket 49419)
 C/Cookbook.pod - typo fixes (thanks Brad Barber)
+               - Change "NAME" from "C Cookbook ..." to "Inline::C-Cookbook ...".
+                (RT ticket 45417)
 
 ---
 version: 0.45
