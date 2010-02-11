@@ -655,6 +655,10 @@ shortcut below.
 You will see warnings about blindly untainting fields in both %ENV
 and Inline objects. If you want to silence these warnings, set the
 Config option NO_UNTAINT_WARN => 1.
+There can be some problems untainting Inline scripts where older
+versions of Cwd, such as those that shipped with early versions of
+perl-5.8 (and earlier), are installed. Updating Cwd will probably
+solve these problems.
 
 =head2 SAFEMODE
 
