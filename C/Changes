@@ -1,5 +1,15 @@
 Revision history for Perl extension Inline::C.
 
+0.46 Fri 12 Feb 2010
+      - Same as 0.45_02.
+
+0.45_02 Fri 5 Feb 2010
+      - Add C/t/08core.t as part of RT ticket 13084 fix. See top level
+        "Changes" file.
+
+0.45_01 Thurs 28 Jan 2010
+      - Fix Rt tickets 40140, 45417 and 49419. See top level "Changes" file.
+
 0.45  Sat Nov 22 2008
       - No changes from 0.44_01
 
@@ -25,7 +35,7 @@ Revision history for Perl extension Inline::C.
 	  allows Inline::CPP to override only get_parser(). (NEILW)
 
 0.43  Sat Jul  7 12:53:33 PDT 2001
-	- Break up the generation of XS code into smaller stages which can 
+	- Break up the generation of XS code into smaller stages which can
 	  be overridden in Inline::CPP. Makes the code somewhat longer, but
 	  more clear. (NEILW)
 
@@ -49,9 +59,9 @@ Revision history for Perl extension Inline::C.
 	  Account for no trailing '/' in paths
 
 0.34  Sun May  6 16:56:53 PDT 2001
-	- Changed the generated Makefile.PL to not create any dependencies 
+	- Changed the generated Makefile.PL to not create any dependencies
 	  between Makefile and Makefile.PL. This was creating a problem on
-	  an HP-UX system using AFS. Inline users should never need this 
+	  an HP-UX system using AFS. Inline users should never need this
 	  dependency anyways.
 
 0.34  Tue May  1 00:05:58 PDT 2001
@@ -64,7 +74,7 @@ Revision history for Perl extension Inline::C.
 	- Added support for Inline::Filters. FILTERS config option.
 
 0.33  Sat Apr 28 20:20:29 PDT 2001
-	- Made installation of Inline::C optional. For those people without 
+	- Made installation of Inline::C optional. For those people without
 	  a C compiler who may wish to use Java.
 
 0.33  Sat Apr 28 20:20:29 PDT 2001
