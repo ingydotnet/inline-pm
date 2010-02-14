@@ -1,5 +1,8 @@
 Revision history for Perl extension Inline::C.
 
+0.46_01 not yet released
+      - Second attempt at accommodating 'ccache cc' compiler (RT ticket 40140)
+
 0.46 Fri 12 Feb 2010
       - Same as 0.45_02.
 
