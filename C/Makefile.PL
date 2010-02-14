@@ -5,32 +5,29 @@ use File::Spec;
 
 my ($cc, $exe) = @Config{'cc', '_exe'};
 $cc =~ s/\s+-.+$//; #remove possible trailing options
-my $comp = (split /\./, $cc)[0];
 
 my $found = 0;
 my $delim = $Config::Config{path_sep};
 
 if ($cc =~ m|/:\[|) {
+    my $comp = (split /\./, $cc)[0];
     $found = -f "$comp$exe";
-}
-
-# $Config{cc} might be something like '/some/place/cc'
-elsif ($cc =~ m|/|) {
-    $found = -f "$comp$exe" || -l $cc;
 }
 
 # $Config{cc} might be something like 'ccache cc'
 elsif ($cc =~ m|ccache|) {
     my @cc = split /\s+/, $cc;
-    $found = -f "$cc[0]$exe" || -l $cc[0];
-    if($found && $cc[1]) {$found = -f "$cc[1]$exe" || -l $cc[1]}
+    $found = 1;
+    for (@cc) {
+        if (!find_executable($_)) {
+            $found = 0;
+            last;
+        }
+    }
 }
 
 else {
-    my $comp = (split /\./, $cc)[0];
-    for my $lib (split $delim, $ENV{PATH}) {
-	$found = -f File::Spec->catfile($lib,"$comp$exe") and last;
-    }
+    $found = find_executable($cc);
 }
 
 print <<END;
@@ -50,7 +47,7 @@ END
 
 if ($found) {
     print <<END;
-I have located this compiler on your system:
+I have located this compiler on your system.
 
 END
 }
@@ -92,4 +89,18 @@ test::
 clean::
 END
     close MF;
+}
+
+sub find_executable {
+    my($cc) = @_;
+    my $comp = (split /\./, $cc)[0];
+
+    # $Config{cc} might be something like '/some/place/cc'
+    if ($cc =~ m|/|) {
+        return -f "$comp$exe" || -l $cc;
+    }
+
+    for my $lib (split $delim, $ENV{PATH}) {
+	return 1 if -f File::Spec->catfile($lib,"$comp$exe");
+    }
 }
