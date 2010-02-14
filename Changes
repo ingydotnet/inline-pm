@@ -1,6 +1,11 @@
 # Revision history for Perl extension Inline.
 
 ---
+version: 0.46_01
+date: not yet released
+ Second attempt at accommodating 'ccache cc' compiler (RT ticket 40140)
+
+---
 version: 0.46
 date:    Fri Feb 12 2010
  Same as 0.45_02 (plus some minor doc alterations in Inline.pod).
