@@ -3,7 +3,8 @@
 ---
 version: 0.46_01
 date: not yet released
- Second attempt at accommodating 'ccache cc' compiler (RT ticket 40140)
+Inline.pm - add archname and perlversion number to config filename.
+C/C.pm - Second attempt at accommodating 'ccache cc' compiler (RT ticket 40140).
 
 ---
 version: 0.46
