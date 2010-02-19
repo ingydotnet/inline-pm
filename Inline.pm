@@ -23,6 +23,9 @@ $Inline::languages = undef; #needs to be global for AutoLoaded error messages
 
 our $did = '_Inline'; # Default Inline Directory
 
+# This is the config file written by create_config_file().
+our $configuration_file = 'config-' . $Config::Config{'archname'} . '-' . $];
+
 my %shortcuts =
   (
    NOCLEAN =>      [CLEAN_AFTER_BUILD => 0],
@@ -713,14 +716,14 @@ sub check_config_file {
     }
 
     $o->create_config_file($DIRECTORY)
-      if not -e File::Spec->catfile($DIRECTORY,"config");
+      if not -e File::Spec->catfile($DIRECTORY, $configuration_file);
 
-    open CONFIG, "< ".File::Spec->catfile($DIRECTORY,"config")
+    open CONFIG, "< ".File::Spec->catfile($DIRECTORY, $configuration_file)
       or croak M17_config_open_failed($DIRECTORY);
     my $config = join '', <CONFIG>;
     close CONFIG;
 
-    croak M62_invalid_config_file(File::Spec->catfile($DIRECTORY,"config"))
+    croak M62_invalid_config_file(File::Spec->catfile($DIRECTORY, $configuration_file))
       unless $config =~ /^version :/;
     ($config) = $config =~ /(.*)/s if UNTAINT;
 
@@ -815,7 +818,7 @@ sub create_config_file {
 	closedir LIB;
     }
 
-    my $file = File::Spec->catfile($ARGV[0],"config");
+    my $file = File::Spec->catfile($ARGV[0], $configuration_file);
     open CONFIG, "> $file" or croak M24_open_for_output_failed($file);
     print CONFIG Inline::denter->new()
       ->indent(*version => $Inline::VERSION,
@@ -1515,7 +1518,7 @@ END
 
 sub M17_config_open_failed {
     my ($dir) = @_;
-    my $file = File::Spec->catfile(${dir},"config");
+    my $file = File::Spec->catfile(${dir}, $configuration_file);
     return <<END;
 Can't open ${file} for input.
 
@@ -1538,6 +1541,7 @@ END
 
 sub M19_usage_language {
     my ($language, $directory) = @_;
+    require Config;
     return <<END;
 Error. You have specified '$language' as an Inline programming language.
 
@@ -1547,7 +1551,7 @@ I currently only know about the following languages:
      }
 
 If you have installed a support module for this language, try deleting the
-config file from the following Inline DIRECTORY, and run again:
+config-${Config::Config{'archname'}}-$] file from the following Inline DIRECTORY, and run again:
 
     $directory
 
@@ -1556,7 +1560,7 @@ END
 
 sub M20_config_creation_failed {
     my ($dir) = @_;
-    my $file = File::Spec->catfile(${dir},"config");
+    my $file = File::Spec->catfile(${dir}, $configuration_file);
     return <<END;
 Failed to autogenerate ${file}.
 
