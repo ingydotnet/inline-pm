@@ -327,6 +327,7 @@ END
 # Create and initialize a parser
 sub get_parser {
     my $o = shift;
+    Inline::C::_parser_test("Inline::C::get_parser called\n") if $o->{CONFIG}{_TESTING};
     require Inline::C::ParseRecDescent;
     Inline::C::ParseRecDescent::get_parser($o);
 }
@@ -815,6 +816,23 @@ sub fix_make {
 	}
     }
     close MAKEFILE;
+}
+
+#==============================================================================
+# This routine used by C/t/09parser to test that the expected parser is in use
+#==============================================================================
+
+sub _parser_test {
+    my $dir = '_Inline_test';
+    if(! -d $dir) {
+      my $ok = mkdir $dir;
+      warn $! if !$ok;
+    }
+
+    warn $! if !open(TEST_FH, '>>', "$dir/parser_id");
+
+    print TEST_FH $_[0];
+    warn $! if !close(TEST_FH);
 }
 
 1;
