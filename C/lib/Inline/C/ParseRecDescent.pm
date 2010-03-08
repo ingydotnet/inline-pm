@@ -1,7 +1,7 @@
 package Inline::C::ParseRecDescent;
 use strict;
 use Carp;
- 
+
 sub register {
     {
      extends => [qw(C)],
@@ -11,6 +11,7 @@ sub register {
 
 sub get_parser {
     my $o = shift;
+    Inline::C::_parser_test("Inline::C::ParseRecDescent::get_parser called\n") if $o->{CONFIG}{_TESTING};
     eval { require Parse::RecDescent };
     croak <<END if $@;
 This innvocation of Inline requires the Parse::RecDescent module.
@@ -23,7 +24,7 @@ END
 sub grammar {
     <<'END';
 
-code:   part(s) 
+code:   part(s)
         {
          return 1;
         }
@@ -34,11 +35,11 @@ part:   comment
          my $function = $item[1][0];
          $return = 1, last if $thisparser->{data}{done}{$function}++;
          push @{$thisparser->{data}{functions}}, $function;
-         $thisparser->{data}{function}{$function}{return_type} = 
+         $thisparser->{data}{function}{$function}{return_type} =
              $item[1][1];
-         $thisparser->{data}{function}{$function}{arg_types} = 
+         $thisparser->{data}{function}{$function}{arg_types} =
              [map {ref $_ ? $_->[0] : '...'} @{$item[1][2]}];
-         $thisparser->{data}{function}{$function}{arg_names} = 
+         $thisparser->{data}{function}{$function}{arg_names} =
              [map {ref $_ ? $_->[1] : '...'} @{$item[1][2]}];
         }
       | function_declaration
@@ -48,16 +49,16 @@ part:   comment
          $return = 1, last if $thisparser->{data}{done}{$function}++;
          my $dummy = 'arg1';
          push @{$thisparser->{data}{functions}}, $function;
-         $thisparser->{data}{function}{$function}{return_type} = 
+         $thisparser->{data}{function}{$function}{return_type} =
              $item[1][1];
-         $thisparser->{data}{function}{$function}{arg_types} = 
+         $thisparser->{data}{function}{$function}{arg_types} =
              [map {ref $_ ? $_->[0] : '...'} @{$item[1][2]}];
-         $thisparser->{data}{function}{$function}{arg_names} = 
+         $thisparser->{data}{function}{$function}{arg_names} =
              [map {ref $_ ? ($_->[1] || $dummy++) : '...'} @{$item[1][2]}];
         }
       | anything_else
 
-comment:  
+comment:
         m{\s* // [^\n]* \n }x
       | m{\s* /\* (?:[^*]+|\*(?!/))* \*/  ([ \t]*)? }x
 
@@ -78,7 +79,7 @@ rtype:  rtype1 | rtype2
 rtype1: modifier(s?) TYPE star(s?)
         {
          $return = $item[2];
-         $return = join ' ',@{$item[1]},$return 
+         $return = join ' ',@{$item[1]},$return
            if @{$item[1]} and $item[1][0] ne 'extern';
          $return .= join '',' ',@{$item[3]} if @{$item[3]};
          return undef unless (defined $thisparser->{data}{typeconv}
@@ -96,7 +97,7 @@ rtype2: modifier(s) star(s?)
 arg:    type IDENTIFIER {[@item[1,2]]}
       | '...'
 
-arg_decl: 
+arg_decl:
         type IDENTIFIER(s?) {[$item[1], $item[2][0] || '']}
       | '...'
 
@@ -119,17 +120,17 @@ type2:  modifier(s) star(s?)
                                                    {valid_types}{$return});
         }
 
-modifier: 
+modifier:
         'unsigned' | 'long' | 'extern' | 'const'
 
 star:   '*'
 
-IDENTIFIER: 
+IDENTIFIER:
         /\w+/
 
 TYPE:   /\w+/
 
-anything_else: 
+anything_else:
         /.*/
 
 END
