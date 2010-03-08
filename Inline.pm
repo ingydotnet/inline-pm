@@ -1,7 +1,7 @@
 package Inline;
 
 use strict;
-require 5.005;
+require 5.006;
 $Inline::VERSION = '0.46_01';
 
 use AutoLoader 'AUTOLOAD';
@@ -68,6 +68,7 @@ my $default_config =
    BUILD_TIMERS => 0,
    WARNINGS => 1,
    _INSTALL_ => 0,
+   _TESTING => 0,
   };
 
 sub UNTAINT {$untaint}
@@ -311,8 +312,11 @@ sub push_overrides {
             next if defined $o->{OVERRIDDEN}{$ilsm . "::$override"};
             $o->{OVERRIDDEN}{$ilsm . "::$override"} =
               \&{$ilsm . "::$override"};
+            {
+            no warnings 'redefine';
             *{$ilsm . "::$override"} =
               \&{$using_module . "::$override"};
+            }
         }
     }
 }
