@@ -4,7 +4,8 @@ Revision history for Perl extension Inline::C.
       - Add sub _parser_test() to C.pm (enables us to check which parser is
         use.
       - Add tests (C/t/09parser.t) to check that the expected parser is being
-        used - makes use of '_TESTING' config option.
+        used - makes use of '_TESTING' config option. (Involves minor changes
+        to lib/Inline/C/ParseRecDescent.pm and lib/Inline/C/ParseRegExp.pm).
 
 0.46_01 Sun 14 Feb 2010
       - Second attempt at accommodating 'ccache cc' compiler (RT ticket 40140)
