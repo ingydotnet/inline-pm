@@ -2,7 +2,15 @@
 
 ---
 version: 0.46_01
-date: not yet released
+date: Mon 8 March 2010
+Inline.pm - add '_TESTING' config option
+          - hide the 'redefined' warning introduced by the fix to ticket 49669,
+            by placing the offending code in a 'no warnings "redefine";' block.
+          - bump require from 5.005 to 5.006
+
+---
+version: 0.46_01
+date: Sun 14 feb 2010
 Inline.pm - add archname and perlversion number to config filename.
 C/C.pm - Second attempt at accommodating 'ccache cc' compiler (RT ticket 40140).
 
@@ -17,7 +25,7 @@ date:    Fri Feb 5 2010
  Changes to Inline.pm, denter.pm, and Inline.pod relating to "fixing" untainting
  (to the extent that untainting of -T inline scripts works as documented).
  Many thanks to Patrick LeBoutillier.
- Also added C/t/08core.t (which contains -T on the shebang line) as a basic test
+ Also added C/t/08taint.t (which contains -T on the shebang line) as a basic test
  of untainting. (RT ticket 13084)
 
 ---
