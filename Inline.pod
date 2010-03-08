@@ -795,6 +795,15 @@ It has been removed from Inline altogether and replaced with a much
 simpler and more powerful mechanism, C<Inline::MakeMaker>. See the
 section below on how to create modules with Inline.
 
+=item _TESTING
+
+C/t/09parser.t (in the Inline::C test suite) sets this option to verify that
+the parser being used is as expected.
+Setting this option with Inline::C will mean that a file named 'parser_id'
+is created in the ./Inline_test directory, creating that directory if it
+doesn't already exist. The 'parser_id' file contains the name(s) of the
+parser(s) being used. That's all this option currently does.
+
 =item TIMERS
 
 Turn on BUILD_TIMERS to get extra diagnostic info about builds.
