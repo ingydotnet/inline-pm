@@ -1,13 +1,19 @@
 Revision history for Perl extension Inline::C.
 
-0.46_01 not yet released
+0.46_01 Mon 8 Mar
+      - Add sub _parser_test() to C.pm (enables us to check which parser is
+        use.
+      - Add tests (C/t/09parser.t) to check that the expected parser is being
+        used - makes use of '_TESTING' config option.
+
+0.46_01 Sun 14 Feb 2010
       - Second attempt at accommodating 'ccache cc' compiler (RT ticket 40140)
 
 0.46 Fri 12 Feb 2010
       - Same as 0.45_02.
 
 0.45_02 Fri 5 Feb 2010
-      - Add C/t/08core.t as part of RT ticket 13084 fix. See top level
+      - Add C/t/08taint.t as part of RT ticket 13084 fix. See top level
         "Changes" file.
 
 0.45_01 Thurs 28 Jan 2010
