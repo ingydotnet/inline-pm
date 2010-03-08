@@ -10,12 +10,13 @@ sub register {
 }
 
 sub get_parser {
+    Inline::C::_parser_test("Inline::C::ParseRegExp::get_parser called\n") if $_[0]->{CONFIG}{_TESTING};
     bless {}, 'Inline::C::ParseRegExp'
 }
 
 sub code {
     my($self,$code) = @_;
-    
+
     # These regular expressions were derived from Regexp::Common v0.01.
     my $RE_comment_C   = q{(?:(?:\/\*)(?:(?:(?!\*\/)[\s\S])*)(?:\*\/))};
     my $RE_comment_Cpp = q{(?:\/\*(?:(?!\*\/)[\s\S])*\*\/|\/\/[^\n]*\n)};
@@ -33,7 +34,7 @@ sub code {
     $code =~ s/^\#.*(\\\n.*)*//mgo;
     #$code =~ s/$RE_quoted/\"\"/go; # Buggy, if included.
     $code =~ s/$RE_balanced_brackets/{ }/go;
-    
+
     $self->{_the_code_most_recently_parsed} = $code; # Simplifies debugging.
 
     my $normalize_type = sub {
@@ -74,7 +75,7 @@ sub code {
     # vertical whitespace.
     my $sp = qr{[ \t]|\n(?![ \t]*\n)};
 
-    my $re_type = qr {( 
+    my $re_type = qr {(
 			(?: \w+ $sp* )+? # words
 			(?: \*  $sp* )*  # stars
 			)}xo;
@@ -98,7 +99,7 @@ sub code {
         goto RESYNC if $self->{data}{done}{$function};
         goto RESYNC if !defined
             $self->{data}{typeconv}{valid_rtypes}{$return_type};
-        
+
         my(@arg_names,@arg_types);
 	my $dummy_name = 'arg1';
 
@@ -116,7 +117,7 @@ sub code {
 		}
 		goto RESYNC if !defined
 		    $self->{data}{typeconv}{valid_types}{$arg_type};
-		
+
 		push(@arg_names,$arg_name);
 		push(@arg_types,$arg_type);
 	    }
@@ -131,7 +132,7 @@ sub code {
 
         # Commit.
         push @{$self->{data}{functions}}, $function;
-        $self->{data}{function}{$function}{return_type}= $return_type; 
+        $self->{data}{function}{$function}{return_type}= $return_type;
         $self->{data}{function}{$function}{arg_names} = [@arg_names];
         $self->{data}{function}{$function}{arg_types} = [@arg_types];
         $self->{data}{done}{$function} = 1;
@@ -141,7 +142,7 @@ sub code {
       RESYNC:  # Skip the rest of the current line, and continue.
         $code =~ /\G[^\n]*\n/gc;
     }
- 
+
    return 1;  # We never fail.
 }
 
