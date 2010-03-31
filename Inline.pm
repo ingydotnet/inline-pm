@@ -729,15 +729,24 @@ sub check_config_file {
 
     croak M62_invalid_config_file(File::Spec->catfile($DIRECTORY, $configuration_file))
       unless $config =~ /^version :/;
-    ($config) = $config =~ /(.*)/s if UNTAINT;
+    if(UNTAINT) {
+      warn "In Inline::check_config_file(): Blindly untainting Inline configuration file information.\n" unless $o->{CONFIG}{NO_UNTAINT_WARN};
+      ($config) = $config =~ /(.*)/s;
+    }
 
     %config = Inline::denter->new()->undent($config);
     $Inline::languages = $config{languages};
 
+    {
+    no warnings ('numeric'); # These warnings were a pain with devel releases.
+                             # If there's a problem with the version number, the
+                             # error message will output $config{version} anyway.
     croak M18_error_old_version($config{version}, $DIRECTORY)
 	unless (defined $config{version} and
                 $config{version} =~ /TRIAL/ or
 		$config{version} >= 0.40);
+    } # numeric warnings re-enabled.
+
     croak M19_usage_language($o->{API}{language_id}, $DIRECTORY)
       unless defined $config{languages}->{$o->{API}{language_id}};
     $o->{API}{language} = $config{languages}->{$o->{API}{language_id}};
@@ -1017,8 +1026,11 @@ sub env_untaint {
     my $o = shift;
     warn "In Inline::env_untaint() : Blindly untainting tainted fields in %ENV.\n" unless $o->{CONFIG}{NO_UNTAINT_WARN};
 
-    for (keys %ENV) {
-	($ENV{$_}) = $ENV{$_} =~ /(.*)/;
+    {
+    no warnings ('uninitialized'); # In case $ENV{$_} is set to undef.
+      for (keys %ENV) {
+	  ($ENV{$_}) = $ENV{$_} =~ /(.*)/;
+      }
     }
 
     $ENV{PATH} = $^O eq 'MSWin32' ?
