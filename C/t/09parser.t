@@ -257,4 +257,4 @@ else {
   print "not ok 1\n";
 }
 
-warn "Failed to unlink C/_Inline_test/parser_id\n" if !unlink('_Inline_test/parser_id');
+Inline::C::_testing_cleanup();
