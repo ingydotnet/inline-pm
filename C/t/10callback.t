@@ -12,6 +12,7 @@ print "1..4\n";
 use Inline C => Config =>
     FORCE_BUILD => 1,
     _TESTING => 1,
+    DIRECTORY => '_Inline_test',
     USING => 'ParseRegExp';
 
 
