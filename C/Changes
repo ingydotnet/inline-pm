@@ -1,6 +1,18 @@
 Revision history for Perl extension Inline::C.
 
-0.46_01 Mon 8 Mar
+0.46_01 Wed 31 Mar 2010
+      - C.pm: local()ise $_ in get_types(). (RT ticket 55607)
+      - C.pm: introduce capability to check that xs_bindings() is
+         working as expected. (Prompted by RT ticket 55543)
+      - C.pm: add _testing_cleanup() to facilitate cleaning up of
+         files created by setting the _TESTING config option
+      - t/08taint.t: Warn the user to expect "Blindly untainting ..."
+         warnings
+      - t/09parser.t: Make use of Inline::C::_testing_cleanup()
+      - add t/10callback.t (mainly in response to RT ticket 55543) and
+         t/11default_readonly.t (in response to RT ticket 55607).
+
+0.46_01 Mon 8 Mar 2010
       - Add sub _parser_test() to C.pm (enables us to check which parser is
         use.
       - Add tests (C/t/09parser.t) to check that the expected parser is being
