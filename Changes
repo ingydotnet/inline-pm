@@ -2,6 +2,16 @@
 
 ---
 version: 0.46_01
+date: Wed 31 March 2010
+Inline.pm - warn about untainting of Inline configuration info (where applicable)
+          - quieten non-numeric warnings in relation to devel releases
+          - quieten uninitialized warning regarding $ENV{WIN64} that can occur
+            in certain circumstances on MS Windows
+Inline.pod - Documentation change relating to introduction of further _TESTING
+             capabilities in Inline::C
+
+---
+version: 0.46_01
 date: Mon 8 March 2010
 Inline.pm - add '_TESTING' config option
           - hide the 'redefined' warning introduced by the fix to ticket 49669,
