@@ -797,12 +797,11 @@ section below on how to create modules with Inline.
 
 =item _TESTING
 
-C/t/09parser.t (in the Inline::C test suite) sets this option to verify that
-the parser being used is as expected.
-Setting this option with Inline::C will mean that a file named 'parser_id'
-is created in the ./Inline_test directory, creating that directory if it
-doesn't already exist. The 'parser_id' file contains the name(s) of the
-parser(s) being used. That's all this option currently does.
+Used internally by C/t/09parser.t and C/t/10callback.t(in the Inline::C test
+suite). Setting this option with Inline::C will mean that files named 'parser_id'
+and 'void_test are created in the ./Inline_test directory, creating that
+directory if it doesn't already exist. The files (but not the ./Inline_test
+directory) are cleaned up by calling Inline::C::_testing_cleanup().
 
 =item TIMERS
 
