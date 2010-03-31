@@ -2,7 +2,7 @@
 
 ---
 version: 0.46_01
-date: Wed 31 March 2010
+date: Wed 31 March 2010 (and released to CPAN as 0.46_01)
 Inline.pm - warn about untainting of Inline configuration info (where applicable)
           - quieten non-numeric warnings in relation to devel releases
           - quieten uninitialized warning regarding $ENV{WIN64} that can occur
