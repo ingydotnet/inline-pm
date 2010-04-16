@@ -1288,8 +1288,11 @@ an Inline C function.
 
     use Inline C;
 
-    c_func_1('This is the first line');
-    c_func_2('This is the second line');
+    for(1..5) {
+       c_func_1('This is the first line');
+       c_func_2('This is the second line');
+       print "\n";
+    }
 
     sub perl_sub_1 {
         print map "$_\n", @_;
@@ -1299,19 +1302,30 @@ an Inline C function.
     __C__
 
     void c_func_2(SV* text) {
-        Inline_Stack_Vars;
-        Inline_Stack_Push(newSVpvf("Plus an extra line"));
-        Inline_Stack_Done;
-        perl_call_pv("main::perl_sub_1", 0);
-        Inline_Stack_Void;
+         dSP;
+
+         ENTER;
+         SAVETMPS;
+
+         XPUSHs(sv_2mortal(newSVpvf("Plus an extra line")));
+         PUTBACK;
+
+         call_pv("perl_sub_1", G_DISCARD);
+
+         FREETMPS;
+         LEAVE;
     }
 
     void c_func_1(SV* text) {
-        c_func_2(text);
+         c_func_2(text);
     }
 
 
 =item Discussion
+
+This demo previously made use of Inline Stack macros only - but that's
+not the correct way to do it. Instead, base the callbacks on the
+perlcall documentation (as we're now doing).
 
 Actually, this program demonstrates calling a C function which calls
 another C function which in turn calls a Perl subroutine.
@@ -1326,9 +1340,12 @@ The first time we call C<c_func_1> which calls C<c_func_2>. The second
 time we call C<c_func_2> directly. C<c_func_2> calls the Perl subroutine
 (C<perl_sub_1>) using the internal C<perl_call_pv> function. It has to
 put arguments on the stack by hand. Since there is already one argument
-on the stack when we enter the function, the C<Inline_Stack_Push> adds a
-second argument. C<Inline_Stack_Void> makes sure that nothing is
-returned from the function.
+on the stack when we enter the function, the C<XPUSHs> ( which is equivalent
+to an C<Inline_Stack_Push> ) adds a second argument.
+
+We iterate through a 'for' loop 5 times just to demonstrate that things
+still work correctly when we do that. (This was where the previous
+rendition, making use solely of Inline Stack macros, fell down.)
 
 =item See Also
 
