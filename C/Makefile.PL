@@ -78,7 +78,7 @@ while (1) {
 if ($answer =~ /^(y|yes)$/i) {
     WriteMakefile(
                   NAME => 'Inline::C',
-                  clean => {FILES => '_Inline_test'},
+                  clean => {FILES => '_Inline_test _Inline_blib_test'},
                  )
 }
 else {
