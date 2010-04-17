@@ -1,6 +1,13 @@
 # Revision history for Perl extension Inline.
 
 ---
+version: 0.46_02
+date: Sat 17 April 2010
+MANIFEST - update to include new test script (C/t/12blib.t).
+Inline.pm - Have '-Mblib' added to the system call in create_config_file(),
+            whenn such is applicable (ie during 'make test').
+
+---
 version: 0.46_01
 date: Wed 31 March 2010 (and released to CPAN as 0.46_01)
 Inline.pm - warn about untainting of Inline configuration info (where applicable)
