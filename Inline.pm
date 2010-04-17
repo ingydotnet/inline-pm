@@ -791,7 +791,31 @@ sub create_config_file {
         my @INC = map { "-I$_" }
        ($inline,
         grep {(-d File::Spec->catdir($_,"Inline") or -d File::Spec->catdir($_,"auto","Inline"))} @INC);
-       system $perl, @INC, "-MInline=_CONFIG_", "-e1", "$dir"
+
+       # Let's try to ensure that the upcoming system() call loads modules from blib (where
+       # applicable) during the running of 'make test'.
+       # This was not always the case wrt Inline::CPP and Inline::Pdlpp (and perhaps others). We're
+       # going to assume that $ENV{HARNESS_ACTIVE} is set && blib is available iff we're running
+       # 'make test'. (The test suite's C/t/12blib.t then tests that this happens as planned.)
+       my @args;
+       if($ENV{HARNESS_ACTIVE}) {
+         require blib;
+         eval{blib->import();};
+         @args = $@ ? ("-MInline=_CONFIG_") : ("-Mblib", "-MInline=_CONFIG_");
+       }
+       else {
+         @args = ("-MInline=_CONFIG_");
+       }
+
+       # This next block should only get executed when running the test suite's C/t/12blib.t
+       if(-f '_Inline_blib_test/blib_test') { # Created by C/t/12blib.t
+         open APP, '>>', '_Inline_blib_test/blib_test'
+           or warn "In Inline::create_config_file(): Can't open blib_test for appending: $!";
+         print APP "@args\n";
+         close APP or warn "In Inline::create_config_file(): Can't close blib_test after appending: $!";
+       }
+
+       system $perl, @INC, @args, "-e1", "$dir"
 	  and croak M20_config_creation_failed($dir);
 	return;
     }
