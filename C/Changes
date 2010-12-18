@@ -1,8 +1,10 @@
 Revision history for Perl extension Inline::C.
+0.46_02 Sat 18 Dec 2010
+      - Makefile.PL: insert 'return 1 if -e $_[0];' at beginning of
+        find_executable() subroutine. (RT ticket 61218)
+
 0.46_02 Sat 17 Apr 2010
       - C-Cookbook.pod: Fix callback example. (RT ticket 56652)
-      - Add t/12blib.t test script
-      - Makefile.PL: Add '_Inline_blib_test' to 'clean' list.
 
 0.46_01 Wed 31 Mar 2010 (and released to CPAN as 0.46_01)
       - C.pm: local()ise $_ in get_types(). (RT ticket 55607)
