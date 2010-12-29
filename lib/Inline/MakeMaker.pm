@@ -1,6 +1,6 @@
 package Inline::MakeMaker;
 
-$VERSION = '0.44';
+$VERSION = '0.45';
 @EXPORT = qw(WriteMakefile WriteInlineMakefile);
 
 use strict;
@@ -17,7 +17,7 @@ sub WriteInlineMakefile {
 #END
     goto &WriteMakefile;
 }
-    
+
 sub WriteMakefile {
     my %args = @_;
     my $name = $args{NAME}
@@ -26,7 +26,7 @@ sub WriteMakefile {
     my $version = '';
 
     croak <<END unless (defined $args{VERSION} or defined $args{VERSION_FROM});
-Inline::MakeMaker::WriteMakefile requires either the VERSION or VERSION_FROM 
+Inline::MakeMaker::WriteMakefile requires either the VERSION or VERSION_FROM
 parameter.
 END
     if (defined $args{VERSION}) {
@@ -42,7 +42,7 @@ Must be of the form '#.##'. (For instance '1.23')
 END
 
     # Provide a convenience rule to clean up Inline's messes
-    $args{clean} = { FILES => "_Inline $object.inl" } 
+    $args{clean} = { FILES => "_Inline $object.inl" }
     unless defined $args{clean};
     # Add Inline to the dependencies
     $args{PREREQ_PM}{Inline} = '0.44' unless defined $args{PREREQ_PM}{Inline};
@@ -57,9 +57,7 @@ END
 
 # --- MakeMaker inline section:
 
-.SUFFIXES: .pm .inl
-
-.pm.inl:
+$object.inl : \$(TO_INST_PM)
 	\$(PERL) -Mblib -MInline=NOISY,_INSTALL_ -M$name -e1 $version \$(INST_ARCHLIB)
 
 pure_all :: $object.inl
