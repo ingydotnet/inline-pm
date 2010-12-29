@@ -1,6 +1,13 @@
 # Revision history for Perl extension Inline.
 
 ---
+version: 0.46_02
+date: Wed 29 December 2010
+lib/Inline/MakeMaker.pm - apply patch from Raymond Mroz to accommodate the modern
+                          h2xs directory structure. Bump Inline::MakeMaker version
+                          to 0.45.
+
+---
 version: 0.46_01
 date: Wed 31 March 2010 (and released to CPAN as 0.46_01)
 Inline.pm - warn about untainting of Inline configuration info (where applicable)
