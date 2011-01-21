@@ -1,6 +1,11 @@
 # Revision history for Perl extension Inline.
 
 ---
+version: 0.47
+date: Fri 21 January 2010
+      Version 0.47 released to CPAN. No changes from 0.46_02
+
+---
 version: 0.46_02
 date: Wed 29 December 2010
 lib/Inline/MakeMaker.pm - apply patch from Raymond Mroz to accommodate the modern
