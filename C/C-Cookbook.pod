@@ -1426,7 +1426,9 @@ Brian Ingerson <INGY@cpan.org>
 
 =head1 COPYRIGHT
 
-Copyright (c) 2001, 2002, Brian Ingerson.
+Copyright (c) 2001, 2002. Brian Ingerson.
+
+Copyright (c) 2008, 2010, 2011. Sisyphus.
 
 All Rights Reserved. This module is free software. It may be
 used, redistributed and/or modified under the terms of the Perl
