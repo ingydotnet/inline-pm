@@ -169,7 +169,9 @@ Brian Ingerson <ingy@ttul.org>
 
 =head1 COPYRIGHT
 
-Copyright (c) 2002. Brian Ingerson. All rights reserved.
+Copyright (c) 2002. Brian Ingerson.
+
+Copyright (c) 2008, 2010, 2011. Sisyphus.
 
 This program is free software; you can redistribute it and/or modify it
 under the same terms as Perl itself.
