@@ -5,11 +5,11 @@ Inline-API - How to bind a programming language to Perl using Inline.pm
 =head1 SYNOPSIS
 
     #!/usr/bin/perl
-    
+
     use Inline Foo;
     say_it('foo');  # Use Foo to print "Hello, Foo"
-    
-    __Foo__ 
+
+    __Foo__
     foo-sub say_it {
         foo-my $foo = foo-shift;
         foo-print "Hello, $foo\n";
@@ -58,7 +58,7 @@ is the entire (working) implementation.
     @Inline::Foo::ISA = qw(Inline);
     require Inline;
     use Carp;
-    
+
     #===========================================================
     # Register Foo as an Inline Language Support Module (ILSM)
     #===========================================================
@@ -70,19 +70,19 @@ is the entire (working) implementation.
             suffix => 'foo',
            };
     }
-    
+
     #===========================================================
     # Error messages
     #===========================================================
-    sub usage_config { 
+    sub usage_config {
         my ($key) = @_;
         "'$key' is not a valid config option for Inline::Foo\n";
     }
-    
-    sub usage_config_bar { 
+
+    sub usage_config_bar {
         "Invalid value for Inline::Foo config option BAR";
     }
-    
+
     #===========================================================
     # Validate the Foo Config Options
     #===========================================================
@@ -105,7 +105,7 @@ is the entire (working) implementation.
         croak usage_config($key);
         }
     }
-    
+
     #===========================================================
     # Parse and compile Foo code
     #===========================================================
@@ -129,7 +129,7 @@ is the entire (working) implementation.
         print FOO_OBJ $code;
         close \*FOO_OBJ;
     }
-    
+
     #===========================================================
     # Only needed for interpreted languages
     #===========================================================
@@ -143,7 +143,7 @@ is the entire (working) implementation.
         eval "package $o->{API}{pkg};\n$code";
         croak "Unable to load Foo module $obj:\n$@" if $@;
     }
-    
+
     #===========================================================
     # Return a small report about the Foo code.
     #===========================================================
@@ -157,7 +157,7 @@ is the entire (working) implementation.
     END
         return $text;
     }
-    
+
     1;
 
 Except for C<load()>, the subroutines in this code are mandatory for an
@@ -208,7 +208,7 @@ will automatically load your ILSM module. It will then call various
 subroutines which you need to supply. We'll call these subroutines
 "callbacks".
 
-You will need to provide the following 5 callback subroutines. 
+You will need to provide the following 5 callback subroutines.
 
 =head2 The register() Callback
 
@@ -406,7 +406,9 @@ Brian Ingerson <INGY@cpan.org>
 
 =head1 COPYRIGHT
 
-Copyright (c) 2000, 2001, 2002. Brian Ingerson. All rights reserved.
+Copyright (c) 2000-2002. Brian Ingerson.
+
+Copyright (c) 2008, 2010, 2011. Sisyphus.
 
 This program is free software; you can redistribute it and/or modify it
 under the same terms as Perl itself.
