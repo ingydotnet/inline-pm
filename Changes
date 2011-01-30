@@ -1,6 +1,12 @@
 # Revision history for Perl extension Inline.
 
 ---
+version: 0.47_01
+date: Sun 30 January 2011
+      Version 0.47_01 released to CPAN.
+      Changes only to Inline::C test suite - see C/Changes.
+
+---
 version: 0.47
 date: Fri 21 January 2011
       Version 0.47 released to CPAN. No changes from 0.46_02
