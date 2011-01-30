@@ -2,9 +2,9 @@ INTRODUCTION:
 
 Inline.pm - Write Perl subroutines in other programming languages.
 
-Inline lets you write Perl subroutines in other programming languages 
-like C, C++, Java, Python, Tcl and even Assembly. You don't need to 
-compile anything. All the details are handled transparently so you 
+Inline lets you write Perl subroutines in other programming languages
+like C, C++, Java, Python, Tcl and even Assembly. You don't need to
+compile anything. All the details are handled transparently so you
 can just run your Perl script like normal.
 
 Example:
@@ -12,12 +12,12 @@ Example:
     use Inline::Files;
     use Inline C;
     print JAxH('Inline'), "\n";
-    
+
     __C__
     SV* JAxH(char* x) {
         return newSVpvf ("Just Another %s Hacker",x);
     }
-    
+
 When run, this complete program prints:
 
     Just Another Inline Hacker
@@ -66,7 +66,7 @@ Inline version 0.41 is a minor release:
 Inline version 0.40 is a major upgrade. It includes:
 + Inline::MakeMaker
   + Rock solid support for writing CPAN extension modules
-+ Short file names. 
++ Short file names.
   + No more _Inline/lib/auto/Foo_C_3cee729d1d942c6792ca5a741dc21879/Foo_C_3cee729d1d942c6792ca5a741dc21879.so
   + Now it's _Inline/lib/auto/Foo/Foo.so
 + Support for creating binary distributions.
@@ -111,7 +111,7 @@ Inline version 0.31 is a minor upgrade with the following changes:
 Inline version 0.30 is a major upgrade from previous verions. It includes:
 
 + Integrated support for typemap files in C.
-  + All the recognized types now come *only* from typemaps. 
+  + All the recognized types now come *only* from typemaps.
   + The default types come from the default typemap installed with core Perl.
   + Typemaps are used to modify the Parse::RecDescent grammar for parsing C.
   + This means you can easily use your existing typemaps.
@@ -119,11 +119,11 @@ Inline version 0.30 is a major upgrade from previous verions. It includes:
   + Beta supoort for C (Inline::C, included)
   + Alpha support for C++ (Inline::CPP, available separately)
   + Alpha support for Python (Inline::Python, available separately)
-  + Support for 'embedding' Perl in C with my new programming language, CPR. 
+  + Support for 'embedding' Perl in C with my new programming language, CPR.
     (Inline::CPR, available separately) This one may warp your mind :^)
   + Simple API for adding your own language support.
     + Write your own Inline::Foo
-    + Write your own implementation of Inline::C, or just modify 
+    + Write your own implementation of Inline::C, or just modify
       Inline::C::grammar.
   + Support for interpreted languages in addition to compiled ones.
 + Autodetection of new Inline language modules.
@@ -148,7 +148,7 @@ Other features of Inline.pm include:
 
 = Automatically compiles your source code and caches the shared object.
 = Automatically DynaLoads the shared object and binds it to Perl.
-= Recompiles only when the C code changes. 
+= Recompiles only when the C code changes.
 = Changing the Perl code will not cause a recompile of the C code.
 = Support for writing extension modules, suitable for distributing to the CPAN.
 = Support for generating and binding Inline subs at run time. <bind()>
@@ -159,7 +159,7 @@ INSTALLATION:
 
 This module requires the Digest::MD5 and Parse::RecDescent modules. It also
 requires the appropriate C compiler. (Where appropriate means the one referred
-to in your Config.pm) 
+to in your Config.pm)
 
 To install Inline do this:
 
@@ -185,9 +185,10 @@ INFORMATION:
   try http://www.perldoc.com/perl5.6/pod/perlapi.html
 = The Fall 2000 edition of The Perl Journal has an article about Inline
 
-The Inline.pm mailing list is inline@perl.org. Send email to 
+The Inline.pm mailing list is inline@perl.org. Send email to
 inline-subscribe@perl.org to subscribe.
 
 Please send questions and comments to "Brian Ingerson" <INGY@cpan.org>
 
-Copyright (c) 2001, 2002, Brian Ingerson. All Rights Reserved.  
+Copyright (c) 2000-2002. Brian Ingerson.
+Copyright (c) 2008, 2010, 2011. Sisyphus.
