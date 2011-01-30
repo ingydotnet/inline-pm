@@ -11,7 +11,7 @@ Example:
         return newSVpvf ("Just Another %s Hacker",x);
     }
     END
-    
+
     print JAxH('Inline'), "\n";
 
 When run, this complete program prints:
@@ -23,9 +23,9 @@ INSTALLATION:
 
 This module requires the Inline module with which it is distributed. It also
 requires the appropriate C compiler. (Where appropriate means the one referred
-to in your Config.pm) 
+to in your Config.pm)
 
-Inline::C is packaged with Inline.pm. It is not necessary to install Inline::C to use Inline with some other language, like Java. 
+Inline::C is packaged with Inline.pm. It is not necessary to install Inline::C to use Inline with some other language, like Java.
 
 -------------------------------------------------------------------------------
 INFORMATION:
@@ -37,9 +37,10 @@ INFORMATION:
 = For information about the Perl5 internal C API, see 'perldoc perlapi' or
   try http://www.perldoc.com/perl5.6/pod/perlapi.html
 
-The Inline.pm mailing list is inline@perl.org. 
+The Inline.pm mailing list is inline@perl.org.
 Send email to inline-subscribe@perl.org to subscribe.
 
 Please send questions and comments to "Brian Ingerson" <INGY@cpan.org>
 
-Copyright (c) 2001, 2002, Brian Ingerson. All Rights Reserved.  
+Copyright (c) 2001, 2002. Brian Ingerson.
+Copyright (c) 2008, 2010, 2011. Sisyphus.
