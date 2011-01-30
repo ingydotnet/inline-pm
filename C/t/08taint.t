@@ -1,71 +1,39 @@
 #!perl -T
-use File::Spec;
-use lib (File::Spec->catdir(File::Spec->updir(),'blib','lib'), File::Spec->catdir(File::Spec->curdir(),'blib','lib'));
-use strict;
-use Test;
-use diagnostics;
-use Inline Config =>
-    UNTAINT => 1,
-    DIRECTORY => '_Inline_test';
 
 BEGIN {
-    plan(tests => 5,
-	 todo => [],
-	 onfail => sub {},
-	);
-    warn "Expect a number of \"Blindly untainting ...\" warnings - these are intended.\n";
-}
-use Inline Config =>
-           UNTAINT => 1,
-           DIRECTORY => '_Inline_test';
+  if($] < 5.007) {
+    print "1..1\n";
+    warn "Skipped for perl 5.6.x\n";
+    print "ok 1\n";
+    exit(0);
+  }
+};
+use warnings;
+use strict;
+use Test::More tests => 10;
 
-# test 1 - Check string syntax
-ok(add(3, 7) == 10);
-# test 2 - Check string syntax again
-ok(subtract(3, 7) == -4);
-# test 3 - Check DATA syntax
-ok(multiply(3, 7) == 21);
-# test 4 - Check DATA syntax again
-ok(divide(7, -3) == -2);
+use Test::Warn;
 
-use Inline 'C';
-use Inline C => 'DATA';
-use Inline C => <<'END_OF_C_CODE';
+# Suppress "Set up gcc environment ..." warning.
+# (Affects ActivePerl only.)
+$ENV{ACTIVEPERL_CONFIG_SILENT} = 1;
 
-int add(int x, int y) {
-    return x + y;
-}
+my $w1 = 'Blindly untainting tainted fields in %ENV';
+my $w2 = 'Blindly untainting Inline configuration file information';
+my $w3 = 'Blindly untainting tainted fields in Inline object';
 
-int subtract(int x, int y) {
-    return x - y;
-}
-END_OF_C_CODE
+warnings_like {require_taint_1()} [qr/$w1/, qr/$w2/, qr/$w1/, qr/$w3/], 'warn_test 1';
+warnings_like {require_taint_2()} [qr/$w1/, qr/$w2/, qr/$w1/, qr/$w3/], 'warn_test 2';
+warnings_like {require_taint_3()} [qr/$w1/, qr/$w2/, qr/$w1/, qr/$w3/, qr/$w1/, qr/$w2/, qr/$w1/, qr/$w3/], 'warn_test 3';
 
-Inline->bind(C => <<'END');
-
-int incr(int x) {
-    return x + 1;
-}
-END
-
-# test 5 - Test Inline->bind() syntax
-ok(incr(incr(7)) == 9);
-
-__END__
-
-# unused code or maybe AutoLoader stuff
-sub crap {
-    return 'crap';
+sub require_taint_1 {
+    require './t/08taint_1.p';
 }
 
-__C__
-
-int multiply(int x, int y) {
-    return x * y;
+sub require_taint_2 {
+    require './t/08taint_2.p';
 }
 
-__C__
-
-int divide(int x, int y) {
-    return x / y;
+sub require_taint_3 {
+    require './t/08taint_3.p';
 }
