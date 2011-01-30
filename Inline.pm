@@ -2,7 +2,7 @@ package Inline;
 
 use strict;
 require 5.006;
-$Inline::VERSION = '0.47';
+$Inline::VERSION = '0.47_01';
 
 use AutoLoader 'AUTOLOAD';
 use Inline::denter;
@@ -1024,7 +1024,7 @@ sub with_configs {
 #==============================================================================
 sub env_untaint {
     my $o = shift;
-    warn "In Inline::env_untaint() : Blindly untainting tainted fields in %ENV.\n" unless $o->{CONFIG}{NO_UNTAINT_WARN};
+        warn "In Inline::env_untaint() : Blindly untainting tainted fields in %ENV.\n" unless $o->{CONFIG}{NO_UNTAINT_WARN};
 
     {
     no warnings ('uninitialized'); # In case $ENV{$_} is set to undef.
