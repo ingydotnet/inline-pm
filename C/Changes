@@ -1,9 +1,14 @@
 Revision history for Perl extension Inline::C.
 
+0.47_02 Tues 1 Feb 2011
+     Version 0.47_02 released to CPAN.
+      - Change the Test::Warn dependency from 0.22 to 0.21 and
+        specify it in top-level Makefile.PL instead of in C/Makefile.PL.
+
 0.47_01 Sun 30 January 2011
      Version 0.47_01 released to CPAN.
-      - Use Test::Warn to check and suppress the warnings produced by
-        C/t/08taint.t during 'make test'. (Ticket #54825.)
+      - Use Test::Warn (on perl-5.8 and later) to check and suppress the
+        warnings produced by C/t/08taint.t during 'make test'. (Ticket #54825.)
 
 0.47 Fri 21 January 2011
      Version 0.47 released to CPAN. No changes from 0.46_02
