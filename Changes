@@ -1,6 +1,13 @@
 # Revision history for Perl extension Inline.
 
 ---
+version: 0.47_02
+date: Tues 1 Feb 2011
+      Version 0.47_02 released to CPAN.
+Makefile.PL - Change the Test::Warn dependency from 0.22 to 0.21 and
+              specify it in top-level Makefile.PL instead of in C/Makefile.PL.
+
+---
 version: 0.47_01
 date: Sun 30 January 2011
       Version 0.47_01 released to CPAN.
