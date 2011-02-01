@@ -77,7 +77,6 @@ while (1) {
 
 if ($answer =~ /^(y|yes)$/i) {
     my %h = (NAME => 'Inline::C', clean => {FILES => '_Inline_test'});
-    if($] >= 5.007) {$h{PREREQ_PM} = {'Test::Warn' => 0.22}}
     WriteMakefile(%h);
 }
 else {
