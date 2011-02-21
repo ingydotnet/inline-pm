@@ -1,5 +1,5 @@
 package Inline::C;
-$VERSION = '0.47_02';
+$VERSION = '0.48';
 
 use strict;
 require Inline;
