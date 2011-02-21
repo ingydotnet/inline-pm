@@ -1,6 +1,11 @@
 # Revision history for Perl extension Inline.
 
 ---
+version: 0.48
+date: Mon 21 Feb 2011
+      Version 0.48 released to CPAN. (No changes from 0.47_02.)
+
+---
 version: 0.47_02
 date: Tues 1 Feb 2011
       Version 0.47_02 released to CPAN.
