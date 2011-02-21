@@ -1,5 +1,8 @@
 Revision history for Perl extension Inline::C.
 
+0.48 Mon 21 Feb 2011
+     Version 0.48 released to CPAN. (No changes from 0.47_02.)
+
 0.47_02 Tues 1 Feb 2011
      Version 0.47_02 released to CPAN.
       - Change the Test::Warn dependency from 0.22 to 0.21 and
