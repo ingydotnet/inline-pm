@@ -1,6 +1,11 @@
 # Revision history for Perl extension Inline.
 
 ---
+version 0.48_01
+date: Wed 09 Mar 2011
+      Have t/05files.t provide a reason for skipping the tests.
+
+---
 version: 0.48
 date: Mon 21 Feb 2011
       Version 0.48 released to CPAN. (No changes from 0.47_02.)
