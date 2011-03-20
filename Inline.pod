@@ -715,6 +715,13 @@ C<VERSION> shortcut below.
 Puts Inline into 'REPORTBUG' mode, which is what you want if you desire
 to report a bug.
 
+=head2 REWRITE_CONFIG_FILE
+
+Default is 0, but setting 'REWRITE_CONFIG_FILE => 1' will mean that the
+existing configuration file in the Inline DIRECTORY will be overwritten.
+(This is useful if the existing config file is not up to date as regards
+supported languages.)
+
 =head2 WARNINGS
 
 This option tells Inline whether to print certain warnings. Default is 1.
@@ -799,9 +806,10 @@ section below on how to create modules with Inline.
 
 Used internally by C/t/09parser.t and C/t/10callback.t(in the Inline::C test
 suite). Setting this option with Inline::C will mean that files named 'parser_id'
-and 'void_test are created in the ./Inline_test directory, creating that
+and 'void_test' are created in the ./Inline_test directory, creating that
 directory if it doesn't already exist. The files (but not the ./Inline_test
 directory) are cleaned up by calling Inline::C::_testing_cleanup().
+Also used by t/06rewrite_config.t to trigger a warning.
 
 =item TIMERS
 
