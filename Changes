@@ -2,8 +2,9 @@
 
 ---
 version 0.48_01
-date: Wed 09 Mar 2011
+date:
       Have t/05files.t provide a reason for skipping the tests.
+      Create REWRITE_CONFIG_FILE config option.
 
 ---
 version: 0.48
