@@ -62,6 +62,7 @@ my $default_config =
    REPORTBUG => 0,
    UNTAINT => 0,
    NO_UNTAINT_WARN => 0,
+   REWRITE_CONFIG_FILE => 0,
    SAFEMODE => -1,
    GLOBAL_LOAD => 0,
    BUILD_NOISY => 0,
@@ -717,6 +718,14 @@ sub check_config_file {
     else {
 	$DIRECTORY = $o->{INLINE}{DIRECTORY} =
 	  $o->{CONFIG}{DIRECTORY} || $o->find_temp_dir;
+    }
+
+    if($o->{CONFIG}{REWRITE_CONFIG_FILE}) {
+      if(-e File::Spec->catfile($DIRECTORY, $configuration_file)) {
+        my $unlink = unlink(File::Spec->catfile($DIRECTORY, $configuration_file));
+        if(!$unlink) {warn "Failed to remove config file"}
+        else {warn "config file removed\n" if $o->{CONFIG}{_TESTING}}
+      }
     }
 
     $o->create_config_file($DIRECTORY)
