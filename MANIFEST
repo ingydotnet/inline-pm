@@ -51,4 +51,6 @@ t/02config.t
 t/03errors.t
 t/04create.t
 t/05files.t
+t/06rewrite_config.t
+t/06rewrite_config.p
 t/file
