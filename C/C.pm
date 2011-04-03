@@ -38,12 +38,13 @@ END
 sub validate {
     my $o = shift;
 
+    print STDERR "validate Stage\n" if $o->{CONFIG}{BUILD_NOISY};
     $o->{ILSM} ||= {};
     $o->{ILSM}{XS} ||= {};
     $o->{ILSM}{MAKEFILE} ||= {};
     if (not $o->UNTAINT) {
 	require FindBin;
-	$o->{ILSM}{MAKEFILE}{INC} = "-I$FindBin::Bin";
+	$o->{ILSM}{MAKEFILE}{INC} = "-I\"$FindBin::Bin\"";
     }
     $o->{ILSM}{AUTOWRAP} = 0 if not defined $o->{ILSM}{AUTOWRAP};
     $o->{ILSM}{XSMODE} = 0 if not defined $o->{ILSM}{XSMODE};
@@ -79,8 +80,11 @@ END
 	    $o->add_list($o->{ILSM}{MAKEFILE}, $key, $value, []);
 	    next;
 	}
-	if ($key eq 'INC' or
-	    $key eq 'MYEXTLIB' or
+	if ($key eq 'INC') {
+	    $o->add_string($o->{ILSM}{MAKEFILE}, $key, quote_space($value), '');
+	    next;
+	}
+	if ($key eq 'MYEXTLIB' or
 	    $key eq 'OPTIMIZE' or
 	    $key eq 'CCFLAGS' or
 	    $key eq 'LDDLFLAGS') {
@@ -94,14 +98,14 @@ END
 	      $value = File::Spec->rel2abs($value);
           }
           else {
-          for (my $i = 0; $i < scalar(@$value); $i++) {
+            for (my $i = 0; $i < scalar(@$value); $i++) {
 	      croak "TYPEMAPS file '${$value}[$i]' not found"
 	        unless -f ${$value}[$i];
-            ${$value}[$i] = File::Spec->rel2abs(${$value}[$i]);
+              ${$value}[$i] = File::Spec->rel2abs(${$value}[$i]);
             }
           }
-	    $o->add_list($o->{ILSM}{MAKEFILE}, $key, $value, []);
-	    next;
+	  $o->add_list($o->{ILSM}{MAKEFILE}, $key, $value, []);
+	  next;
 	}
 	if ($key eq 'AUTO_INCLUDE') {
 	    $o->add_text($o->{ILSM}, $key, $value, '');
@@ -338,6 +342,7 @@ sub get_parser {
 sub get_maps {
     my $o = shift;
 
+    print STDERR "get_maps Stage\n" if $o->{CONFIG}{BUILD_NOISY};
     my $typemap = '';
     my $file;
     $file = File::Spec->catfile($Config::Config{installprivlib},"ExtUtils","typemap");
@@ -353,7 +358,9 @@ sub get_maps {
     if (not $o->UNTAINT) {
 	require FindBin;
 	$file = File::Spec->catfile($FindBin::Bin,"typemap");
-	push(@{$o->{ILSM}{MAKEFILE}{TYPEMAPS}}, $file) if -f $file;
+        if ( -f $file ) {
+	   push(@{$o->{ILSM}{MAKEFILE}{TYPEMAPS}}, $file);
+        }
     }
 }
 
@@ -691,8 +698,10 @@ END
 sub write_Makefile_PL {
     my $o = shift;
     $o->{ILSM}{xsubppargs} = '';
+    my $i = 0;
     for (@{$o->{ILSM}{MAKEFILE}{TYPEMAPS}}) {
-	$o->{ILSM}{xsubppargs} .= "-typemap $_ ";
+	$o->{ILSM}{xsubppargs} .= "-typemap \"$_\" ";
+        $o->{ILSM}{MAKEFILE}{TYPEMAPS}->[$i++] = fix_space($_);
     }
 
     my %options = (
@@ -847,13 +856,25 @@ sub fix_make {
 	if (/^(\w+)\s*=\s*\S+.*$/ and
 	    $fix = $fixes{$1}
 	   ) {
-	    print MAKEFILE "$1 = $o->{ILSM}{$fix}\n"
+	    my $fixed = $o->{ILSM}{$fix};
+	    $fixed = fix_space($fixed) if $fix eq 'install_lib';
+	    print MAKEFILE "$1 = $fixed\n";
 	}
 	else {
 	    print MAKEFILE;
 	}
     }
     close MAKEFILE;
+}
+
+sub quote_space {
+    $_[0] = '"'.$_[0].'"' if $_[0] and $_[0] =~ /\s/;
+    $_[0];
+}
+
+sub fix_space {
+    $_[0] =~ s/ /\\ /g if $_[0] =~ / /;
+    $_[0];
 }
 
 #==============================================================================
