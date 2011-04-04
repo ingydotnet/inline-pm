@@ -5,6 +5,7 @@ version 0.48_01
 date:
       Have t/05files.t provide a reason for skipping the tests.
       Create REWRITE_CONFIG_FILE config option.
+      Test::Warn 0.23 needed for perl-5.14. (Older perls need 0.21).
 
 ---
 version: 0.48
