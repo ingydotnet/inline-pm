@@ -1,6 +1,6 @@
 Revision history for Perl extension Inline::C.
 
-0.48_01 Sun 4 Apr 2011
+0.48_01
       - C/C.pm: [cpan #67053] Space in pwd. Patch from Reini Urban to work with
         spaces in the current dir.
 
