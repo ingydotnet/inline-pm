@@ -2,10 +2,12 @@
 
 ---
 version 0.48_01
-date:
-      Have t/05files.t provide a reason for skipping the tests.
-      Create REWRITE_CONFIG_FILE config option.
-      Test::Warn 0.23 needed for perl-5.14. (Older perls need 0.21).
+date: Mon 11 Apr 2011
+      Version 0.48_01 released to CPAN
+      t/05files.t - Have t/05files.t provide a reason for skipping the tests.
+      Inline.pm - Create REWRITE_CONFIG_FILE config option.
+      Makefile.PL - Test::Warn 0.23 or later needed for perl-5.13 and later.
+                   (Older perls need 0.21 or later).
 
 ---
 version: 0.48
