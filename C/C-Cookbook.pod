@@ -1404,6 +1404,75 @@ If you know such a person, have them drop me a line.
 
 =cut --------------------------------------------------------------------------
 
+=head2 Accessing Fortran subs using Inline::C
+
+=over 4
+
+=item Problem
+
+I've been given a neat little sub written in fortran that takes, as its
+args, two integers and returns their product. And I would like to use
+that sub as is from Inline::C. By way of example, let's say that the
+fortran source file is named 'prod.f', and that it looks like this:
+
+      integer function sqarea(r,s)
+      integer r, s
+      sqarea = r*s
+      return
+      end
+
+=item Solution
+
+We can't access that code directly, but we can compile it into a
+library which we *can* then access from Inline::C.
+Using gcc we could run:
+
+  gfortran -c prod.f -o prod.o
+  ar cru libprod.a prod.o
+
+The function is then accessible as follows:
+
+  use warnings;
+
+  use Inline C => Config =>
+    LIBS =>
+     '-L/full/path/to/libprod_location -lprod -lgfortran';
+
+  use Inline C => <<'  EOC';
+
+  int wrap_sqarea(int a, int b) {
+      return sqarea_(&a, &b);
+  }
+
+  EOC
+
+  $x = 15;
+  $y = $x + 3;
+  $ret = wrap_sqarea($x, $y);
+  print "Product of $x and $y is $ret\n";
+
+=item Discussion
+
+Note firstly that, although the function is specified as 'sqarea'
+in the source file, gfortran appends an underscore to the name when
+the source is compiled. (I don't know if *all* fortran compilers do
+this.) Therefore Inline::C needs to call the function as 'sqarea_'.
+
+Secondly, because fortran subs pass args by reference, we need to
+pass the *addresses* of the two integer args to sqarea() when we call
+it from our Inline::C sub.
+
+If using g77 instead of gfortran, the only necessary change is that
+we specify '-lg2c' instead of '-lgfortran' in our 'LIBS' setting.
+
+=item See Also
+
+=item Credits
+
+=back
+
+=cut --------------------------------------------------------------------------
+
 =head1 SEE ALSO
 
 For generic information about Inline, see L<Inline>.
