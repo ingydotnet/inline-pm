@@ -1,5 +1,8 @@
 Revision history for Perl extension Inline::C.
 
+0.48_02 Thurs 25 Aug 2011
+     Add example for accessing fortran code to C-Cookbook.
+
 0.48_01 Mon 11 Apr 2011
       Version 0.48_01 released to CPAN.
       - C/C.pm: [cpan #67053] Space in pwd. Patch from Reini Urban to work with
