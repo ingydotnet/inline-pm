@@ -1,4 +1,8 @@
 Revision history for Perl extension Inline::C.
+0.48_02 Fri 9 Sep 2011
+     - Bump Inline::C version to 0.48_02
+     - Make a correction and provide some elaboration in the 'Discussion'
+       relating to 'Object Oriented Inline' in C-Cookbook.pod.
 
 0.48_02 Thurs 25 Aug 2011
      Add example for accessing fortran code to C-Cookbook.
