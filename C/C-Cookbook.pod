@@ -643,8 +643,14 @@ blessed scalar. The scalar contains a readonly integer which is a C
 pointer to a Soldier struct. This is our object.
 
 The C<new()> function needs to malloc the memory for the struct and then
-copy the initial values into it using C<strdup()>. This also allocates
+copy the initial values into it using C<savepv()>. This also allocates
 more memory (which we have to keep track of).
+
+Note that C<newSVrv()> doesn't create a reference, but returns a new SV
+('obj') and makes 'obj_ref' a reference to it. Ultimately, 'obj_ref'
+(which is the SV that C<new()> returns) holds a reference to the blessed
+scalar in 'obj', which in turn contains an integer that corresponds to
+the memory address of the C object.
 
 The accessor methods are pretty straightforward. They return the current
 value of their attribute.
