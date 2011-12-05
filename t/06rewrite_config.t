@@ -17,7 +17,7 @@ use Test::Warn;
 # (Affects ActivePerl only.)
 $ENV{ACTIVEPERL_CONFIG_SILENT} = 1;
 
-my $w = 'config file removed';
+my $w = 'config file removal successful';
 
 warnings_like {require_rewrite()} [qr/$w/], 'warn_test';
 
