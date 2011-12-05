@@ -723,27 +723,39 @@ sub check_config_file {
     if($o->{CONFIG}{REWRITE_CONFIG_FILE}) {
       if(-e File::Spec->catfile($DIRECTORY, $configuration_file)) {
         my $unlink = unlink(File::Spec->catfile($DIRECTORY, $configuration_file));
-        if(!$unlink) {warn "Failed to remove config file"}
-        else {warn "config file removed\n" if $o->{CONFIG}{_TESTING}}
+        if(!$unlink) {warn "REWRITE_CONFIG_FILE is set, but removal of config file failed"}
+        else {warn "config file removal successful\n" if $o->{CONFIG}{_TESTING}}
       }
     }
 
-    $o->create_config_file($DIRECTORY)
-      if not -e File::Spec->catfile($DIRECTORY, $configuration_file);
+       my $load_cfg = sub {
+           $o->create_config_file($DIRECTORY)
+             if not -e File::Spec->catfile($DIRECTORY, $configuration_file);
 
-    open CONFIG, "< ".File::Spec->catfile($DIRECTORY, $configuration_file)
-      or croak M17_config_open_failed($DIRECTORY);
-    my $config = join '', <CONFIG>;
-    close CONFIG;
+           open CONFIG, "< ".File::Spec->catfile($DIRECTORY,$configuration_file)
+             or croak M17_config_open_failed($DIRECTORY);
+           my $config = join '', <CONFIG>;
+           close CONFIG;
 
-    croak M62_invalid_config_file(File::Spec->catfile($DIRECTORY, $configuration_file))
-      unless $config =~ /^version :/;
-    if(UNTAINT) {
-      warn "In Inline::check_config_file(): Blindly untainting Inline configuration file information.\n" unless $o->{CONFIG}{NO_UNTAINT_WARN};
-      ($config) = $config =~ /(.*)/s;
-    }
+           croak M62_invalid_config_file(File::Spec->catfile($DIRECTORY,$configuration_file))
+             unless $config =~ /^version :/;
+           if(UNTAINT) {
+             warn "In Inline::check_config_file(): Blindly untainting Inline configuration file information.\n"
+               unless $o->{CONFIG}{NO_UNTAINT_WARN};
+             ($config) = $config =~ /(.*)/s;
+           }
 
-    %config = Inline::denter->new()->undent($config);
+           %config = Inline::denter->new()->undent($config);
+       } ;
+
+       $load_cfg->() ;
+       if (! defined $config{languages}->{$o->{API}{language_id}}){
+        my $unlink = unlink(File::Spec->catfile($DIRECTORY, $configuration_file));
+        if(!$unlink) {warn "Failed to remove config file"}
+        else {warn "config file removed\n" if $o->{CONFIG}{_TESTING}}
+               $load_cfg->() ;
+       }
+
     $Inline::languages = $config{languages};
 
     {
