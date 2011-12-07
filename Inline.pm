@@ -2,7 +2,7 @@ package Inline;
 
 use strict;
 require 5.006;
-$Inline::VERSION = '0.48_02';
+$Inline::VERSION = '0.49';
 
 use AutoLoader 'AUTOLOAD';
 use Inline::denter;
@@ -1591,6 +1591,8 @@ If you have installed a support module for this language, try deleting the
 config-${Config::Config{'archname'}}-$] file from the following Inline DIRECTORY, and run again:
 
     $directory
+
+(And if that works, please file a bug report.)
 
 END
 }
