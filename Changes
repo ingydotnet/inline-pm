@@ -1,5 +1,11 @@
 # Revision history for Perl extension Inline.
 ---
+version 0.49
+date: Thurs 8 Dec 2011
+      Version 0.49 released to CPAN
+      Inline.pm - small alteration to M19_usage_language error message
+
+---
 version 0.48_02
 date: Mon 5 Dec 2011
       Version 0.48_02 released to CPAN
