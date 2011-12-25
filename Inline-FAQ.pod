@@ -1,4 +1,4 @@
-=head1 NAME 
+=head1 NAME
 
 Inline-FAQ - The Inline FAQ
 
@@ -47,13 +47,23 @@ Inline extension (Inline based module) with 0.40:
     2) Test it using the normal/local _Inline/ cache.
     3) Create a Makefile.PL (like the one produced by h2xs)
     4) Change 'use ExtUtils::MakeMaker' to 'use Inline::MakeMaker'
-    5) Change your 'use Inline C => DATA' to 'use Inline C => DATA => NAME
+    5) In the Makefile.PL's WriteMakefile() insert:
+
+        CONFIGURE_REQUIRES  =>  {
+            'Inline::MakeMaker'     => 0.45,
+            'ExtUtils::MakeMaker'   => 6.52,
+        },
+
+       (See the "Writing Modules with Inline" section of Inline.pod for
+        an explanation/elaboration.)
+
+    6) Change your 'use Inline C => DATA' to 'use Inline C => DATA => NAME
        => Foo => VERSION => 1.23'
-    6) Make sure NAME matches your package name ('Foo'), or begins with
+    7) Make sure NAME matches your package name ('Foo'), or begins with
        'Foo::'.
-    7) Make sure VERSION matches $Foo::VERSION. This must be a string (not a
+    8) Make sure VERSION matches $Foo::VERSION. This must be a string (not a
        number) matching /^\d\.\d\d$/
-    8) Do the perl/make/test/install dance (thanks binkley :)
+    9) Do the perl/make/test/install dance (thanks binkley :)
 
 With Inline 0.41 (or thereabouts) you can skip steps 3 & 4, and just
 say 'perl -MInline=INSTALL ./Foo.pm'. This will work for non-Inline
@@ -97,7 +107,7 @@ lot) easier.
     @Math::Simple::ISA = qw(Exporter);
     @Math::Simple::EXPORT = qw(add subtract);
     $Math::Simple::VERSION = '1.23';
-    
+
     use Inline (C => 'src/Simple.c' =>
                 NAME => 'Math::Simple',
                 VERSION => '1.23',
@@ -108,7 +118,7 @@ lot) easier.
     int add (int x, int y) {
         return x + y;
     }
-    
+
     int subtract (int x, int y) {
         return x - y;
     }
@@ -117,7 +127,7 @@ lot) easier.
 So now you have the Perl in one file and the C in the other. The C code
 must be in a subdirectory.
 
-3) 
+3)
 Note that I also changed the term 'DATA' to the name of the C file. This
 will work just as if the C were still inline.
 
@@ -127,13 +137,13 @@ will work just as if the C were still inline.
 
 6) Get the MD5 key from 'blib/arch/auto/Math/Simple/Simple.inl'
 
-7) 
+7)
 Edit 'blib/lib/Math/Simple.pm'. Change 'src/Simple.c' to
 '02c61710cab5b659efc343a9a830aa73' (the MD5 key)
 
 8) Run 'make ppd'
 
-9) 
+9)
 Edit 'Math-Simple.ppd'. Fill in AUTHOR and ABSTRACT if you wish. Then
 change:
 
@@ -148,7 +158,7 @@ to
     tar cvf Math-Simple.tar blib
     gzip --best Math-Simple.tar
 
-11) 
+11)
 Run:
 
     tar cvf Math-Simple-1.23.tar Math-Simple.ppd Math-Simple.tar.gz
@@ -156,7 +166,7 @@ Run:
 
 12) Distribute Math-Simple-1.23.tar.gz with the following instructions:
 
-A) Run: 
+A) Run:
 
     gzip -d Math-Simple-1.23.tar.gz
     tar xvzf Math-Simple-1.23.tar
