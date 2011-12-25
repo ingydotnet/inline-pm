@@ -1,6 +1,6 @@
 package Inline::MakeMaker;
 
-$VERSION = '0.45';
+$VERSION = '0.49_01';
 @EXPORT = qw(WriteMakefile WriteInlineMakefile);
 
 use strict;
