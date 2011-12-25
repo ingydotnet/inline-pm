@@ -62,7 +62,7 @@ The following definitions would not be recognized:
     void Foo(void) {           # void only valid for return type
 
 Notice that Inline only looks for function I<definitions>, not function
-I<prototypes>. Definitions are the syntax directly preceeding a function
+I<prototypes>. Definitions are the syntax directly preceding a function
 body. Also Inline does not scan external files, like headers. Only the
 code passed to Inline is used to create bindings; although other
 libraries can linked in, and called from C-space.
