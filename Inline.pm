@@ -2,7 +2,7 @@ package Inline;
 
 use strict;
 require 5.006;
-$Inline::VERSION = '0.49';
+$Inline::VERSION = '0.49_01';
 
 use AutoLoader 'AUTOLOAD';
 use Inline::denter;
