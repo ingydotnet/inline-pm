@@ -2,7 +2,8 @@
 --- version 0.49_01
 date Sun 25 Dec 2011
       As the result of input from David Oswald:
-      Inline.pod - Changes relating to "CONFIGURE_REQUIRES"
+      Inline.pod - Changes relating to "CONFIGURE_REQUIRES" and fix
+                   typo reported in ticket 73108.
       Inline-FAQ.pod - Changes relating to "CONFIGURE_REQUIRES"
       Inline.pm - Bump version to 0.49_01
       lib/Inline/MakeMaker.pm - Bump version to 0.49_01
