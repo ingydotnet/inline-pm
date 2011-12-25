@@ -1,6 +1,7 @@
 # Revision history for Perl extension Inline.
 --- version 0.49_01
 date Sun 25 Dec 2011
+      As the result of input from David Oswald:
       Inline.pod - Changes relating to "CONFIGURE_REQUIRES"
       Inline-FAQ.pod - Changes relating to "CONFIGURE_REQUIRES"
       Inline.pm - Bump version to 0.49_01
