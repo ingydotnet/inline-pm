@@ -549,7 +549,8 @@ C<Inline::>. It will then call that module's C<register()> method to get
 useful information for future invocations.
 
 Whenever you add a new ILSM, you should delete this file so that Inline
-will auto-discover your newly installed language module.
+will auto-discover your newly installed language module. (This should
+no longer be necessary as of Inline-0.49.)
 
 =head1 Configuration Options
 
@@ -894,6 +895,24 @@ to
 
     use Inline::MakeMaker;
 
+And, in order that the module build work correctly in the cpan shell,
+add the following directive to the Makefile.PL's WriteMakefile():
+
+        CONFIGURE_REQUIRES  =>  {
+            'Inline::MakeMaker'     => 0.45,
+            'ExtUtils::MakeMaker'   => 6.52,
+        },
+
+This "CONFIGURE_REQUIRES" directive ensures that the cpan shell will
+install Inline on the user's machine (if it's not already present)
+before building your Inline-based module.
+Specifying of "ExtUtils::MakeMaker => 6.52," is optional, and can be
+omitted if you like. It ensures only that some harmless warnings relating
+to the "CONFIGURE_REQUIRES" directive won't be emitted during the
+building of the module. It also means, of course, that
+ExtUtils::Makemaker will first be updated on the user's machine unless
+the user already has version 6.52 or later.
+
 When the person installing C<Math::Simple> does a "C<make>", the
 generated Makefile will invoke Inline in such a way that the C code will
 be compiled and the executable code will be placed into the C<./blib>
@@ -907,7 +926,9 @@ Now all you need to do is:
     make dist
 
 That will generate the file C<Math-Simple-0.20.tar.gz> which is a
-distributable package. That's all there is to it.
+distributable package. (It will also generate some harmless warnings in
+relation to "CONFIGURE_REQUIRES" unless the version of your
+ExtUtils::MakeMaker is 6.52 or later.) That's all there is to it.
 
 IMPORTANT NOTE:
 Although the above steps will produce a workable module, you still have
