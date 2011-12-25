@@ -917,7 +917,7 @@ When the person installing C<Math::Simple> does a "C<make>", the
 generated Makefile will invoke Inline in such a way that the C code will
 be compiled and the executable code will be placed into the C<./blib>
 directory. Then when a "C<make install>" is done, the module will be
-copied into the appropiate Perl sitelib directory (which is where an
+copied into the appropriate Perl sitelib directory (which is where an
 installed module should go).
 
 Now all you need to do is:
