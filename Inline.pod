@@ -1013,7 +1013,11 @@ that meets one of the following conditions:
     I) Create bin/_Inline/; if possible
 
 Failing that, Inline will croak. This is rare and easily remedied by
-just making a directory that Inline will use;
+just making a directory that Inline will use.
+
+If the PERL_INSTALL_ROOT Environment Variable has been set, you will need
+to make special provision for that if the 'make install' phase of your
+Inline scripts are to succeed.
 
 If the module option is being compiled for permanent installation, then
 Inline will only use C<./_Inline/> to build in, and the
