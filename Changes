@@ -1,5 +1,15 @@
 # Revision history for Perl extension Inline.
 --- version 0.49_01
+date Mon 23 Jan 2012
+      C/t - Make alterations to all of the '.t' files in C/t (except
+            for 00init.t). This is in reponse to ticket 73448, which
+            raised the possibility that Inline may get built with the
+            PERL_INSTALL_ROOT environment variable set.
+      Inline.pod - mention the need to make provision for the
+                   PERL_INSTALL_ROOT environment variable iff it has
+                   been set.
+
+--- version 0.49_01
 date Sun 25 Dec 2011
       As the result of input from David Oswald:
       Inline.pod - Changes relating to "CONFIGURE_REQUIRES" and fix
