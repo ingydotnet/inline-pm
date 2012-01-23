@@ -1,3 +1,9 @@
+BEGIN {
+  if (exists $ENV{PERL_INSTALL_ROOT}) {
+    warn "\nIgnoring \$ENV{PERL_INSTALL_ROOT} in $0\n";
+    delete $ENV{PERL_INSTALL_ROOT};
+  }
+};
 use File::Spec;
 use lib (File::Spec->catdir(File::Spec->updir(),'blib','lib'), File::Spec->catdir(File::Spec->curdir(),'blib','lib'));
 use strict;
@@ -22,7 +28,7 @@ void foo() {
 void foo2() {
      Inline_Stack_Vars;
      int i;
-     
+
      Inline_Stack_Reset;
 
      if(0) printf( "Hello World again\n" ); /* tests balanced quotes bugfix */
@@ -30,7 +36,7 @@ void foo2() {
      for(i = 24; i < 30; ++ i) Inline_Stack_Push(sv_2mortal(newSViv(i)));
 
      Inline_Stack_Done;
-     Inline_Stack_Return(6);     
+     Inline_Stack_Return(6);
 }
 
 EOC
