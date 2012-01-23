@@ -2,6 +2,12 @@
 # are truly void or not. (In response to bug #55543.)
 # This test script plagiarises the perlcall documentation.
 
+BEGIN {
+  if (exists $ENV{PERL_INSTALL_ROOT}) {
+    warn "\nIgnoring \$ENV{PERL_INSTALL_ROOT} in $0\n";
+    delete $ENV{PERL_INSTALL_ROOT};
+  }
+};
 use File::Spec;
 use lib (File::Spec->catdir(File::Spec->updir(),'blib','lib'), File::Spec->catdir(File::Spec->curdir(),'blib','lib'));
 use strict;
