@@ -1,3 +1,9 @@
+BEGIN {
+  if (exists $ENV{PERL_INSTALL_ROOT}) {
+    warn "\nIgnoring \$ENV{PERL_INSTALL_ROOT} in $0\n";
+    delete $ENV{PERL_INSTALL_ROOT};
+  }
+};
 use File::Spec;
 use lib (File::Spec->catdir(File::Spec->updir(),'blib','lib'), File::Spec->catdir(File::Spec->curdir(),'blib','lib'));
 use strict;
@@ -6,12 +12,12 @@ use diagnostics;
 use Inline Config => DIRECTORY => '_Inline_test';
 
 BEGIN {
-    plan(tests => 5, 
+    plan(tests => 5,
 	 todo => [],
 	 onfail => sub {},
 	);
 }
-use Inline Config => 
+use Inline Config =>
            DIRECTORY => '_Inline_test';
 
 # test 1 - Check string syntax
