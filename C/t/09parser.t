@@ -1,3 +1,9 @@
+BEGIN {
+  if (exists $ENV{PERL_INSTALL_ROOT}) {
+    warn "\nIgnoring \$ENV{PERL_INSTALL_ROOT} in $0\n";
+    delete $ENV{PERL_INSTALL_ROOT};
+  }
+};
 use File::Spec;
 use lib (File::Spec->catdir(File::Spec->updir(),'blib','lib'), File::Spec->catdir(File::Spec->curdir(),'blib','lib'));
 use strict;
@@ -196,6 +202,7 @@ else {warn "1a: Got $res\nExpected $prod\n"}
 
 open(RD, '<', '_Inline_test/parser_id') or warn $!;
 my @p = <RD>;
+
 my $lines = 16;
 
 if(scalar(@p) == $lines) {$ok .= 'b'}
