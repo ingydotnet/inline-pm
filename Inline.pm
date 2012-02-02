@@ -804,15 +804,15 @@ sub create_config_file {
         my($v,$d,$f) = File::Spec->splitpath($inline);
         $f = "" if $f eq 'Inline.pm';
         $inline = File::Spec->catpath($v,$d,$f);
-        #my $INC = "-I$inline -I" .
-        #          join(" -I", grep {(-d File::Spec->catdir($_,"Inline") or
-        #                             -d File::Spec->catdir($_,"auto","Inline")
-	  #		            )} @INC);
-	#system "$perl $INC -MInline=_CONFIG_ -e1 $dir"
-        my @INC = map { "-I$_" }
+
+        # P::RD may be in a different PERL5LIB dir to Inline (as happens with cpan smokers).
+        # Therefore we need to grep for it - otherwise, if P::RD *is* in a different PERL5LIB
+        # directory the ensuing rebuilt @INC will not include that directory and attempts to use
+        # Inline::CPP (and perhaps other Inline modules) will fail because P::RD isn't found.
+        my @_inc = map { "-I$_" }
        ($inline,
-        grep {(-d File::Spec->catdir($_,"Inline") or -d File::Spec->catdir($_,"auto","Inline"))} @INC);
-       system $perl, @INC, "-MInline=_CONFIG_", "-e1", "$dir"
+        grep {(-d File::Spec->catdir($_,"Inline") or -d File::Spec->catdir($_,"auto","Inline") or -e File::Spec->catdir($_,"Parse/RecDescent.pm"))} @INC);
+       system $perl, @_inc, "-MInline=_CONFIG_", "-e1", "$dir"
 	  and croak M20_config_creation_failed($dir);
 	return;
     }
