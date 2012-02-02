@@ -1,5 +1,17 @@
 # Revision history for Perl extension Inline.
 --- version 0.49_01
+date Mon 2 Feb 2012
+      Version 0.49_01 released to CPAN.
+	Inline.pm - Rename create_config_file()'s private @INC to @_inc.
+                  (This is just to avoid any confusion that we might be
+                  messing with @INC.)
+                - In creating @_inc, we now additionally grep for the location
+                  of Parse::RecDescent - in case it's in a different PERL5LIB
+                  location to Inline (as generally happens with cpan smokers -
+                  but could happen anywhere).
+                - Update copyright dates throughout.
+
+--- version 0.49_01
 date Mon 23 Jan 2012
       C/t - Make alterations to all of the '.t' files in C/t (except
             for 00init.t). This is in reponse to ticket 73448, which
