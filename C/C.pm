@@ -1,5 +1,6 @@
 package Inline::C;
-$VERSION = '0.49_01';
+$Inline::C::VERSION = '0.49_02';
+$Inline::C::VERSION = eval $Inline::C::VERSION;
 
 use strict;
 require Inline;
