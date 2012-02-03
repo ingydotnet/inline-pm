@@ -1,4 +1,9 @@
 Revision history for Perl extension Inline::MakeMaker.
+---
+version: 0.49_02
+date:    Fri 3 Feb 2012
+  - Bring version numbering into line with recommendations made in
+    http://perldoc.perl.org/perlmodstyle.html#Version-numbering
 
 ---
 version: 0.44
