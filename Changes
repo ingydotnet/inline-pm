@@ -1,6 +1,13 @@
 # Revision history for Perl extension Inline.
+
+--- version 0.49_02
+date Fri 3 Feb 2012
+      Version 0.49_02 released to CPAN
+      Inline.pm - Bring version numbering into line with recommendations made in
+                  http://perldoc.perl.org/perlmodstyle.html#Version-numbering
+
 --- version 0.49_01
-date Mon 2 Feb 2012
+date Thurs 2 Feb 2012
       Version 0.49_01 released to CPAN.
 	Inline.pm - Rename create_config_file()'s private @INC to @_inc.
                   (This is just to avoid any confusion that we might be
