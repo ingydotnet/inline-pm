@@ -1,5 +1,9 @@
 Revision history for Perl extension Inline::C.
 
+0.50 Tues 7 Feb 2012
+      Version 0.50 released to CPAN
+      C.pm - Bump version number to 0.50
+
 0.49_02 Fri 3 Feb 2012
       Version 0.49_02 released to CPAN
       C.pm - Bring version numbering into line with recommendations made in
