@@ -2,7 +2,7 @@ package Inline;
 
 use strict;
 require 5.006;
-$Inline::VERSION = '0.50';
+$Inline::VERSION = '0.50_01';
 $Inline::VERSION = eval $Inline::VERSION;
 
 use AutoLoader 'AUTOLOAD';
@@ -738,8 +738,11 @@ sub check_config_file {
            my $config = join '', <CONFIG>;
            close CONFIG;
 
-           croak M62_invalid_config_file(File::Spec->catfile($DIRECTORY,$configuration_file))
-             unless $config =~ /^version :/;
+           unless($config =~ /^version :/) {
+             warn "\$load_cfg sub: \$config: *${config}*\n";
+             croak M62_invalid_config_file(File::Spec->catfile($DIRECTORY,$configuration_file));
+           }
+
            if(UNTAINT) {
              warn "In Inline::check_config_file(): Blindly untainting Inline configuration file information.\n"
                unless $o->{CONFIG}{NO_UNTAINT_WARN};
