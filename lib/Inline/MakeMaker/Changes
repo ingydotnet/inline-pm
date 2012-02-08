@@ -1,6 +1,11 @@
 Revision history for Perl extension Inline::MakeMaker.
 
 ---
+version: 0.50_01
+date:    Wed 8 Feb 2012
+         Makemaker.pm - Bump version number to 0.50_01
+
+---
 version: 0.50
 date:    Tues 7 Feb 2012
          Version 0.50 released to CPAN
