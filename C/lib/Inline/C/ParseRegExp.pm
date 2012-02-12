@@ -104,22 +104,29 @@ sub code {
 	my $dummy_name = 'arg1';
 
 	foreach my $arg (@arguments) {
-
+          my $arg_no_space = $arg;
+          $arg_no_space =~ s/\s//g;
+          # If $arg_no_space is 'void', there will be no identifier.
 	    if(my($type, $identifier) =
 	       $arg =~ /^\s*$re_type(?:$re_identifier)?\s*$/o)
 	    {
 		my $arg_name = $identifier;
 		my $arg_type = &$normalize_type($type);
 
-		if(!defined $arg_name) {
+		if((!defined $arg_name) && ($arg_no_space ne 'void')) {
 		    goto RESYNC if !$is_decl;
 		    $arg_name = $dummy_name++;
 		}
-		goto RESYNC if !defined
-		    $self->{data}{typeconv}{valid_types}{$arg_type};
+		goto RESYNC if ((!defined
+		    $self->{data}{typeconv}{valid_types}{$arg_type}) && ($arg_no_space ne 'void'));
 
-		push(@arg_names,$arg_name);
-		push(@arg_types,$arg_type);
+            # Push $arg_name onto @arg_names iff it's defined. Otherwise ($arg_no_space
+            # was 'void'), push the empty string onto @arg_names (to avoid uninitialized
+            # warnings emanating from C.pm).
+		defined($arg_name) ? push(@arg_names,$arg_name)
+                               : push(@arg_names, '');
+            if($arg_name) {push(@arg_types,$arg_type)}
+            else {push(@arg_types,'')} # $arg_no_space was 'void' - this push() avoids 'uninitialized' warnings from C.pm
 	    }
 	    elsif($arg =~ /^\s*\.\.\.\s*$/) {
 		push(@arg_names,'...');
@@ -172,7 +179,7 @@ Mitchell N Charity <mcharity@vendian.org>
 
 Copyright (c) 2002. Brian Ingerson.
 
-Copyright (c) 2008, 2010, 2011. Sisyphus.
+Copyright (c) 2008, 2010-2012. Sisyphus.
 
 This program is free software; you can redistribute it and/or modify it
 under the same terms as Perl itself.
