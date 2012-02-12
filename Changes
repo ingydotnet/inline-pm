@@ -1,6 +1,9 @@
 # Revision history for Perl extension Inline.
 
 --- version 0.50_01
+      Version 0.50_01 released to CPAN
+
+--- version 0.50_01
 date Wed 8 Feb 2012
       Inline.pm - Add a warning prior to croaking with M62_invalid_config_file().
                   That way, we'll at least see what $config contains. This is in
