@@ -1,9 +1,13 @@
 Revision history for Perl extension Inline::C.
 
+0.50_02 Tues 14 Feb
+      C.pm - Bump version number to 0.50_02
+
 0.50_01 Sun 12 Feb 2012
       0.50_01 released to CPAN
       lib/Inline/C/ParseRegExp.pm - Accommodate 'void' argument.
       t/14void_arg.t - Test that 'void' arg gets processed as desired.
+      C.pod - Document new standing of 'void' argument.
 
 0.50_01 Wed 8 Feb 2012
       C.pm - Bump version number to 0.50_01
