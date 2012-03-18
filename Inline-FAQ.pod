@@ -195,4 +195,14 @@ just type:
 
     make ppm
 
+=head2 Why does C/t/09parser.t fail on Cygwin ?
+
+It doesn't always fail on Cygwin, but if you find that it produces
+"unable to remap .... to same address as parent" errors during the
+build phase, then it's time for you to run rebaseall.
+
+See http://cygwin.com/faq/faq-nochunks.html#faq.using.fixing-fork-failures
+and, if needed, seek further help from the Cygwin mailing list.
+
+
 =cut
