@@ -1,6 +1,14 @@
 Revision history for Perl extension Inline::C.
 
-0.50_02 Tues 14 Feb
+0.50_02 Sun 18 Mar 2012
+      C.pod - Rewrite CCFLAGS documentation to make it clear that setting
+              it clobbers the existing CCFLAGS (which is $Config{ccflags}).
+              Thanks, BrowserUk.
+      ../Inline-FAQ.pod - Document the C/t/09parser.t test failure that
+                          can occur when Cygwin is in need of 'rebaseall'
+                          - and what to do about it. Thanks, davido.
+
+0.50_02 Tues 14 Feb 2012
       C.pm - Bump version number to 0.50_02
 
 0.50_01 Sun 12 Feb 2012
