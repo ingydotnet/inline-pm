@@ -106,7 +106,12 @@ Specify which compiler to use.
 
 =head2 CCFLAGS
 
-Specify extra compiler flags.
+Specify compiler flags.
+Whatever gets specified here replaces the default $Config{ccflags}.
+Usually, you'll be using this option to add an extra flag without
+wanting to clobber the existing flags:
+
+  CCFLAGS => $Config{ccflags} . " -DEXTRA_DEFINE",
 
 =head2 FILTERS
 
