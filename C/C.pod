@@ -106,12 +106,22 @@ Specify which compiler to use.
 
 =head2 CCFLAGS
 
-Specify compiler flags.
+Specify compiler flags - same as ExtUtils::MakeMaker's CCFLAGS option.
 Whatever gets specified here replaces the default $Config{ccflags}.
-Usually, you'll be using this option to add an extra flag without
-wanting to clobber the existing flags:
+Often, you'll want to add an extra flag or two without
+clobbering the default flags in which case you could
+instead use CCFLAGSEX (see below) or, iff Config.pm has already
+been loaded:
 
-  CCFLAGS => $Config{ccflags} . " -DEXTRA_DEFINE",
+  use Inline C => Config => CCFLAGS => $Config{ccflags} . " -DXTRA -DTOO";
+
+=head2 CCFLAGSEX
+
+Extend compiler flags.
+Sets CCFLAGS to $Config{ccflags} followed by a space, followed by
+the specified value:
+
+  use Inline C => Config => CCFLAGSEX => "-DXTRA -DTOO";
 
 =head2 FILTERS
 
@@ -194,11 +204,22 @@ parameter.
 
     use Inline C => Config => PREFIX => 'ZLIB_';
 
+=head2 PRE_HEAD
+
+Specifies code that will precede the inclusion of all files specified
+in AUTO_INCLUDE (ie EXTERN.h, perl.h, XSUB.h, INLINE.h and anything else
+that might have been added to AUTO_INCLUDE by the user). If the specified
+value identifies a file, the contents of that file will be inserted,
+otherwise the specified value is inserted.
+
+  use Inline C => Config => PRE_HEAD => $code_or_filename;
+
 =head2 TYPEMAPS
 
 Specifies extra typemap files to use. These types will modify the
 behaviour of the C parsing. Corresponds to the MakeMaker parameter.
-Expects a fully qualified path.
+Specify either a fully qualified path or a path relative to the cwd
+(ie relative to what the cwd is at the time the script is loaded).
 
     use Inline C => Config => TYPEMAPS => '/your/path/typemap';
 
