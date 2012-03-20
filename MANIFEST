@@ -24,6 +24,10 @@ C/t/10callback.t
 C/t/11default_readonly.t
 C/t/12taint_old.t
 C/t/14void_arg.t
+C/t/15ccflags.t
+C/t/16ccflagsex.t
+C/t/17prehead.t
+C/t/prehead.in
 C/t/soldier_typemap
 C/t/typemap
 Changes
