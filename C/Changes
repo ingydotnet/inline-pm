@@ -1,5 +1,12 @@
 Revision history for Perl extension Inline::C.
 
+0.50_02 Tues 20 Mar 2012
+      C.pm - Add CCFLAGSEX and PRE_HEAD config options.
+      C.pod - Document CCGLAGSEX and PRE_HEAD.
+      Add new test files t/15ccflags.t, t/16ccflagsex.t, t/17prehead.t
+       and t/prehead.in.
+      ../MANIFEST - Add new files.
+
 0.50_02 Sun 18 Mar 2012
       C.pod - Rewrite CCFLAGS documentation to make it clear that setting
               it clobbers the existing CCFLAGS (which is $Config{ccflags}).
