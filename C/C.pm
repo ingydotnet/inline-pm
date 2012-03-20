@@ -65,6 +65,19 @@ END
 
     while (@_) {
 	my ($key, $value) = (shift, shift);
+      if ($key eq 'PRE_HEAD') {
+         unless( -f $value) {
+           $o->{ILSM}{AUTO_INCLUDE} = $value . "\n" . $o->{ILSM}{AUTO_INCLUDE};
+         }
+         else {
+           my $insert;
+           open RD, '<', $value or die "Couldn't open $value for reading: $!";
+           while(<RD>) {$insert .= $_}
+           close RD or die "Couldn't close $value after reading: $!";
+           $o->{ILSM}{AUTO_INCLUDE} = $insert . "\n" . $o->{ILSM}{AUTO_INCLUDE};
+         }
+         next;
+      }
 	if ($key eq 'MAKE' or
 	    $key eq 'AUTOWRAP' or
             $key eq 'XSMODE'
@@ -92,6 +105,10 @@ END
 	    $o->add_string($o->{ILSM}{MAKEFILE}, $key, $value, '');
 	    next;
 	}
+      if ($key eq 'CCFLAGSEX') {
+	    $o->add_string($o->{ILSM}{MAKEFILE}, 'CCFLAGS', $Config{ccflags} . ' ' . $value, '');
+          next;
+      }
 	if ($key eq 'TYPEMAPS') {
           unless(ref($value) eq 'ARRAY') {
 	      croak "TYPEMAPS file '$value' not found"
