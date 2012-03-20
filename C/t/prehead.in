@@ -1,0 +1,5 @@
+#ifndef EXTRA_DEFINE
+#define EXTRA_DEFINE 1234
+#else
+#define SOMETHING_ELSE 1234
+#endif
