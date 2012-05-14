@@ -1,6 +1,13 @@
 # Revision history for Perl extension Inline.
 
 --- version 0.50_02
+date Mon 14 May 2012
+      Inline-FAQ.pod - Mention that the behaviour being documented in the
+                       first FAQ can be overridden by either the DIRECTORY
+                       config option or the PERL_INLINE_DIRECTORY
+                       environemnt variable.
+
+--- version 0.50_02
 date Tues 14 Feb 2012
       Inline.pm - Bump version number to 0.50_02
 
