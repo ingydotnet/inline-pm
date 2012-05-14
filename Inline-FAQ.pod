@@ -25,13 +25,15 @@ I probably need to be more emphatic about the roll of _Inline/ cache
 directories. Since they are created automatically, they are completely
 disposable. I delete them all the time. And it is fine to have a
 different one for each project. In fact as long as you don't have
-~/.Inline/ defined, Inline will create a new ./_Inline directory. You
-can move that to ./.Inline and it will continue to work if you want to
-give it more longevity and hide it from view. There is a long
-complicated list of rules about how [_.]Inline/ directories are
+~/.Inline/ defined, Inline will create a new ./_Inline directory (unless,
+you've done something to override this automatic process - such as
+using the DIRECTORY config option, or using the PERL_INLINE_DIRECTORY
+environment variable). You can move that to ./.Inline and it will continue
+to work if you want togive it more longevity and hide it from view. There
+is a long complicated list of rules about how [_.]Inline/ directories are
 used/created. But it was designed to give you the most
 flexibility/ease-of-use. Never be afraid to nuke 'em. They'll just pop
-right back next time. :)
+right back next time they're needed. :)
 
 =head2 Whatever happened to the SITE_INSTALL option?
 
