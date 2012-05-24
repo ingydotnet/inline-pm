@@ -1,6 +1,16 @@
 # Revision history for Perl extension Inline.
 
 --- version 0.50_02
+date Thurs 24 May 2012
+      Version 0.50_02 released to CPAN.
+
+      Makefile.PL - Provide special handling of the Digest::MD5 dependency
+                    For pre-5.8.1 versions of perl.
+      Inline.pm - Replace "$lexwarn" with its actual value of "no warnings;".
+      Inline.pod - Document use of "Inline->init();" for Inline modules.
+      Inline-FAQ.pod - Document use of "Inline->init();" for Inline modules.
+
+--- version 0.50_02
 date Mon 14 May 2012
       Inline-FAQ.pod - Mention that the behaviour being documented in the
                        first FAQ can be overridden by either the DIRECTORY
