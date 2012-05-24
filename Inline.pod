@@ -858,6 +858,9 @@ the options do) Next, modify the C<Simple.pm> file to look like this:
                VERSION => '1.23',
                NAME => 'Math::Simple';
 
+    # The following Inline->init() call is optional - see below for more info.
+    #Inline->init();
+
     1;
 
     __DATA__
@@ -912,6 +915,12 @@ to the "CONFIGURE_REQUIRES" directive won't be emitted during the
 building of the module. It also means, of course, that
 ExtUtils::Makemaker will first be updated on the user's machine unless
 the user already has version 6.52 or later.
+
+If the "Inline->init();" is not done then, having installed Math::Simple,
+a warning that "One or more DATA sections were not processed by Inline"
+will appear when (and only when) Math::Simple is loaded by a "require
+call. It's a harmless warning - and if you're prepared to live with it,
+then there's no need to make the "Inline->init();" call.
 
 When the person installing C<Math::Simple> does a "C<make>", the
 generated Makefile will invoke Inline in such a way that the C code will
@@ -1110,7 +1119,7 @@ Sisyphus <sisyphus@cpan.org> fixed some bugs and is current co-maintainer.
 
 Copyright (c) 2000-2002. Brian Ingerson.
 
-Copyright (c) 2008, 2010, 2011. Sisyphus.
+Copyright (c) 2008, 2010-2012. Sisyphus.
 
 This program is free software; you can redistribute it and/or modify it
 under the same terms as Perl itself.
