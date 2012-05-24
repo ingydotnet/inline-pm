@@ -1,5 +1,8 @@
 Revision history for Perl extension Inline::C.
 
+0.50_02 Thur 24 May 2012
+      Version 0.50_02 released to CPAN.
+
 0.50_02 Tues 20 Mar 2012
       C.pm - Add CCFLAGSEX and PRE_HEAD config options.
       C.pod - Document CCGLAGSEX and PRE_HEAD.
