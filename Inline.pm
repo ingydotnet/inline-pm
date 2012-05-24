@@ -193,12 +193,11 @@ sub bind {
 # Process delayed objects that don't have source code yet.
 #==============================================================================
 # This code is an ugly hack because of the fact that you can't use an
-# INIT block at "run-time proper". So we kill the warning for 5.6+ users
-# and tell them to use a Inline->init() call if they run into problems. (rare)
-my $lexwarn = ($] >= 5.006) ? 'no warnings;' : '';
+# INIT block at "run-time proper". So we kill the warning and tell users
+# to use an Inline->init() call if they run into problems. (rare)
 
 eval <<END;
-$lexwarn
+no warnings;
 \$INIT = \$INIT; # Needed by Sarathy's patch.
 sub INIT {
     \$INIT++;
