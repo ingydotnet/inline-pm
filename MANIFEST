@@ -27,9 +27,13 @@ C/t/14void_arg.t
 C/t/15ccflags.t
 C/t/16ccflagsex.t
 C/t/17prehead.t
+C/t/18quote_space.t
+C/t/19INC.t
 C/t/prehead.in
 C/t/soldier_typemap
 C/t/typemap
+C/t/foo/find_me_in_foo.h
+C/t/bar/find_me_in_bar.h
 Changes
 Inline-API.pod
 Inline-FAQ.pod
