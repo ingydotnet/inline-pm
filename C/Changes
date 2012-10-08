@@ -1,5 +1,11 @@
 Revision history for Perl extension Inline::C.
 
+0.50_03 Mon 8 Oct 2012
+      Fix Reini's patch (#67053). The original version of quote_space()
+      caused a breakage whenever the INC Config argument contained more
+      than one -I switch. (See #80026.)
+      Also, provide tests for this in the test suite.
+
 0.50_02 Thur 24 May 2012
       Version 0.50_02 released to CPAN.
 
