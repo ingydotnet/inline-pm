@@ -1,5 +1,5 @@
 package Inline::C;
-$Inline::C::VERSION = '0.50_02';
+$Inline::C::VERSION = '0.50_03';
 $Inline::C::VERSION = eval $Inline::C::VERSION;
 
 use strict;
@@ -886,8 +886,71 @@ sub fix_make {
 }
 
 sub quote_space {
-    $_[0] = '"'.$_[0].'"' if $_[0] and $_[0] =~ /\s/;
-    $_[0];
+
+  # If $_[0] contains one or more doublequote characters, assume
+  # that whitespace has already been quoted as required. Hence,
+  # do nothing other than immediately return $_[0] as is.
+  # We currently don't properly handle tabs either, so we'll
+  # do the same if $_[0] =~ /\t/.
+  return $_[0] if ($_[0] =~ /"/ || $_[0] =~ /\t/);
+
+  # We want to split on /\s\-I/ not /\-I/
+  my @in = split /\s\-I/, $_[0];
+  my $s = @in - 1;
+  my %s;
+  my %q;
+
+  # First up, let's reinstate the ' ' characters that split
+  # removed
+  for(my $i = 0; $i < $s; $i++) {
+    $in[$i] .= ' ';
+  }
+
+  # This for{} block dies if it finds that any of the ' -I'
+  # occurrences in $_[0] are part of a directory name.
+  for(my $i = 1; $i < $s; $i++) {
+    my $t = $in[$i + 1];
+    while($t =~ /\s$/) {chop $t}
+    die "Found a '", $in[$i], "-I", $t, "' directory.",
+        " INC Config argument is ambiguous.",
+        " Please use doublequotes to signify your intentions"
+      if -d ($in[$i] . "-I" . $t);
+  }
+
+  $s++; # Now the same as scalar(@in)
+
+  # Remove (but also Keep track of the amount of) whitespace
+  # at the end of each element of @in.
+  for(my $i = 0; $i < $s; $i++) {
+    my $count = 0;
+    while($in[$i] =~ /\s$/) {
+      chop $in[$i];
+      $count++;
+    }
+    $s{$i} = $count;
+  }
+
+  # Note which elements of @in still contain whitespace. These
+  # (and only these) elements will be quoted
+  for(my $i = 0; $i < $s; $i++) {
+    $q{$i} = 1 if $in[$i] =~ /\s/;
+  }
+
+  # Reinstate the occurrences of '-I' that were removed by split(),
+  # insert any quotes that are needed, reinstate the whitespace
+  # that was removed earlier, then join() the array back together
+  # again.
+  for(my $i = 0; $i < $s; $i++) {
+    $in[$i] = '-I' . $in[$i] if $i;
+    $in[$i] = '"' . $in[$i] . '"' if $q{$i};
+    $in[$i] .= ' ' x $s{$i};
+  }
+
+  # Note: If there was no whitespace that needed quoting, the
+  # original argument should not have changed in any way.
+
+  my $out = join '', @in;
+  $_[0] = $out;
 }
 
 sub fix_space {
