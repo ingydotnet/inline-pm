@@ -95,15 +95,17 @@ else {
   print "not ok 6\n";
 }
 
+my $have_file_path;
+my $newdir = Cwd::getcwd();
+$newdir .= '/foo -I/';
+
 eval{require File::Path;};
 if($@) {
   warn "\nSkipping remaining tests - couldn't load File::Path\n";
   for(7 .. $t) {print "ok $_\n"}
   exit 0;
 }
-
-my $newdir = Cwd::getcwd();
-$newdir .= '/foo -I/';
+else {$have_file_path = 1}
 
 unless(File::Path::mkpath($newdir)) {
   unless(-d $newdir) {
@@ -126,6 +128,6 @@ else {
 
 
 END {
-  File::Path::remove_tree($newdir);
+  File::Path::rmtree($newdir) if $have_file_path;
   warn "Failed to remove $newdir" if -d $newdir;
 };
