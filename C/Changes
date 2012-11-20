@@ -1,5 +1,9 @@
 Revision history for Perl extension Inline::C.
 
+0.51_02 20 Nov 2012
+      Version-0.51_02 released to CPAN.
+      Makefile.PL - correct typo.
+
 0.51_01 20 Nov 2012
       Version-0.51_01 released to CPAN.
       C.pm - setting $ENV{NO_INSANE_DIRNAMES} turns quote_space() into a no-op.
