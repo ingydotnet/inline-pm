@@ -11,7 +11,7 @@ use Cwd;
 
 require Inline::C;
 
-my $t = 8;
+my $t = 10;
 print "1..$t\n";
 
 my $ok = 1;
@@ -49,6 +49,7 @@ my @t2 =
   '   -I/for-Ian -I/for-Ingy and me    -I/for-some-Idiocy  ',
   'some crap -I-I-I -I/for-Ian -I/for-Ingy    -I/for-some Idiocy  -I/foo -I/bar ',
   '-I/foo  -I/for-Ian and me -I/for -I/an -I/fu bar',
+  ' -I /foo -I /bar',
  );
 
 for my $e2 (@t2) {Inline::C::quote_space($e2)}
@@ -92,8 +93,28 @@ if($t2[5] eq '-I/foo  "-I/for-Ian and me" -I/for -I/an "-I/fu bar"') {print "ok 
 else {
   warn "\n7\nGot:      **$t2[5]**\n",
            "Expected: **-I/foo  \"-I/for-Ian and me\" -I/for -I/an \"-I/fu bar\"**\n";
-  print "not ok 6\n";
+  print "not ok 7\n";
 }
+
+if($t2[6] eq ' "-I/foo" "-I/bar"') {print "ok 8\n"}
+else {
+  warn "\n8\nGot:      **$t2[6]**\n",
+           "Expected: ** \"-I/foo\" \"-I/bar\"**\n";
+  print "not ok 8\n";
+}
+
+$ENV{NO_INSANE_DIRNAMES} = 1;
+
+my $got = Inline::C::quote_space('-I/foo and fu -I/bar');
+
+if($got eq '-I/foo and fu -I/bar') {print "ok 9\n"}
+else {
+  warn "\n9\nGot:      **$got**\n",
+           "Expected: **-I/foo and fu -I/bar**\n";
+  print "not ok 9\n";
+}
+
+delete $ENV{NO_INSANE_DIRNAMES};
 
 my $have_file_path;
 my $newdir = Cwd::getcwd();
@@ -102,7 +123,7 @@ $newdir .= '/foo -I/';
 eval{require File::Path;};
 if($@) {
   warn "\nSkipping remaining tests - couldn't load File::Path\n";
-  for(7 .. $t) {print "ok $_\n"}
+  for(10 .. $t) {print "ok $_\n"}
   exit 0;
 }
 else {$have_file_path = 1}
@@ -110,8 +131,8 @@ else {$have_file_path = 1}
 unless(File::Path::mkpath($newdir)) {
   unless(-d $newdir) {
     warn "\n Skipping remaining tests - couldn't create $newdir directory.\n",
-         "Assuming this platfrom doesn't support spaces in directory names\n";
-    for(7 .. $t) {print "ok $_\n"}
+         "Assuming this platform doesn't support spaces in directory names\n";
+    for(10 .. $t) {print "ok $_\n"}
     exit 0;
   }
 }
@@ -120,10 +141,10 @@ my $stest = " -I/here and there -I$newdir -I/foo -I/bar ";
 
 eval{Inline::C::quote_space($stest);};
 
-if($@ =~ /\/foo \-I\/' directory\./) {print "ok 8\n"}
+if($@ =~ /\/foo \-I\/' directory\./) {print "ok 10\n"}
 else {
   warn "\n\$\@: $@\n";
-  print "not ok 8\n";
+  print "not ok 10\n";
 }
 
 
