@@ -1,5 +1,5 @@
 package Inline::C;
-$Inline::C::VERSION = '0.51';
+$Inline::C::VERSION = '0.51_01';
 $Inline::C::VERSION = eval $Inline::C::VERSION;
 
 use strict;
@@ -887,6 +887,9 @@ sub fix_make {
 
 sub quote_space {
 
+  # Do nothing if $ENV{NO_INSANE_DIRNAMES} is set
+  return $_[0] if $ENV{NO_INSANE_DIRNAMES};
+
   # If $_[0] contains one or more doublequote characters, assume
   # that whitespace has already been quoted as required. Hence,
   # do nothing other than immediately return $_[0] as is.
@@ -950,6 +953,7 @@ sub quote_space {
   # original argument should not have changed in any way.
 
   my $out = join '', @in;
+  $out =~ s/"\-I\s+\//"\-I\//g;
   $_[0] = $out;
 }
 
