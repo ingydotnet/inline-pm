@@ -75,7 +75,7 @@ while (1) {
     last if $answer =~ /^(y|yes|n|no)$/i;
 }
 
-my $prereq_pm = install_base_problem() ? {'ExtUtils::Makemaker' => 6.62}
+my $prereq_pm = install_base_problem() ? {'ExtUtils::MakeMaker' => 6.62}
                                        : {};
 
 if ($answer =~ /^(y|yes)$/i) {
