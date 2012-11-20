@@ -75,8 +75,12 @@ while (1) {
     last if $answer =~ /^(y|yes|n|no)$/i;
 }
 
+my $prereq_pm = install_base_problem() ? {'ExtUtils::Makemaker' => 6.62}
+                                       : {};
+
 if ($answer =~ /^(y|yes)$/i) {
-    my %h = (NAME => 'Inline::C', clean => {FILES => '_Inline_test'});
+    my %h = (NAME => 'Inline::C', clean => {FILES => '_Inline_test'},
+             PREREQ_PM => $prereq_pm);
     WriteMakefile(%h);
 }
 else {
@@ -102,4 +106,19 @@ sub find_executable {
     for my $lib (split $delim, $ENV{PATH}) {
 	return 1 if -f File::Spec->catfile($lib,"$comp$exe");
     }
+}
+
+# Inline::C is known to not build successfully with EU-MM-6.57_05.
+# when INSTALL_BASE is set. (Ticket #81094.)
+sub install_base_problem {
+    return 0 unless $ExtUtils::MakeMaker::VERSION =~ /6\.57/;
+    for my $arg(@ARGV) {
+      if($arg =~ /INSTALL_BASE/) {
+        warn
+          "\n  There are problems with some versions of EU-MM-6.57_x and INSTALL_BASE\n",
+          "  Setting PREREQ_PM to version 6.62 (which is known to be fine.)\n\n";
+        return 1;
+      }
+    }
+    return 0;
 }
