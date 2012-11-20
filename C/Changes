@@ -1,5 +1,16 @@
 Revision history for Perl extension Inline::C.
 
+0.51_01 20 Nov 2012
+      Version-0.51_01 released to CPAN.
+      C.pm - setting $ENV{NO_INSANE_DIRNAMES} turns quote_space() into a no-op.
+             (This is just an undocumented fallback option in case the quote_space()
+             handling  of spaces breaks something for someone who has no need
+             of "space handling" anyway.)
+           - additional tweaks to quote_space sub [Ticket #81172]
+      Makefile.PL - Set EU::MM PREREQ_PM to 6.62, but only if the current
+                    version of EU::MM is 6.57_x, and even then only if
+                    building with INSTALL_BASE. (Ticket #81094).
+
 0.51 Sat 13 Oct 2012
       Version 0.51 released to CPAN.
 
