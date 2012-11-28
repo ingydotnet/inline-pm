@@ -1410,6 +1410,61 @@ If you know such a person, have them drop me a line.
 
 =cut --------------------------------------------------------------------------
 
+=head2 Providing a pure perl alternative
+
+=over 4
+
+=item Problem
+
+I want to write a script that will use a C subroutine if Inline::C is installed,
+but will otherwise use an equivalent pure perl subroutine if Inline::C is not
+already installed.
+How do I do this?
+
+=item Solution
+
+  use strict;
+   use warnings;
+
+  eval {
+   require Inline;
+   Inline->import (C => Config =>
+                   BUILD_NOISY => 1);
+   Inline->import (C =><<'EOC');
+
+   int foo() {
+     warn("Using Inline\n");
+     return 42;
+   }
+
+  EOC
+  };
+
+  if($@) {
+    *foo =\&bar;
+  }
+
+  sub bar {
+    warn("Using Pure Perl Implementation\n");
+    return 42;
+  }
+
+  my $x = foo();
+  print "$x\n";
+
+=item Discussion
+
+If Inline::C is installed and functioning properly, the C sub foo is called
+by the perl code. Otherwise, $@ gets set, and the equivalent pure perl
+function bar is instead called.
+
+Note, too, that the pure perl sub bar can still be explicitly called even
+if Inline::C is available.
+
+=back
+
+=cut --------------------------------------------------------------------------
+
 =head2 Accessing Fortran subs using Inline::C
 
 =over 4
@@ -1470,10 +1525,6 @@ it from our Inline::C sub.
 
 If using g77 instead of gfortran, the only necessary change is that
 we specify '-lg2c' instead of '-lgfortran' in our 'LIBS' setting.
-
-=item See Also
-
-=item Credits
 
 =back
 
