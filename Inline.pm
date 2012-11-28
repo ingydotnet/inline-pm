@@ -2,7 +2,7 @@ package Inline;
 
 use strict;
 require 5.006;
-$Inline::VERSION = '0.51_02';
+$Inline::VERSION = '0.51_03';
 $Inline::VERSION = eval $Inline::VERSION;
 
 use AutoLoader 'AUTOLOAD';
@@ -857,6 +857,7 @@ sub create_config_file {
 
     my $file = File::Spec->catfile($ARGV[0], $configuration_file);
     open CONFIG, "> $file" or croak M24_open_for_output_failed($file);
+    flock(CONFIG, LOCK_EX);
     print CONFIG Inline::denter->new()
       ->indent(*version => $Inline::VERSION,
 	       *languages => \%languages,
@@ -864,6 +865,7 @@ sub create_config_file {
 	       *modules => \%modules,
 	       *suffixes => \%suffixes,
 	      );
+    flock(CONFIG, LOCK_UN);
     close CONFIG;
     exit 0;
 }
