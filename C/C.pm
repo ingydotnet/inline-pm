@@ -1,5 +1,5 @@
 package Inline::C;
-$Inline::C::VERSION = '0.51_02';
+$Inline::C::VERSION = '0.51_03';
 $Inline::C::VERSION = eval $Inline::C::VERSION;
 
 use strict;
@@ -761,10 +761,15 @@ sub compile {
     ($cwd) = $cwd =~ /(.*)/ if $o->UNTAINT;
 
     chdir $build_dir;
-    $o->call('makefile_pl', '"perl Makefile.PL"', 2);
-    $o->call('make', '"make"', 2);
-    $o->call('make_install', '"make install"', 2);
+    # Run these in an eval block, so that we get to chdir back to
+    # $cwd if there's a failure. (Ticket #81375.)
+    eval {
+      $o->call('makefile_pl', '"perl Makefile.PL"', 2);
+      $o->call('make', '"make"', 2);
+      $o->call('make_install', '"make install"', 2);
+    };
     chdir $cwd;
+    die if $@; #Die now that we've done the chdir back to $cwd. (#81375)
     $o->call('cleanup', 'Cleaning Up', 2);
 }
 
@@ -974,7 +979,6 @@ sub _parser_test {
     }
 
     warn $! if !open(TEST_FH, '>>', "$dir/parser_id");
-
     print TEST_FH $_[0];
     warn $! if !close(TEST_FH);
 }
