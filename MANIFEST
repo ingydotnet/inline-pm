@@ -29,6 +29,7 @@ C/t/16ccflagsex.t
 C/t/17prehead.t
 C/t/18quote_space.t
 C/t/19INC.t
+C/t/20eval.t
 C/t/prehead.in
 C/t/soldier_typemap
 C/t/typemap
