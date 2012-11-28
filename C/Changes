@@ -1,6 +1,12 @@
 Revision history for Perl extension Inline::C.
 
-0.51_02 20 Nov 2012
+0.51_03 Wed 28 Nov 2012
+      Version-0.51_03 released to CPAN.
+      C-Cookbook.pod - Add additional example ("Providing a pure perl alternative").
+      C.pm - Change sub compile so that it chdirs back to the original cwd before
+             it dies (if the build fails). (Ticket #81375.)
+
+0.51_02 Tues 20 Nov 2012
       Version-0.51_02 released to CPAN.
       Makefile.PL - correct typo.
 
