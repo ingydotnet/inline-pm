@@ -575,6 +575,8 @@ How do I implement Object Oriented programming in Perl using C objects?
 
     #---------------------------------------------------------
 
+    package Soldier;
+
     use Inline C => <<'END';
 
     typedef struct {
