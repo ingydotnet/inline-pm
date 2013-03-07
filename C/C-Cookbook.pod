@@ -568,9 +568,9 @@ How do I implement Object Oriented programming in Perl using C objects?
     my $obj3 = Soldier->new('Matt', 'Sergeant', 33333);
 
     for my $obj ($obj1, $obj2, $obj3) {
-        print ($obj->get_serial, ") ",
+        print  $obj->get_serial, ") ",
                $obj->get_name, " is a ",
-               $obj->get_rank, "\n");
+               $obj->get_rank, "\n";
     }
 
     #---------------------------------------------------------
@@ -1556,7 +1556,7 @@ Brian Ingerson <INGY@cpan.org>
 
 Copyright (c) 2001, 2002. Brian Ingerson.
 
-Copyright (c) 2008, 2010-2012. Sisyphus.
+Copyright (c) 2008, 2010-2013. Sisyphus.
 
 All Rights Reserved. This module is free software. It may be
 used, redistributed and/or modified under the terms of the Perl
