@@ -1,5 +1,19 @@
 # Revision history for Perl extension Inline.
 
+--- version 0.52_01
+date Thurs 11 Apr 2013
+      Version 0.52_01 released to CPAN
+      Inline.pm - in sub read_DATA() replace:
+                  @{$DATA{$pkg}} = split /(?m)(__\S+?__\n)/, $data
+                  with:
+                  @{$DATA{$pkg}} = split /(?m)\n[ \t]{0,}(__\S+?__\n)/, $data;
+                  Otherwise some non-markers can be treated as markers.
+                  Thanks to Chris Nighswonger and Stefan Seifert.
+                  Added C/t/21read_DATA.t as the test case.
+                  NOTE: This is not a complete fix - it's still possible to
+                        write code (albeit in an unorthodox fashion) such
+                        that a non-marker can be treated as a marker.
+
 --- version 0.52
 date Thurs 07 Mar 2013
       Version 0.52 released to CPAN
