@@ -1,5 +1,8 @@
 Revision history for Perl extension Inline::C.
 
+0.52_01 Thurs 11 Apr 2013
+      Version 0.52_01 released to CPAN
+
 0.52 Thurs 07 Mar 2013
       Version 0.52 released to CPAN.
       C-Cookbook.pod - Change the "Object Oriented Inline" example so that it doesn't
