@@ -2,7 +2,7 @@ package Inline;
 
 use strict;
 require 5.006;
-$Inline::VERSION = '0.52';
+$Inline::VERSION = '0.52_01';
 $Inline::VERSION = eval $Inline::VERSION;
 
 use AutoLoader 'AUTOLOAD';
@@ -351,7 +351,7 @@ sub read_DATA {
 	local ($/);
 	my ($CR, $LF) = (&Socket::CR, &Socket::LF);
 	(my $data = <Inline::DATA>) =~ s/$CR?$LF/\n/g;
-	@{$DATA{$pkg}} = split /(?m)(__\S+?__\n)/, $data;
+	@{$DATA{$pkg}} = split /(?m)\n[ \t]{0,}(__\S+?__\n)/, $data;
 	shift @{$DATA{$pkg}} unless ($ {$DATA{$pkg}}[0] || '') =~ /__\S+?__\n/;
     }
     ($marker, $o->{API}{code}) = splice @{$DATA{$pkg}}, 0, 2;
