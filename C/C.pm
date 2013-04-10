@@ -1,5 +1,5 @@
 package Inline::C;
-$Inline::C::VERSION = '0.52';
+$Inline::C::VERSION = '0.52_01';
 $Inline::C::VERSION = eval $Inline::C::VERSION;
 
 use strict;
