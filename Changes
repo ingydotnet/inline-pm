@@ -6,10 +6,10 @@ date Thurs 11 Apr 2013
       Inline.pm - in sub read_DATA() replace:
                   @{$DATA{$pkg}} = split /(?m)(__\S+?__\n)/, $data
                   with:
-                  @{$DATA{$pkg}} = split /(?m)\n[ \t]{0,}(__\S+?__\n)/, $data;
+                  @{$DATA{$pkg}} = split /(?m)^[ \t]{0,}(__\S+?__\n)/, $data;
                   Otherwise some non-markers can be treated as markers.
                   Thanks to Chris Nighswonger and Stefan Seifert.
-                  Added C/t/21read_DATA.t as the test case.
+                  Added C/t/21read_DATA.t and C/t/22read_DATA_2.t as the test cases.
                   NOTE: This is not a complete fix - it's still possible to
                         write code (albeit in an unorthodox fashion) such
                         that a non-marker can be treated as a marker.
