@@ -31,6 +31,7 @@ C/t/18quote_space.t
 C/t/19INC.t
 C/t/20eval.t
 C/t/21read_DATA.t
+C/t/22read_DATA_2.t
 C/t/prehead.in
 C/t/soldier_typemap
 C/t/typemap
