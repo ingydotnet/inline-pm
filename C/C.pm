@@ -1,5 +1,5 @@
 package Inline::C;
-$Inline::C::VERSION = '0.52_01';
+$Inline::C::VERSION = '0.52_02';
 $Inline::C::VERSION = eval $Inline::C::VERSION;
 
 use strict;
@@ -45,7 +45,7 @@ sub validate {
     $o->{ILSM}{MAKEFILE} ||= {};
     if (not $o->UNTAINT) {
 	require FindBin;
-	$o->{ILSM}{MAKEFILE}{INC} = "-I\"$FindBin::Bin\"";
+	$o->{ILSM}{MAKEFILE}{INC} = "-I\"$FindBin::Bin\"" if not defined $o->{ILSM}{MAKEFILE}{INC};
     }
     $o->{ILSM}{AUTOWRAP} = 0 if not defined $o->{ILSM}{AUTOWRAP};
     $o->{ILSM}{XSMODE} = 0 if not defined $o->{ILSM}{XSMODE};
