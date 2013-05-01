@@ -1,5 +1,9 @@
 Revision history for Perl extension Inline::C.
 
+0.53 Wed 1 May 2013
+      Version 0.53 released to CPAN
+      Add C/t/23validate.t test script.
+
 0.52_02 Wed 24 Apr 2013
       Version 0.52_02 released to CPAN
       C.pm - Small tweak to setting of $o->{ILSM}{MAKEFILE}{INC} in validate() sub.
