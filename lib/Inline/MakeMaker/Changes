@@ -1,6 +1,11 @@
 Revision history for Perl extension Inline::MakeMaker.
 
 ---
+version 0.53
+date     Wed 1 May 2013
+         version 0.53 released to CPAN
+
+---
 version 0.52_02
 date     Wed 24 Apr 2013
          version 0.52_02 released to CPAN
