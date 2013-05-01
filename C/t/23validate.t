@@ -8,12 +8,16 @@ print "1..5\n";
 
 require Inline::C;
 
-my $o1->{FOOBAR}{STUFF} = 1;
+# Next 2 lines are for the benefit of 5.8.8.
+my (%o1, %o2, %o3);
+my($o1, $o2, $o3) = (\%o1, \%o2,\ %o3);
 
-my $o2->{FOOBAR}{STUFF} = 1;
+$o1->{FOOBAR}{STUFF} = 1;
+
+$o2->{FOOBAR}{STUFF} = 1;
 $o2->{ILSM}{MAKEFILE}{INC} = '-I/foo -I/bar';
 
-my $o3->{FOOBAR}{STUFF} = 1;
+$o3->{FOOBAR}{STUFF} = 1;
 
 bless($o1, 'Inline::C');
 bless($o2, 'Inline::C');
