@@ -14,7 +14,7 @@ use Config;
 print "1..1\n";
 
 use Inline C => Config =>
-    BUILD_NOISY => 1,
+    #BUILD_NOISY => 1,
     USING => 'ParseRegExp',
     DIRECTORY => '_Inline_test';
     PREFIX => 'MY_PRE_';
