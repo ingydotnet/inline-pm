@@ -33,6 +33,7 @@ C/t/20eval.t
 C/t/21read_DATA.t
 C/t/22read_DATA_2.t
 C/t/23validate.t
+C/t/24prefix.t
 C/t/prehead.in
 C/t/soldier_typemap
 C/t/typemap
