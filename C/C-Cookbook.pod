@@ -271,8 +271,9 @@ How do I return a list of values from a C function?
 
     #include <time.h>
 
-    void get_localtime(int utc) {
-      struct tm *ltime = localtime(&utc);
+    void get_localtime(SV * utc) {
+      const time_t utc_ = (time_t)SvIV(utc);
+      struct tm *ltime = localtime(&utc_);
       Inline_Stack_Vars;
 
       Inline_Stack_Reset;
