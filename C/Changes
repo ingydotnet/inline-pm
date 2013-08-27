@@ -1,5 +1,12 @@
 Revision history for Perl extension Inline::C.
 
+0.53_01 Tues 27 Aug 2013
+      C/C-Cookbook.pod - Fix "Multiple Return Values" recipe. (Was emitting compiler
+                         warnings; also segfaulted on some platforms.)
+
+0.53_01 Thurs 15 Aug 2013
+      Add C/t/24prefix.t
+
 0.53 Wed 1 May 2013
       Version 0.53 released to CPAN
       Add C/t/23validate.t test script.
