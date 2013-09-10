@@ -16,7 +16,7 @@ print "1..1\n";
 use Inline C => Config =>
     #BUILD_NOISY => 1,
     USING => 'ParseRegExp',
-    DIRECTORY => '_Inline_test';
+    DIRECTORY => '_Inline_test',
     PREFIX => 'MY_PRE_';
 
 use Inline C => << 'EOC';
