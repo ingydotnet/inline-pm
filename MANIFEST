@@ -34,6 +34,12 @@ C/t/21read_DATA.t
 C/t/22read_DATA_2.t
 C/t/23validate.t
 C/t/24prefix.t
+C/t/25proto.t
+C/t/proto1.p
+C/t/proto2.p
+C/t/proto3.p
+C/t/proto4.p
+C/t/proto5.p
 C/t/prehead.in
 C/t/soldier_typemap
 C/t/typemap
