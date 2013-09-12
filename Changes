@@ -1,5 +1,9 @@
 # Revision history for Perl extension Inline.
 
+--- version 0.53_01
+date Thurs 12 Sep 2013
+      Inline.pm - Update version number to 0.53_01
+
 --- version 0.53
 date Wed 1 May 2013
       Version 0.53 released to CPAN
