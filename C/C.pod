@@ -214,6 +214,23 @@ otherwise the specified value is inserted.
 
   use Inline C => Config => PRE_HEAD => $code_or_filename;
 
+=head2 PROTOTYPE
+
+Corresponds to the XS keyword 'PROTOTYPE'. See the perlxs documentation
+for both 'PROTOTYPES' and 'PROTOTYPE'. As an example, the following
+will set the PROTOTYPE of the 'foo' function to '$', and disable
+prototyping for the 'bar' function.
+
+  use Inline C => Config => PROTOTYPE => {foo => '$', bar => 'DISABLE'}
+
+=head2 PROTOTYPES
+
+Corresponds to the XS keyword 'PROTOTYPES'. Can take only values of
+'ENABLE' or 'DISABLE'. (Contrary to XS, default value is 'DISABLE').
+See the perlxs documentation for both 'PROTOTYPES' and 'PROTOTYPE'.
+
+  use Inline C => Config => PROTOTYPES => 'ENABLE';
+
 =head2 TYPEMAPS
 
 Specifies extra typemap files to use. These types will modify the
