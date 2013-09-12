@@ -1,5 +1,9 @@
 Revision history for Perl extension Inline::C.
 
+0.53_01 Thurs 12 Sep 2013
+      C.pm - Add support for PROTOTYPES and PROTOTYPE keywords.
+             Update version to 0.53_01
+
 0.53_01 Tues 27 Aug 2013
       C/C-Cookbook.pod - Fix "Multiple Return Values" recipe. (Was emitting compiler
                          warnings; also segfaulted on some platforms.)
