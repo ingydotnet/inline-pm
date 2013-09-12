@@ -1,5 +1,5 @@
 package Inline::C;
-$Inline::C::VERSION = '0.53';
+$Inline::C::VERSION = '0.53_01';
 $Inline::C::VERSION = eval $Inline::C::VERSION;
 
 use strict;
@@ -191,6 +191,16 @@ END
 	    $o->{STRUCT}{'.any'} = 1;
 	    next;
 	}
+        if($key eq 'PROTOTYPES') {
+          $o->{CONFIG}{PROTOTYPES} = $value;
+          next if $value eq 'ENABLE';
+          next if $value eq 'DISABLE';
+          die "PROTOTYPES can be only either 'ENABLE' or 'DISABLE' - not $value";
+        }
+        if($key eq 'PROTOTYPE') {
+          $o->{CONFIG}{PROTOTYPE} = $value;
+          next;
+        }
 	my $class = ref $o; # handles subclasses correctly.
 	croak "'$key' is not a valid config option for $class\n";
     }
@@ -579,11 +589,15 @@ sub xs_bindings {
     my $prefix = (($o->{ILSM}{XS}{PREFIX}) ?
 		  "PREFIX = $o->{ILSM}{XS}{PREFIX}" :
 		  '');
+
+    my $prototypes = defined($o->{CONFIG}{PROTOTYPES}) ? $o->{CONFIG}{PROTOTYPES}
+                                                       : 'DISABLE';
+
     my $XS = <<END;
 
 MODULE = $module	PACKAGE = $pkg	$prefix
 
-PROTOTYPES: DISABLE
+PROTOTYPES: $prototypes
 
 END
 
@@ -603,10 +617,19 @@ END
 		  join(', ', @arg_names), ")\n");
 
 	for my $arg_name (@arg_names) {
-	    my $arg_type = shift @arg_types;
-	    last if $arg_type eq '...';
-	    $XS .= "\t$arg_type\t$arg_name\n";
+	  my $arg_type = shift @arg_types;
+	  last if $arg_type eq '...';
+	  $XS .= "\t$arg_type\t$arg_name\n";
 	}
+
+        my %h;
+        if (defined($o->{CONFIG}{PROTOTYPE})) {
+           %h = %{$o->{CONFIG}{PROTOTYPE}};
+        }
+
+        if(defined($h{$function})) {
+          $XS .= "  PROTOTYPE: $h{$function}\n";
+        }
 
 	my $listargs = '';
 	$listargs = pop @arg_names if (@arg_names and
