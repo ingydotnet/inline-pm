@@ -198,6 +198,8 @@ END
           die "PROTOTYPES can be only either 'ENABLE' or 'DISABLE' - not $value";
         }
         if($key eq 'PROTOTYPE') {
+          die "PROTOTYPE configure arg must specify a hash reference"
+            unless ref($value) eq 'HASH';
           $o->{CONFIG}{PROTOTYPE} = $value;
           next;
         }
