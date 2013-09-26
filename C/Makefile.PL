@@ -79,7 +79,7 @@ my $prereq_pm = install_base_problem() ? {'ExtUtils::MakeMaker' => 6.62}
                                        : {};
 
 if ($answer =~ /^(y|yes)$/i) {
-    my %h = (NAME => 'Inline::C', clean => {FILES => '_Inline_test'},
+    my %h = (NAME => 'Inline::C', clean => {FILES => '_Inline_test _Inline_test21 _Inline_test22'},
              PREREQ_PM => $prereq_pm);
     WriteMakefile(%h);
 }
