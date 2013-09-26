@@ -20,7 +20,7 @@ else {
 
 $ret = do 't/proto3.p';
 
-if(!defined($ret) && $@ =~ /^Usage: main::foo/) {print "ok 3\n"}
+if(!defined($ret) && $@ =~ /^Usage: PROTO3::foo/) {print "ok 3\n"}
 else {
   warn "\n$ret: $ret\n\$\@: $@\n";
   print "not ok 3\n";
@@ -28,7 +28,7 @@ else {
 
 $ret = do 't/proto4.p';
 
-if(!defined($ret) && $@ =~ /^Usage: main::foo/) {print "ok 4\n"}
+if(!defined($ret) && $@ =~ /^Usage: PROTO4::foo/) {print "ok 4\n"}
 else {
   warn "\n$ret: $ret\n\$\@: $@\n";
   print "not ok 4\n";
