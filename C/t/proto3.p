@@ -1,6 +1,8 @@
 use warnings;
 use strict;
 
+package PROTO3;
+
 use Inline C => Config =>
      DIRECTORY => '_Inline_test',
      #PROTOTYPES => 'ENABLE',
