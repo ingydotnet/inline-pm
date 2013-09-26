@@ -1,5 +1,10 @@
 Revision history for Perl extension Inline::C.
 
+0.53_01 Thurs 26 Sep 2013
+      Have t/21read_DATA.t and t/22read_DATA_2.t use different build directories
+      and modify C/Makefile.PL so that those directories are cleaned up by 'make
+      clean'.
+
 0.53_01 Thurs 12 Sep 2013
       C.pm - Add support for PROTOTYPES and PROTOTYPE keywords.
              Update version to 0.53_01
