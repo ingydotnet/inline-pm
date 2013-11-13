@@ -1,6 +1,12 @@
 # Revision history for Perl extension Inline.
 
 --- version 0.53_01
+date Wed 13 Nov 2013
+     modules/Math/Simple/Simple.pm - spread the declaration of the package name over
+     two lines to prevent the module being picked up by the PAUSE indexer.
+     (Thanks Linda A Walsh.)
+
+--- version 0.53_01
 date Sat 28 Sep 2013
       t/01usages.t - Fix typo.
 
