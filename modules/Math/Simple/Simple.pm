@@ -1,4 +1,5 @@
-package Math::Simple;
+package
+Math::Simple;
 $VERSION = '1.23';
 
 use base 'Exporter';
