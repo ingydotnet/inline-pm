@@ -278,6 +278,7 @@ sub glue {
     if ($o->{INLINE}{ILSM_suffix} ne 'so' and
 	$o->{INLINE}{ILSM_suffix} ne 'dll' and
 	$o->{INLINE}{ILSM_suffix} ne 'bundle' and
+	$o->{INLINE}{ILSM_suffix} ne 'sl' and
 	ref($o) eq 'Inline'
        ) {
 	eval "require $o->{INLINE}{ILSM_module}";
