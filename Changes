@@ -1,6 +1,11 @@
 # Revision history for Perl extension Inline.
 
 --- version 0.53_01
+date Thurs 6 Feb 2014
+     Inline.pm - in sub glue() cater for the possibility that ILSM_suffix might be
+                 'sl' (in addition to the 'so', 'dll', and 'bundle' possibilities).
+
+--- version 0.53_01
 date Wed 13 Nov 2013
      modules/Math/Simple/Simple.pm - spread the declaration of the package name over
      two lines to prevent the module being picked up by the PAUSE indexer.
