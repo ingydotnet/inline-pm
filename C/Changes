@@ -1,5 +1,11 @@
 Revision history for Perl extension Inline::C.
 
+0.53_01 Thurs 20 Feb 2014
+      C-Cookbook.pod - Rewrite Soldier example as per suggestion provided at:
+                       http://www.perlmonks.org/?node_id=924969. Thanks ikegami.
+                       Nothing wrong with the code it replaces - but this
+                       revised rendition is probably more easily understood.
+
 0.53_01 Thurs 26 Sep 2013
       Have t/21read_DATA.t and t/22read_DATA_2.t use different build directories
       and modify C/Makefile.PL so that those directories are cleaned up by 'make
