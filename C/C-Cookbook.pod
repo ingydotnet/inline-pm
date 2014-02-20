@@ -580,6 +580,16 @@ How do I implement Object Oriented programming in Perl using C objects?
 
     use Inline C => <<'END';
 
+    /*
+    Allocate memory with Newx if it's
+    available - if it's an older perl
+    that doesn't have Newx then we
+    resort to using New.
+    */
+    #ifndef Newx
+    #  define Newx(v,n,t) New(0,v,n,t)
+    #endif
+
     typedef struct {
      char* name;
      char* rank;
@@ -593,7 +603,7 @@ How do I implement Object Oriented programming in Perl using C objects?
       SV      * obj;
       SV      * obj_ref;
 
-      New(42, soldier, 1, Soldier);
+      Newx(soldier, 1, Soldier);
       soldier->name = savepv(name);
       soldier->rank = savepv(rank);
       soldier->serial = serial;
