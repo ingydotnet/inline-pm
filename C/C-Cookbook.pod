@@ -581,46 +581,48 @@ How do I implement Object Oriented programming in Perl using C objects?
     use Inline C => <<'END';
 
     typedef struct {
-      char* name;
-      char* rank;
-      long  serial;
-      } Soldier;
+     char* name;
+     char* rank;
+     long  serial;
+     } Soldier;
 
 
 
-    SV* new(char* class, char* name, char* rank, long serial) {
-        Soldier* soldier;
-        SV*      obj_ref = newSViv(0);
-        SV*      obj = newSVrv(obj_ref, class);
+     SV* new(const char * classname, const char * name, const char * rank, long serial) {
+      Soldier * soldier;
+      SV      * obj;
+      SV      * obj_ref;
 
-        New(42, soldier, 1, Soldier);
+      New(42, soldier, 1, Soldier);
+      soldier->name = savepv(name);
+      soldier->rank = savepv(rank);
+      soldier->serial = serial;
 
-        soldier->name = savepv(name);
-        soldier->rank = savepv(rank);
-        soldier->serial = serial;
+      obj = newSViv((IV)soldier);
+      obj_ref = newRV_noinc(obj);
+      sv_bless(obj_ref, gv_stashpv(classname, GV_ADD));
+      SvREADONLY_on(obj);
 
-        sv_setiv(obj, (IV)soldier);
-        SvREADONLY_on(obj);
-        return obj_ref;
+      return obj_ref;
      }
 
      char* get_name(SV* obj) {
-           return ((Soldier*)SvIV(SvRV(obj)))->name;
+       return ((Soldier*)SvIV(SvRV(obj)))->name;
      }
 
      char* get_rank(SV* obj) {
-           return ((Soldier*)SvIV(SvRV(obj)))->rank;
+       return ((Soldier*)SvIV(SvRV(obj)))->rank;
      }
 
      long get_serial(SV* obj) {
-          return ((Soldier*)SvIV(SvRV(obj)))->serial;
+      return ((Soldier*)SvIV(SvRV(obj)))->serial;
      }
 
      void DESTROY(SV* obj) {
-          Soldier* soldier = (Soldier*)SvIV(SvRV(obj));
-          Safefree(soldier->name);
-          Safefree(soldier->rank);
-          Safefree(soldier);
+      Soldier* soldier = (Soldier*)SvIV(SvRV(obj));
+      Safefree(soldier->name);
+      Safefree(soldier->rank);
+      Safefree(soldier);
     }
 
     END
@@ -648,12 +650,6 @@ pointer to a Soldier struct. This is our object.
 The C<new()> function needs to malloc the memory for the struct and then
 copy the initial values into it using C<savepv()>. This also allocates
 more memory (which we have to keep track of).
-
-Note that C<newSVrv()> doesn't create a reference, but returns a new SV
-('obj') and makes 'obj_ref' a reference to it. Ultimately, 'obj_ref'
-(which is the SV that C<new()> returns) holds a reference to the blessed
-scalar in 'obj', which in turn contains an integer that corresponds to
-the memory address of the C object.
 
 The accessor methods are pretty straightforward. They return the current
 value of their attribute.
