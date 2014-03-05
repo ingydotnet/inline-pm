@@ -1064,10 +1064,15 @@ sub env_untaint {
                  join ';', grep {not /^\./ and -d $_
 				  } split /;/, $ENV{PATH}
                  :
-                 join ':', grep {not /^\./ and -d $_ and
-				      not ((stat($_))[2] & 0022)
-				  } split /:/, $ENV{PATH};
+                 join ':', grep {not /^\./ and -d $_ and not -w $_ || -W $_
+                                  } split /:/, $ENV{PATH};
+# Was:
+#                join ':', grep {not /^\./ and -d $_ and
+#		                 not ((stat($_))[2] & 0022)
+#				  } split /:/, $ENV{PATH};
+
     map {($_) = /(.*)/} @INC;
+
 }
 #==============================================================================
 # Blindly untaint tainted fields in Inline object.
