@@ -1,5 +1,9 @@
 Revision history for Perl extension Inline::C.
 
+0.53_01 Thurs 6 Mar 2014
+      Version 0.53_01 released to CPAN
+      t/08taint.t - Skip tests on Android as per Brian Fraser's suggestion (Ticket #65703)
+
 0.53_01 Thurs 20 Feb 2014
       C-Cookbook.pod - Rewrite Soldier example as per suggestion provided at:
                        http://www.perlmonks.org/?node_id=924969. Thanks ikegami.
