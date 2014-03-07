@@ -1,5 +1,9 @@
 Revision history for Perl extension Inline::C.
 
+0.53_02 Fri 7 Mar 2014
+      Update version to 0.53_02
+      Replace 09parser.t with one supplied by H.Merijn Brand
+
 0.53_01 Thurs 6 Mar 2014
       Version 0.53_01 released to CPAN
       t/08taint.t - Skip tests on Android as per Brian Fraser's suggestion (Ticket #65703)
