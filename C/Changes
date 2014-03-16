@@ -1,5 +1,8 @@
 Revision history for Perl extension Inline::C.
 
+0.53_02 Sun 16 Mar 2014
+      Version 0.53_02 released to CPAN
+
 0.53_02 Fri 7 Mar 2014
       Update version to 0.53_02
       Replace 09parser.t with one supplied by H.Merijn Brand
