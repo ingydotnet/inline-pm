@@ -18,7 +18,7 @@ task with Inline. Each example is followed by a short discussion,
 explaining in detail the particular features that are being
 demonstrated.
 
-Many of these recipes are apdapted from email discussions I have had
+Many of these recipes are adapted from email discussions I have had
 with Inline users around the world. It has been my experience so far,
 that Inline provides an elegant solution to almost all problems
 involving Perl and C.
