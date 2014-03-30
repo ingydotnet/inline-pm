@@ -357,7 +357,7 @@ options to each section.
 
 =head2 Configuration Options
 
-Inline trys to do the right thing as often as possible. But
+Inline tries to do the right thing as often as possible. But
 sometimes you may need to override the default actions. This is easy
 to do. Simply list the Inline configuration options after the
 regular Inline parameters. All congiguration options are specified
@@ -647,7 +647,7 @@ platforms. See the C<GLOBAL> shortcut below.
 
 You can use this option whenever you use Perl's C<-T> switch, for taint
 checking. This option tells Inline to blindly untaint all tainted
-variables. (This is generally considerd to be an appallingly insecure
+variables. (This is generally considered to be an appallingly insecure
 thing to do, and not to be recommended - but the option is there for
 you to use if you want. Please consider using something other than
 Inline for scripts that need taint checking.)
@@ -729,7 +729,7 @@ This option tells Inline whether to print certain warnings. Default is 1.
 
 =head1 Inline Configuration Shortcuts
 
-This is a list of all the shorcut configuration options currently
+This is a list of all the shortcut configuration options currently
 available for Inline. Specify them from the command line when running
 Inline scripts.
 
@@ -740,7 +740,7 @@ or
     perl -MInline=Info,force,NoClean inline_script.pl
 
 You can specify multiple shortcuts separated by commas. They are not
-case sensitive. You can also specify shorcuts inside the Inline program
+case sensitive. You can also specify shortcuts inside the Inline program
 like this:
 
     use Inline 'Info', 'Force', 'Noclean';
