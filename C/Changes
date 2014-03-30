@@ -1,5 +1,11 @@
 Revision history for Perl extension Inline::C.
 
+0.54_01 Mon 31 Mar 2014
+     Update version number to 0.54_01
+     C-Cookbook.pod - Correct typo (thanks David Steinbrunner).
+     C.pod - Correct typos (thanks David Steinbrunner).
+     ParseRegExp.pm - Correct typo (thanks David Steinbrunner).
+
 0.54 Sat 29 mar 2014
      Update version number to 0.54
      Release version 0.54 to CPAN
