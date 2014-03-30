@@ -1,6 +1,6 @@
 package Inline::MakeMaker;
 
-$Inline::MakeMaker::VERSION = '0.54';
+$Inline::MakeMaker::VERSION = '0.54_01';
 $Inline::MakeMaker::VERSION = eval $Inline::MakeMaker::VERSION;
 @EXPORT = qw(WriteMakefile WriteInlineMakefile);
 
