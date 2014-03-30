@@ -62,6 +62,16 @@ WriteMakefile(
     VERSION_FROM => 'Inline.pm',
     PREREQ_PM => $prereq_pm,
     clean => {FILES => '_Inline_test _Inline .Inline'},
+    META_MERGE => {
+        'meta-spec' => { version => 2 },
+        resources => {
+            repository => {
+                type => 'git',
+                url => 'https://github.com/ingydotnet/inline-pm.git',
+                web => 'https://github.com/ingydotnet/inline-pm',
+            },
+        },
+    },
 );
 
 if ($^O =~ /Win32/i) {
