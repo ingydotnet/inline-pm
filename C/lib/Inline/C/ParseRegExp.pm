@@ -70,7 +70,7 @@ sub code {
 	(?m: ^ ) \s*
     }xo;
 
-    # Instead of using \s , we dont tolerate blank lines.
+    # Instead of using \s , we don't tolerate blank lines.
     # This matches user expectation better than allowing arbitrary
     # vertical whitespace.
     my $sp = qr{[ \t]|\n(?![ \t]*\n)};
