@@ -1,12 +1,19 @@
 Revision history for Perl extension Inline::C.
 
+0.54_01 Sat 5 Apr 2014
+     C/Makefile.PL - Apply Cygwin-specific fix (PLICEASE@cpan.org). (Ticket #92144)
+     C/Makefile.PL - Add ::Filters to list of know Inline extensions.
+     C.pm - fix make -jn test, parallel tests (Ticket #85336) (rurban)
+     C.pm - disable BUILD_NOISY redirects on MSWin32 with cmd.exe (rurban)
+     C.pm - print exitcode with failed commands and MAKE* ENV values (rurban)
+
 0.54_01 Mon 31 Mar 2014
      Update version number to 0.54_01
      C-Cookbook.pod - Correct typo (thanks David Steinbrunner).
      C.pod - Correct typos (thanks David Steinbrunner).
      ParseRegExp.pm - Correct typo (thanks David Steinbrunner).
 
-0.54 Sat 29 mar 2014
+0.54 Sat 29 Mar 2014
      Update version number to 0.54
      Release version 0.54 to CPAN
 
