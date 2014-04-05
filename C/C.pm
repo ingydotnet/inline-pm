@@ -804,6 +804,7 @@ sub makefile_pl {
     -f ($perl = $Config::Config{perlpath})
       or ($perl = $^X)
       or croak "Can't locate your perl binary";
+    $perl = qq{"$perl"} if $perl =~ m/\s/;
     $o->system_call("$perl Makefile.PL", 'out.Makefile_PL');
     $o->fix_make;
 }
@@ -811,12 +812,18 @@ sub make {
     my ($o) = @_;
     my $make = $o->{ILSM}{MAKE} || $Config::Config{make}
       or croak "Can't locate your make binary";
+    if($ENV{MAKEFLAGS}) { # Avoid uninitialized warnings
+      local $ENV{MAKEFLAGS} = $ENV{MAKEFLAGS} =~ s/(--jobserver-fds=[\d,]+)//;
+    }
     $o->system_call("$make", 'out.make');
 }
 sub make_install {
     my ($o) = @_;
     my $make = $o->{ILSM}{MAKE} || $Config::Config{make}
       or croak "Can't locate your make binary";
+    if($ENV{MAKEFLAGS}) { # Avoid uninitialized warnings
+      local $ENV{MAKEFLAGS} = $ENV{MAKEFLAGS} =~ s/(--jobserver-fds=[\d,]+)//;
+    }
     $o->system_call("$make pure_install", 'out.make_install');
 }
 sub cleanup {
@@ -841,6 +848,7 @@ sub system_call {
       defined $ENV{PERL_INLINE_BUILD_NOISY}
       ? $ENV{PERL_INLINE_BUILD_NOISY}
       : $o->{CONFIG}{BUILD_NOISY};
+    $build_noisy = undef if $build_noisy and $^O eq 'MSWin32' and $Config::Config{sh} =~ /^cmd/;
     if (not $build_noisy) {
         $cmd = "$cmd > $output_file 2>&1";
     }
@@ -861,11 +869,12 @@ sub build_error_message {
         close OUTPUT;
     }
 
-    return $output . <<END;
+    my $errcode = $? >> 8;
+    $output .= <<END;
 
 A problem was encountered while attempting to compile and install your Inline
 $o->{API}{language} code. The command that failed was:
-  $cmd
+  \"$cmd\" with error code $errcode
 
 The build directory was:
 $build_dir
@@ -873,6 +882,12 @@ $build_dir
 To debug the problem, cd to the build directory, and inspect the output files.
 
 END
+   if ($cmd =~ /^make >/) {
+     for (sort keys %ENV) {
+       $output .= "$_ = $ENV{$_}\n" if /^MAKE/;
+     }
+   }
+   return $output;
 }
 
 #==============================================================================
