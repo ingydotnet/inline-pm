@@ -1,6 +1,12 @@
 # Revision history for Perl extension Inline.
 
 --- version 0.54_01
+date Sat 5 Apr 2014
+     Inline.pm - import Fcntl constants for flock (rurban).
+     Inline.pm - flock only on supported platforms, would die on VMS,riscos,VOS (rurban).
+     Makefile.PL - simplify 5.6 PREREQ_PM handling (rurban).
+
+--- version 0.54_01
 date Mon 31 Mar 2014
      Update version nmuyber to 0.54_01
      Makefile.PL - add META_MERGE info (thanks David Steinbrunner).
