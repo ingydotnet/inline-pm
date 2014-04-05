@@ -40,22 +40,14 @@ unless($md5_check) {
 
 my $twv = $] > 5.013 ? 0.23 : 0.21;
 
-my $prereq_pm = $] > 5.007 ?
-                             {
-                              Data::Dumper => 2.09,
-                              Digest::MD5 => 2.09,
-	                        Parse::RecDescent => 1.80,
-                              File::Spec => 0.8,
-                              Test::Warn => $twv,
-                             }
-
-                           :
-                             {
-                              Data::Dumper => 2.09,
-                              Digest::MD5 => 2.09,
-	                        Parse::RecDescent => 1.80,
-                              File::Spec => 0.8,
-                             };
+my $prereq_pm = {
+    Data::Dumper => 2.09,
+    Digest::MD5 => 2.09,
+    Parse::RecDescent => 1.80,
+    File::Spec => 0.8,
+    Test::Warn => $twv,
+};
+delete $prereq_pm->{'Test::Warn'} if $] <= 5.007;
 
 WriteMakefile(
     NAME => 'Inline',
