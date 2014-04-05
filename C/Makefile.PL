@@ -5,6 +5,7 @@ use File::Spec;
 
 my ($cc, $exe) = @Config{'cc', '_exe'};
 $cc =~ s/\s+-.+$//; #remove possible trailing options
+$exe = '' if $^O eq 'cygwin';
 
 my $found = 0;
 my $delim = $Config::Config{path_sep};
@@ -36,8 +37,9 @@ Inline::C is packaged with Inline.pm because it is the most commonly used
 Inline Language Support Module (ILSM).
 
 See also: Inline::ASM, ::Awk, ::BC, ::Basic, ::Befunge, ::CPP (C++), ::CPR,
-          ::Foo, ::Guile, ::Java, ::Octave, ::PERL, ::Python, ::Ruby, ::TT,
-          ::Tcl and ::WebChat.
+          ::Filters, ::Foo, ::Guile, ::Java, ::Octave, ::PERL, ::Python,
+          ::Ruby, ::TT, ::Tcl and ::WebChat.
+
 
 Config.pm indicates that your version of Perl was built with this C compiler:
 
