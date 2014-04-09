@@ -1,5 +1,9 @@
 # Revision history for Perl extension Inline.
 
+---version 0.54_03
+date Wed 9 Apr 2014
+     Released to CPAN. (No changes from 0.54_01.)
+
 --- version 0.54_01
 date Sat 5 Apr 2014
      Inline.pm - import Fcntl constants for flock (rurban).
