@@ -1,5 +1,8 @@
 Revision history for Perl extension Inline::C.
 
+0.54_03 Wed 9 Apr 2014
+     Released to CPAN. (No changes from 0.54_01.)
+
 0.54_01 Sat 5 Apr 2014
      C/Makefile.PL - Apply Cygwin-specific fix (PLICEASE@cpan.org). (Ticket #92144)
      C/Makefile.PL - Add ::Filters to list of know Inline extensions.
