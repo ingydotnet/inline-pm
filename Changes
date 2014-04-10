@@ -1,5 +1,10 @@
 # Revision history for Perl extension Inline.
 
+---version 0.54_04
+date Wed 10 Apr 2014
+     Add META.yml & META.json to distro
+     Released to CPAN.
+
 ---version 0.54_03
 date Wed 9 Apr 2014
      Released to CPAN. (No changes from 0.54_01.)
