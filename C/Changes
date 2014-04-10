@@ -1,5 +1,9 @@
 Revision history for Perl extension Inline::C.
 
+0.54_04 Wed 10 Apr 2014
+     Add META.yml & META.json to distro
+     Released to CPAN.
+
 0.54_03 Wed 9 Apr 2014
      Released to CPAN. (No changes from 0.54_01.)
 
