@@ -1,5 +1,9 @@
 Revision history for Perl extension Inline::C.
 
+0.54_05 Sun 13 Apr 2014
+     Update version number to 0.54_05
+     C.pm - Fix localisation of $ENV{MAKEFLAGS}. (Thanks Shawn Laffan.)
+
 0.54_04 Wed 10 Apr 2014
      Add META.yml & META.json to distro
      Released to CPAN.
