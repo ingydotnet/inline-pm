@@ -1,5 +1,11 @@
 # Revision history for Perl extension Inline.
 
+---version 0.54_05
+date Sun 13 Apr 2014
+     Update version number to 0.54_05.
+     Inline.pod - Add documentation regarding "with" and
+                  modules. (Thanks to Ed J.)
+
 ---version 0.54_04
 date Wed 10 Apr 2014
      Add META.yml & META.json to distro
