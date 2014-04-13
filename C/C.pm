@@ -1,5 +1,5 @@
 package Inline::C;
-$Inline::C::VERSION = '0.54_04';
+$Inline::C::VERSION = '0.54_05';
 $Inline::C::VERSION = eval $Inline::C::VERSION;
 
 use strict;
@@ -812,9 +812,8 @@ sub make {
     my ($o) = @_;
     my $make = $o->{ILSM}{MAKE} || $Config::Config{make}
       or croak "Can't locate your make binary";
-    if($ENV{MAKEFLAGS}) { # Avoid uninitialized warnings
-      local $ENV{MAKEFLAGS} = $ENV{MAKEFLAGS} =~ s/(--jobserver-fds=[\d,]+)//;
-    }
+    local $ENV{MAKEFLAGS} = $ENV{MAKEFLAGS} =~ s/(--jobserver-fds=[\d,]+)//
+      if($ENV{MAKEFLAGS};
     $o->system_call("$make", 'out.make');
 }
 sub make_install {
