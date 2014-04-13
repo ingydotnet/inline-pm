@@ -469,6 +469,30 @@ You can specify a single module or a list of them. Like:
 
 Currently, C<Event> is the only module that works I<with> Inline.
 
+In order to make B<your> module work I<with> Inline in this way, your
+module needs to provide a function called C<Inline> that takes an Inline
+language as a parameter (e.g. "C"), and returns a reference to a hash with
+configuration information that is acceptable to the relevant ILSM. For C,
+see L<Inline::C/"C Configuration Options">. E.g.:
+
+    my $confighashref = Event::Inline('C'); # only supports C in 1.21
+    # hashref contains keys INC, TYPEMAPS, MYEXTLIB, AUTO_INCLUDE, BOOT
+
+If your module supports L<ExtUtils::Depends>, your function might be as
+simple as this:
+
+    package Module;
+    sub Inline {
+	return unless $_[0] eq 'C'; # Inline's error message is good
+	require Module::Install::Files;
+	+{
+	    map { (uc($_) =>  ${$Module::Install::Files::{$_}}) } qw(inc libs),
+	    TYPEMAPS => \@Module::Install::Files::typemaps,
+	};
+    }
+
+=back
+
 =head2 Inline Shortcuts
 
 Inline lets you set many configuration options from the command line.
