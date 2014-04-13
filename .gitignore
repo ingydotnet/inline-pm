@@ -1,0 +1,12 @@
+.*.swp
+*.bs
+*.json
+*.o
+*.yml
+blib/
+_Inline/
+_Inline_test/
+C/_Inline_test*
+pm_to_blib
+Makefile
+Makefile.old
