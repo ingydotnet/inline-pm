@@ -813,7 +813,7 @@ sub make {
     my $make = $o->{ILSM}{MAKE} || $Config::Config{make}
       or croak "Can't locate your make binary";
     local $ENV{MAKEFLAGS} = $ENV{MAKEFLAGS} =~ s/(--jobserver-fds=[\d,]+)//
-      if($ENV{MAKEFLAGS};
+      if $ENV{MAKEFLAGS};
     $o->system_call("$make", 'out.make');
 }
 sub make_install {
