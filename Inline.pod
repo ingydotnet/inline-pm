@@ -491,7 +491,6 @@ simple as this:
 	};
     }
 
-=back
 
 =head2 Inline Shortcuts
 
