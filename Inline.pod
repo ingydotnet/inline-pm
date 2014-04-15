@@ -485,7 +485,7 @@ simple as this:
     sub Inline {
 	return unless $_[0] eq 'C'; # Inline's error message is good
 	require Module::Install::Files;
-	+{
+	{
 	    map { (uc($_) =>  ${$Module::Install::Files::{$_}}) } qw(inc libs),
 	    TYPEMAPS => \@Module::Install::Files::typemaps,
 	};
