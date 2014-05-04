@@ -53,8 +53,12 @@ WriteMakefile(
     NAME => 'Inline',
     VERSION_FROM => 'Inline.pm',
     PREREQ_PM => $prereq_pm,
+    LICENSE  => 'perl',
     clean => {FILES => '_Inline_test _Inline .Inline'},
     META_MERGE => {
+        no_index => {
+            directory => ['modules'],
+        },
         'meta-spec' => { version => 2 },
         resources => {
             repository => {
