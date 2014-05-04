@@ -2,7 +2,7 @@ package Inline;
 
 use strict;
 require 5.006;
-$Inline::VERSION = '0.55';
+$Inline::VERSION = '0.55_01';
 $Inline::VERSION = eval $Inline::VERSION;
 
 use AutoLoader 'AUTOLOAD';
