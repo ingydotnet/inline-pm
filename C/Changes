@@ -1,5 +1,14 @@
 Revision history for Perl extension Inline::C.
 
+0.55_01 Sun 8 Jun 2014
+     Add new demo module (Boo-2.01) to modules folder. This demonstrates
+     that the layout of having multiple modules under a top level source
+     directory (named 'lib') also works. This particular module failed to
+     with Inline-0.55 and earlier. See bug report #95809.
+
+     Re-structure the layout of the Math-Simple demo module. (Merge the
+     Math/Simple into one directory named Math-Simple-1.23.)
+
 0.55_01 Mon 5 May 2014
      Update version number to 0.55_01
 
