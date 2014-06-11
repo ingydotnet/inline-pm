@@ -1061,16 +1061,13 @@ sub env_untaint {
       }
     }
 
+    # only accept dirs that are absolute and not world-writable
     $ENV{PATH} = $^O eq 'MSWin32' ?
-                 join ';', grep {not /^\./ and -d $_
+                 join ';', grep {/^\// and -d $_
 				  } split /;/, $ENV{PATH}
                  :
-                 join ':', grep {not /^\./ and -d $_ and not -w $_ || -W $_
+                 join ':', grep {/^\// and -d $_ and not ((stat($_))[2] & 0022)
                                   } split /:/, $ENV{PATH};
-# Was:
-#                join ':', grep {not /^\./ and -d $_ and
-#		                 not ((stat($_))[2] & 0022)
-#				  } split /:/, $ENV{PATH};
 
     map {($_) = /(.*)/} @INC;
 
@@ -1240,7 +1237,7 @@ END
 }
 
 #==============================================================================
-# Hand off this invokation to Inline::MakeMaker
+# Hand off this invocation to Inline::MakeMaker
 #==============================================================================
 sub maker_utils {
     require Inline::MakeMaker;
