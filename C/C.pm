@@ -883,7 +883,7 @@ To debug the problem, cd to the build directory, and inspect the output files.
 END
    if ($cmd =~ /^make >/) {
      for (sort keys %ENV) {
-       $output .= "$_ = $ENV{$_}\n" if /^MAKE/;
+       $output .= "Environment $_ = '$ENV{$_}'\n" if /^(?:MAKE|PATH)/;
      }
    }
    return $output;
