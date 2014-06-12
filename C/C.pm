@@ -9,6 +9,7 @@ use Data::Dumper;
 use Carp;
 use Cwd qw(cwd abs_path);
 use File::Spec;
+use Fcntl ':flock';
 
 @Inline::C::ISA = qw(Inline);
 
@@ -300,12 +301,16 @@ sub build {
         croak "You need Time::HiRes for BUILD_TIMERS option:\n$@" if $@;
         $total_build_time = Time::HiRes::time();
     }
+    open my $lockfh, '>', "$o->{API}{directory}/.lock" or die "lockfile: $!";
+    flock($lockfh, LOCK_EX) if $^O !~ /^VMS|riscos|VOS$/;
+    $o->mkpath($o->{API}{build_dir});
     $o->call('preprocess', 'Build Preprocess');
     $o->call('parse', 'Build Parse');
     $o->call('write_XS', 'Build Glue 1');
     $o->call('write_Inline_headers', 'Build Glue 2');
     $o->call('write_Makefile_PL', 'Build Glue 3');
     $o->call('compile', 'Build Compile');
+    flock($lockfh, LOCK_UN) if $^O !~ /^VMS|riscos|VOS$/;
     if ($o->{CONFIG}{BUILD_TIMERS}) {
         $total_build_time = Time::HiRes::time() - $total_build_time;
         printf STDERR "Total Build Time: %5.4f secs\n", $total_build_time;
@@ -504,7 +509,6 @@ sub write_XS {
     my $o = shift;
     my $modfname = $o->{API}{modfname};
     my $module = $o->{API}{module};
-    $o->mkpath($o->{API}{build_dir});
     open XS, "> ".File::Spec->catfile($o->{API}{build_dir},"$modfname.xs")
       or croak $!;
     if ($o->{ILSM}{XSMODE}) {
