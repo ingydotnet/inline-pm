@@ -1079,6 +1079,7 @@ sub obj_untaint {
     my $o = shift;
     warn "In Inline::obj_untaint() : Blindly untainting tainted fields in Inline object.\n" unless $o->{CONFIG}{NO_UNTAINT_WARN};
     ($o->{INLINE}{ILSM_module}) = $o->{INLINE}{ILSM_module} =~ /(.*)/;
+    ($o->{API}{directory}) = $o->{API}{directory} =~ /(.*)/;
     ($o->{API}{build_dir}) = $o->{API}{build_dir} =~ /(.*)/;
     ($o->{CONFIG}{DIRECTORY}) = $o->{CONFIG}{DIRECTORY} =~ /(.*)/;
     ($o->{API}{install_lib}) = $o->{API}{install_lib} =~ /(.*)/;
