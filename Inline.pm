@@ -1061,16 +1061,13 @@ sub env_untaint {
       }
     }
 
+    # only accept dirs that are absolute and not world-writable
     $ENV{PATH} = $^O eq 'MSWin32' ?
                  join ';', grep {not /^\./ and -d $_
 				  } split /;/, $ENV{PATH}
                  :
-                 join ':', grep {not /^\./ and -d $_ and not -w $_ || -W $_
+                 join ':', grep {/^\// and -d $_ and not ((stat($_))[2] & 0022)
                                   } split /:/, $ENV{PATH};
-# Was:
-#                join ':', grep {not /^\./ and -d $_ and
-#		                 not ((stat($_))[2] & 0022)
-#				  } split /:/, $ENV{PATH};
 
     map {($_) = /(.*)/} @INC;
 
@@ -1082,6 +1079,7 @@ sub obj_untaint {
     my $o = shift;
     warn "In Inline::obj_untaint() : Blindly untainting tainted fields in Inline object.\n" unless $o->{CONFIG}{NO_UNTAINT_WARN};
     ($o->{INLINE}{ILSM_module}) = $o->{INLINE}{ILSM_module} =~ /(.*)/;
+    ($o->{API}{directory}) = $o->{API}{directory} =~ /(.*)/;
     ($o->{API}{build_dir}) = $o->{API}{build_dir} =~ /(.*)/;
     ($o->{CONFIG}{DIRECTORY}) = $o->{CONFIG}{DIRECTORY} =~ /(.*)/;
     ($o->{API}{install_lib}) = $o->{API}{install_lib} =~ /(.*)/;
@@ -1240,7 +1238,7 @@ END
 }
 
 #==============================================================================
-# Hand off this invokation to Inline::MakeMaker
+# Hand off this invocation to Inline::MakeMaker
 #==============================================================================
 sub maker_utils {
     require Inline::MakeMaker;
