@@ -1063,7 +1063,7 @@ sub env_untaint {
 
     # only accept dirs that are absolute and not world-writable
     $ENV{PATH} = $^O eq 'MSWin32' ?
-                 join ';', grep {/^\// and -d $_
+                 join ';', grep {not /^\./ and -d $_
 				  } split /;/, $ENV{PATH}
                  :
                  join ':', grep {/^\// and -d $_ and not ((stat($_))[2] & 0022)
