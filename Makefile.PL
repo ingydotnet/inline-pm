@@ -45,6 +45,7 @@ my $prereq_pm = {
     Digest::MD5 => 2.09,
     Parse::RecDescent => 1.80,
     File::Spec => 0.8,
+    Test::More => 0.88,
     Test::Warn => $twv,
 };
 delete $prereq_pm->{'Test::Warn'} if $] <= 5.007;
