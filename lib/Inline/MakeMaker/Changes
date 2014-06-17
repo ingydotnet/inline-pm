@@ -1,6 +1,11 @@
 Revision history for Perl extension Inline::MakeMaker.
 
 ---version 0.55_01
+date Tues 17 Jun 2014
+          Enable building of Inline module bundles
+          (Ticket #95809 - thanks Jason McCarver.)
+
+---version 0.55_01
 date Mon 5 May 2014
           Update version number to 0.55_01
 
