@@ -21,7 +21,7 @@ under this heading.
 
 =head2 How disposable is a .Inline or _Inline directory?
 
-I probably need to be more emphatic about the roll of _Inline/ cache
+I probably need to be more emphatic about the role of _Inline/ cache
 directories. Since they are created automatically, they are completely
 disposable. I delete them all the time. And it is fine to have a
 different one for each project. In fact as long as you don't have
