@@ -1,8 +1,17 @@
 # Revision history for Perl extension Inline.
 
 ---version 0.55_01
+date Tues 17 Jun 2014
+     Inline.pm - Add subroutine satisfy_makefile_dep(Ticket #95809 - thanks Jason McCarver.)
+               - Some more changes relating to untainting (ticket #96291) and parallel testing.
+                 (Thanks Ed J.)
+     Inline-FAQ.pod - Fix typo. (Thanks Ed J.)
+     Makefile.PL - add 'Test::More=>0.88' to prerequsites (as 'done_testing' is called by both
+                   C/t/09parser.t and C/t/08taint.t).
+
+---version 0.55_01
 date Mon 5 May 2014
-          Update version number to 0.55_01
+     Update version number to 0.55_01
 
 ---version 0.55
 date Mon 28 Apr 2014
