@@ -1,27 +1,22 @@
 #!perl -T
 
 BEGIN {
-  if($] < 5.007) {
-    print "1..1\n";
-    warn "Skipped for perl 5.6.x\n";
-    print "ok 1\n";
+  my $fail = '';
+  $fail = "Skipped for perl 5.6.x" if $] < 5.007;
+  $fail = "Skipping for Android (tests fail)" if lc($^O) eq 'android';
+  if ($fail) {
+    print "1..1\nok 1\n";
+    warn "$fail\n";
     exit(0);
   }
-
-  if(lc($^O) eq 'android') {
-    print "1..1\n";
-    warn "Skipping for Android (tests fail)\n";
-    print "ok 1\n";
-    exit(0);
-  }
-};
+}
 
 BEGIN {
   if (exists $ENV{PERL_INSTALL_ROOT}) {
     warn "\nIgnoring \$ENV{PERL_INSTALL_ROOT} in $0\n";
     delete $ENV{PERL_INSTALL_ROOT};
   }
-};
+}
 
 use warnings;
 use strict;
