@@ -1,5 +1,8 @@
 Revision history for Perl extension Inline::C.
 
+0.55_01 Thurs 19 Jun 2014
+     Version 0.55_01 released to CPAN
+
 0.55_01 Tues 17 Jun 2014
 
      C.pm - some more changes relating to untainting (ticket #96291) and parallel testing.
