@@ -2,7 +2,7 @@ package Inline;
 
 use strict;
 require 5.006;
-$Inline::VERSION = '0.55_01';
+$Inline::VERSION = '0.55_02';
 $Inline::VERSION = eval $Inline::VERSION;
 
 use AutoLoader 'AUTOLOAD';
@@ -846,6 +846,8 @@ sub create_config_file {
 		next;
 	    }
 	    next if $mod =~ /^(MakeMaker|denter|messages)$/;
+	    # @INC is made safe by -T disallowing PERL5LIB et al
+	    ($mod) = $mod =~ /(.*)/;
 	    eval "require Inline::$mod;";
             warn($@), next if $@;
 	    eval "\$register=&Inline::${mod}::register";
@@ -1075,11 +1077,16 @@ sub env_untaint {
                  join ';', grep {not /^\./ and -d $_
 				  } split /;/, $ENV{PATH}
                  :
-                 join ':', grep {/^\// and -d $_ and not ((stat($_))[2] & 0022)
+                 join ':', grep {/^\// and -d $_ and $< == $> ? 1 : not (-W $_ or -O $_)
                                   } split /:/, $ENV{PATH};
 
     map {($_) = /(.*)/} @INC;
 
+    # list cherry-picked from `perldoc perlrun`
+    delete @ENV{qw(PERL5OPT PERL5SHELL PERL_ROOT IFS CDPATH ENV BASH_ENV)};
+    $ENV{SHELL} = '/bin/sh' if -x '/bin/sh';
+
+    $< = $> if $< != $>; # so child processes retain euid - ignore failure
 }
 #==============================================================================
 # Blindly untaint tainted fields in Inline object.
