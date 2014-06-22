@@ -1,5 +1,9 @@
 Revision history for Perl extension Inline::C.
 
+0.55_02 Sun 22 Jun 2014
+     Version updated to 0.55_02 and released to CPAN
+     t/08taint.t - further tweaks. (Thanks Ed J).
+
 0.55_01 Thurs 19 Jun 2014
      Version 0.55_01 released to CPAN
 
