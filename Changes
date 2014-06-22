@@ -1,5 +1,10 @@
 # Revision history for Perl extension Inline.
 
+---version 0.55_02
+date Sun 22 Jun 2014
+     Version updated to 0.55_02 and released to CPAN
+     Inline.pm - additional changes to -T handling. (Thanks Ed J).
+
 ---version 0.55_01
 date Thurs 19 Jun 2014
      Version 0.55_01 released to CPAN
