@@ -5,12 +5,10 @@ BEGIN {
   }
   mkdir('_Inline_test', 0777) unless -e '_Inline_test';
 };
-use File::Spec;
-use lib (File::Spec->catdir(File::Spec->updir(),'blib','lib'), File::Spec->catdir(File::Spec->curdir(),'blib','lib'));
 use strict;
+use warnings;
 use diagnostics;
-
-print "1..12\n";
+use Test::More;
 
 use Inline C => Config =>
     FORCE_BUILD => 1,
@@ -73,54 +71,9 @@ SV * foo12
 
 EOC
 
-eval {foo1();};
-if($@) {
-  warn "\$\@: $@";
-  print "not ok 1\n";
-}
-else { print "ok 1\n"}
+for my $f (qw(foo1 foo4 foo7 foo10)) { eval "$f();"; is($@, '', $f); }
+for my $f (qw(foo2 foo3 foo5 foo6)) { no strict 'refs'; is(&$f, 42, $f); }
+for my $f (qw(foo8 foo9)) { no strict 'refs'; is(&$f, 43, $f); }
+for my $f (qw(foo11 foo12)) { no strict 'refs'; is(&$f, 44, $f); }
 
-if(42 == foo2()) {print "ok 2\n"}
-else {print "not ok 2\n"}
-
-if(42 == foo3()) {print "ok 3\n"}
-else {print "not ok 3\n"}
-
-eval {foo4();};
-if($@) {
-  warn "\$\@: $@";
-  print "not ok 4\n";
-}
-else { print "ok 4\n"}
-
-if(42 == foo5()) {print "ok 5\n"}
-else {print "not ok 5\n"}
-
-if(42 == foo6()) {print "ok 6\n"}
-else {print "not ok 6\n"}
-
-eval {foo7();};
-if($@) {
-  warn "\$\@: $@";
-  print "not ok 7\n";
-}
-else { print "ok 7\n"}
-
-if(43 == foo8()) {print "ok 8\n"}
-else {print "not ok 8\n"}
-
-if(43 == foo9()) {print "ok 9\n"}
-else {print "not ok 9\n"}
-
-eval {foo10();};
-if($@) {
-  warn "\$\@: $@";
-  print "not ok 10\n";
-}
-else { print "ok 10\n"}
-
-if(44 == foo11()) {print "ok 11\n"}
-else {print "not ok 11\n"}
-
-if(44 == foo12()) {print "ok 12\n"}
-else {print "not ok 12\n"}
+done_testing;
