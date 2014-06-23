@@ -27,8 +27,8 @@ use Test::Warn;
 # (Affects ActivePerl only.)
 $ENV{ACTIVEPERL_CONFIG_SILENT} = 1;
 
-# deal with running as root - actually simulate running as setuid program
-$< = 1; # ignore failure
+# deal with running as root - actually simulate running as setuid program. Avoid on Windows.
+$< = 1 unless $^O =~ /MSWin32/i; # ignore failure
 
 my $w1 = 'Blindly untainting tainted fields in %ENV';
 my $w2 = 'Blindly untainting Inline configuration file information';
