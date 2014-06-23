@@ -79,13 +79,5 @@ sub run_tests {
 }
 
 run_tests();
-
-{
-package main2;
-use Inline C => Config =>
-  USING => 'ParseRecDescent', FORCE_BUILD => 1, DIRECTORY => '_Inline_test';
-Inline->bind(C => $c_text);
-main::run_tests();
-}
-
 done_testing;
+
