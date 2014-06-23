@@ -1,5 +1,11 @@
 Revision history for Perl extension Inline::C.
 
+0.55_03 Mon 23 Jun 2014
+     C.pm - Update to version 0.55_03
+     C/t/14void_arg.t - use Test::More (Thanks Ed J)
+     C/t/14void_arg_PRD.t - New test file testing ParseRecDescent parser with void arg.
+                            (Those tests expected to fail have been made TODO.)
+
 0.55_02 Sun 22 Jun 2014
      Version updated to 0.55_02 and released to CPAN
      t/08taint.t - further tweaks. (Thanks Ed J).
