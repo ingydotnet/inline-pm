@@ -15,7 +15,7 @@ use Inline C => Config =>
     DIRECTORY => '_Inline_test',
     USING => 'ParseRegExp';
 
-use Inline C => <<'EOC';
+my $c_text = <<'EOC';
 
 void foo1(void) {
      printf("Hello from foo1\n");
@@ -68,12 +68,24 @@ SV * foo12
   {
      return newSVnv(44.0);
 }
-
 EOC
+Inline->bind(C => $c_text);
 
-for my $f (qw(foo1 foo4 foo7 foo10)) { eval "$f();"; is($@, '', $f); }
-for my $f (qw(foo2 foo3 foo5 foo6)) { no strict 'refs'; is(&$f, 42, $f); }
-for my $f (qw(foo8 foo9)) { no strict 'refs'; is(&$f, 43, $f); }
-for my $f (qw(foo11 foo12)) { no strict 'refs'; is(&$f, 44, $f); }
+sub run_tests {
+  for my $f (qw(foo1 foo4 foo7 foo10)) { eval "$f();"; is($@, '', $f); }
+  for my $f (qw(foo2 foo3 foo5 foo6)) { no strict 'refs'; is(&$f, 42, $f); }
+  for my $f (qw(foo8 foo9)) { no strict 'refs'; is(&$f, 43, $f); }
+  for my $f (qw(foo11 foo12)) { no strict 'refs'; is(&$f, 44, $f); }
+}
+
+run_tests();
+
+{
+package main2;
+use Inline C => Config =>
+  USING => 'ParseRecDescent', FORCE_BUILD => 1, DIRECTORY => '_Inline_test';
+Inline->bind(C => $c_text);
+main::run_tests();
+}
 
 done_testing;
