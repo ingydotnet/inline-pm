@@ -1,3 +1,14 @@
+List as of 20140625:
+
+1) Make Inline use modern package distributing - zilla-dist
+2) Look into Devel::Declare magics for inlining code
+3) Use Pegex grammars for language parsing - https://github.com/ingydotnet/pegex-pm
+4) Inline::C's "glue" phase (with typemaps and whatnot) could be used
+   to work with FFI
+
+workflow: make a branch, make an issue for the branch, mention @ingydotnet
+in a comment
+
 # 0.44 To Do List
 
 done:
