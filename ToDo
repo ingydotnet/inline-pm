@@ -5,6 +5,13 @@ List as of 20140625:
 3) Use Pegex grammars for language parsing - https://github.com/ingydotnet/pegex-pm
 4) Inline::C's "glue" phase (with typemaps and whatnot) could be used
    to work with FFI
+5) Ensure I::C parser works better than h2xs with leptonica:
+  wget http://www.leptonica.com/source/leptonica-1.71.tar.gz
+  tar xvf leptonica-1.71.tar.gz
+  # cpan C::Scan if needed so h2xs can parse C
+  cp leptonica-1.70/src/allheaders.h .
+  h2xs -PAxn Image::Leptonica -F -I./leptonica-1.70/src allheaders.h -llept
+  (cd Image-Leptonica/;perl Makefile.PL ;make test)
 
 workflow: make a branch, make an issue for the branch, mention @ingydotnet
 in a comment
