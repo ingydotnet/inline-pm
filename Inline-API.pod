@@ -189,7 +189,7 @@ which is automatically inherited since C<Inline::Foo> is a subclass.
 
 In the build function, you normally need to parse your source code.
 Inline::C uses Parse::RecDescent to do this. Inline::Foo simply uses
-eval. (After we strip out all occurances of 'foo-').
+eval. (After we strip out all occurrences of 'foo-').
 
 An alternative parsing method that works well for many ILSMs (like Java
 and Python) is to use the language's compiler itself to parse for you.
