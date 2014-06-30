@@ -360,7 +360,7 @@ options to each section.
 Inline tries to do the right thing as often as possible. But
 sometimes you may need to override the default actions. This is easy
 to do. Simply list the Inline configuration options after the
-regular Inline parameters. All congiguration options are specified
+regular Inline parameters. All configuration options are specified
 as (key, value) pairs.
 
     use Inline (C => 'DATA',
