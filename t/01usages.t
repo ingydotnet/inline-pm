@@ -5,7 +5,7 @@ use Test;
 use diagnostics;
 
 BEGIN {
-    plan(tests => 7,
+    plan(tests => 8,
 	 todo => [],
 	 onfail => sub {},
 	);
@@ -67,6 +67,23 @@ ok(subtract(3, 7) == -4);
 END
 
 print "$@\nnot ok 2\n" if $@;
+
+# test 8
+# Make sure 'with' works
+{
+  package FakeMod;
+  $INC{__PACKAGE__.'.pm'} = 1;
+  sub Inline { return unless $_[1] eq 'Foo'; { PATTERN=>'qunx-' } }
+}
+eval <<'END';
+Inline->import(with => 'FakeMod');
+Inline->bind(Foo => <<'EOFOO');
+qunx-sub subtract2 {
+    qunx-return $_[0] qunx-- $_[1];
+}
+EOFOO
+ok(subtract2(3, 7) == -4);
+END
 
 __END__
 

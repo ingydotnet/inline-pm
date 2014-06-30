@@ -1048,10 +1048,7 @@ sub with_configs {
     my $o = shift;
     my @configs;
     for my $mod (@{$o->{CONFIG}{WITH}}) {
-	my $ref = eval {
-	    no strict 'refs';
-	    &{$mod . "::Inline"}($o->{API}{language});
-	};
+	my $ref = eval { $mod->Inline($o->{API}{language}); };
 	croak M25_no_WITH_support($mod, $@) if $@;
 	push @configs, %$ref;
     }
