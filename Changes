@@ -1,9 +1,12 @@
 # Revision history for Perl extension Inline.
 
 ---version 0.55_03
-date Mon 23 Jun 2014
-     Version updated to 0.55_03
-
+1 Jul 2014
+     Update ToDo to post 0.44(!)
+     repository cpan metadata added, typo fixes (thanks dsteinbrunner)
+     Update "with" hook to be class method, not function (and test).
+     "make dist" update C/C.pm and Inline::MakeMaker's $VERSION.
+     Undo change disabling BUILD_NOISY for Win32 when shell eq 'cmd'
 
 ---version 0.55_02
 date Sun 22 Jun 2014
