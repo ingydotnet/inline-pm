@@ -1,6 +1,5 @@
 package Inline::C;
-$Inline::C::VERSION = '0.55_03';
-$Inline::C::VERSION = eval $Inline::C::VERSION;
+our $VERSION = "0.55_03";
 
 use strict;
 require Inline;
@@ -11,7 +10,7 @@ use Cwd qw(cwd abs_path);
 use File::Spec;
 use Fcntl ':flock';
 
-@Inline::C::ISA = qw(Inline);
+our @ISA = qw(Inline);
 
 #==============================================================================
 # Register this module as an Inline language support module

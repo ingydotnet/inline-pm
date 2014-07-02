@@ -38,17 +38,23 @@ unless($md5_check) {
   exit 0;
 }
 
-my $twv = $] > 5.013 ? 0.23 : 0.21;
-
 my $prereq_pm = {
     Data::Dumper => 2.09,
     Digest::MD5 => 2.09,
     Parse::RecDescent => 1.80,
     File::Spec => 0.8,
     Test::More => 0.88,
-    Test::Warn => $twv,
+    Test::Warn => $] > 5.013 ? 0.23 : 0.21,
 };
 delete $prereq_pm->{'Test::Warn'} if $] <= 5.007;
+
+sub MY::postamble {
+   <<EOF;
+setver:
+	\$(PERL) -pi -e 's/^(\\s*(?:our)?\\s*\\\$\$VERSION\\s*=\\s*).*;/\$\${1}"\$(VERSION)";/' C/C.pm lib/Inline/MakeMaker.pm
+
+EOF
+}
 
 WriteMakefile(
     NAME => 'Inline',
@@ -69,6 +75,7 @@ WriteMakefile(
             },
         },
     },
+    dist => { PREOP => 'make setver' },
 );
 
 if ($^O =~ /Win32/i) {

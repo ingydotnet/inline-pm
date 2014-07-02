@@ -1,13 +1,12 @@
 package Inline::MakeMaker;
 
-$Inline::MakeMaker::VERSION = '0.55_03';
-$Inline::MakeMaker::VERSION = eval $Inline::MakeMaker::VERSION;
-@EXPORT = qw(WriteMakefile WriteInlineMakefile);
-
 use strict;
 use base 'Exporter';
 use ExtUtils::MakeMaker();
 use Carp;
+
+our $VERSION = "0.55_03";
+our @EXPORT = qw(WriteMakefile WriteInlineMakefile);
 
 sub WriteInlineMakefile {
 #    warn <<END;
