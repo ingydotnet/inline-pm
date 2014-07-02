@@ -852,7 +852,8 @@ sub system_call {
       defined $ENV{PERL_INLINE_BUILD_NOISY}
       ? $ENV{PERL_INLINE_BUILD_NOISY}
       : $o->{CONFIG}{BUILD_NOISY};
-    $build_noisy = undef if $build_noisy and $^O eq 'MSWin32' and $Config::Config{sh} =~ /^cmd/;
+    # test this functionality with:
+    #perl -MInline=C,Config,BUILD_NOISY,1,FORCE_BUILD,1 -e "use Inline C => q[void inline_warner() { int *x = 2; }]"
     if (not $build_noisy) {
         $cmd = "$cmd > $output_file 2>&1";
     }
