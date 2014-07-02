@@ -3,6 +3,7 @@ package Inline;
 use strict;
 require 5.006;
 our $VERSION = '0.55_03';
+$VERSION = eval $VERSION;
 
 use AutoLoader 'AUTOLOAD';
 use Inline::denter;

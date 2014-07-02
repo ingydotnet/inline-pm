@@ -49,10 +49,9 @@ my $prereq_pm = {
 delete $prereq_pm->{'Test::Warn'} if $] <= 5.007;
 
 sub MY::postamble {
-   <<EOF;
+   <<'EOF';
 setver:
-	\$(PERL) -pi -e 's/^(\\s*(?:our)?\\s*\\\$\$VERSION\\s*=\\s*).*;/\$\${1}"\$(VERSION)";/' C/C.pm lib/Inline/MakeMaker.pm
-
+	$(PERL) -pi -e 's/^(\s*(?:our)?\s*\$$VERSION\s*=\s*)[^a-z]*;/$${1}"$(VERSION)";/' C/C.pm lib/Inline/MakeMaker.pm
 EOF
 }
 
