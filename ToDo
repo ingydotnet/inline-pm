@@ -1,6 +1,8 @@
 List as of 20140625:
 
 1) Make Inline use modern package distributing - zilla-dist
+   a) Remove Inline::C from the Inline dist and use the Inline-C dist
+      Need to make it not too surprising for users and dependents
 2) Look into Devel::Declare magics for inlining code
 3) Use Pegex grammars for language parsing - https://github.com/ingydotnet/pegex-pm
 4) Inline::C's "glue" phase (with typemaps and whatnot) could be used
@@ -12,6 +14,9 @@ List as of 20140625:
   cp leptonica-1.70/src/allheaders.h .
   h2xs -PAxn Image::Leptonica -F -I./leptonica-1.70/src allheaders.h -llept
   (cd Image-Leptonica/;perl Makefile.PL ;make test)
+  a) Review Ruby and Python ports of Inline for ideas.
+6) Make a regression suite to assert that all ILSMs don't regress with new
+   Inline releases.
 
 workflow: make a branch, make an issue for the branch, mention @ingydotnet
 in a comment
