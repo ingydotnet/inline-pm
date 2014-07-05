@@ -77,7 +77,7 @@ Inline->bind(C => $c_text);
 sub run_tests {
   for my $f (qw(foo4)) { eval "$f();"; is($@, '', $f); }
   for my $f (qw(foo5 foo6)) { no strict 'refs'; is(&$f, 42, $f); }
-  for my $f (qw(foo1 foo2 foo3 foo7foo8 foo9 foo10 foo11 foo12)) {
+  for my $f (qw(foo1 foo2 foo3 foo7 foo8 foo9 foo10 foo11 foo12)) {
       TODO: {
           local $TODO = "Not expected to succeed with ParseRecDescent parser";
           eval "$f();"; is($@, '', $f);
