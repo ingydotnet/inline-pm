@@ -1,26 +1,28 @@
-package Inline::Foo;
-$VERSION = '0.01';
-require Inline;
-@ISA = qw(Inline);
 use strict;
+package Inline::Foo;
+$Inline::Foo::VERSION = '0.01';
+
+require Inline;
+@Inline::Foo::ISA = qw(Inline);
+
 use Carp;
 use File::Spec;
 
 sub register {
     return {
-	    language => 'Foo',
-	    aliases => ['foo'],
-	    type => 'interpreted',
-	    suffix => 'foo',
-	   };
+        language => 'Foo',
+        aliases => ['foo'],
+        type => 'interpreted',
+        suffix => 'foo',
+    };
 }
 
-sub usage_config { 
+sub usage_config {
     my $key = shift;
     "'$key' is not a valid config option for Inline::Foo\n";
 }
 
-sub usage_config_bar { 
+sub usage_config_bar {
     "Invalid value for Inline::Foo config option BAR";
 }
 
@@ -29,18 +31,18 @@ sub validate {
     $o->{ILSM}{PATTERN} ||= 'foo-';
     $o->{ILSM}{BAR} ||= 0;
     while (@_) {
-	my ($key, $value) = splice @_, 0, 2;
-	if ($key eq 'PATTERN') {
-	    $o->{ILSM}{PATTERN} = $value;
-	    next;
-	}
-	if ($key eq 'BAR') {
-	    croak usage_config_bar
-	      unless $value =~ /^[01]$/;
-	    $o->{ILSM}{BAR} = $value;
-	    next;
-	}
-	croak usage_config($key);
+        my ($key, $value) = splice @_, 0, 2;
+        if ($key eq 'PATTERN') {
+            $o->{ILSM}{PATTERN} = $value;
+            next;
+        }
+        if ($key eq 'BAR') {
+            croak usage_config_bar
+              unless $value =~ /^[01]$/;
+            $o->{ILSM}{BAR} = $value;
+            next;
+        }
+        croak usage_config($key);
     }
 }
 
@@ -51,8 +53,8 @@ sub build {
     $code =~ s/$pattern//g;
     $code =~ s/bar-//g if $o->{ILSM}{BAR};
     {
-	package Foo::Tester;
-	eval $code;
+        package Foo::Tester;
+        eval $code;
     }
     croak "Foo build failed:\n$@" if $@;
     my $path = File::Spec->catdir($o->{API}{install_lib},'auto',$o->{API}{modpname});
@@ -80,5 +82,3 @@ sub info {
 }
 
 1;
-
-__END__
