@@ -1,0 +1,194 @@
+INTRODUCTION:
+
+Inline.pm - Write Perl subroutines in other programming languages.
+
+Inline lets you write Perl subroutines in other programming languages
+like C, C++, Java, Python, Tcl and even Assembly. You don't need to
+compile anything. All the details are handled transparently so you
+can just run your Perl script like normal.
+
+Example:
+
+    use Inline::Files;
+    use Inline C;
+    print JAxH('Inline'), "\n";
+
+    __C__
+    SV* JAxH(char* x) {
+        return newSVpvf ("Just Another %s Hacker",x);
+    }
+
+When run, this complete program prints:
+
+    Just Another Inline Hacker
+
+The one line version is:
+
+    perl -le 'use Inline C=>q{SV*JAxH(char*x){return newSVpvf("Just Another %s Hacker",x);}};print JAxH+Inline'
+
+-------------------------------------------------------------------------------
+FEATURES:
+
+Inline version 0.44 is a semi-major release:
++ This version is intended to be backwards compatible with 0.43.
++ Fixed many bugs reported since 0.43
++ Sped up parsing of C with 'USING => ParseRegExp'
++ Added BUILD_NOISY and BUILD_TIMERS options
++ Use File::Spec for all path operations. First step in porting to all
+  platforms.
++ Always call ILSM->validate()
++ Allow C++ modules to be written with Inline
++ New improved Inline::MakeMaker
+
+Inline version 0.43 is a minor release:
+
++ Added XSMODE for using Inline directly with XS
++ Now works with *all* Perl release versions over 5.005 (5.005_02, etc)
++ Removed old deprecated funstionality
++ Works on Mac OS X
++ Added support for ILSMs who don't want to invoke a build
++ Added script's working directory to the #include path for C
++ Tighter integration between Inline::C and Inline::CPP
++ Bug fixes reported on the mailing list.
+
+Inline version 0.42 is a minor release:
+
++ Applied a couple patches. Python and Tcl now install properly.
+
+Inline version 0.41 is a minor release:
+
++ Added the AUTOWRAP feature for C
+  - Inline can now create wrappers from C function *declarations* alone.
++ Made Inline::MakeMaker work correctly in nested Makefile.PL trees.
++ Fixed bug preventing other Inline::* modules from installing in some cases.
++ Fixed platform dependent CRLF issues.
+
+Inline version 0.40 is a major upgrade. It includes:
++ Inline::MakeMaker
+  + Rock solid support for writing CPAN extension modules
++ Short file names.
+  + No more _Inline/lib/auto/Foo_C_3cee729d1d942c6792ca5a741dc21879/Foo_C_3cee729d1d942c6792ca5a741dc21879.so
+  + Now it's _Inline/lib/auto/Foo/Foo.so
++ Support for creating binary distributions.
+  + Can even do it without shipping C source code.
++ Support for Damian Conway's Inline::Files
+  + No more __END__ markers.
++ Safe new config and caching format.
+  + Similar to Data::Denter format
++ New Inline-FAQ.pod.
+
+Inline version 0.34 fixes 2 minor bugs:
+
++ Makefile.PL got confused on $Config::Config{cc} with full pathnames or flags
++ Makefile.PL/Makefile dependency caused a problem in one rare case.
+
+Inline version 0.33 is a minor upgrade with the following changes:
+
++ Support for Inline::Struct and Inline::Filters
++ Added ENABLE and DISABLE configuration modifiers.
++ C installation is optional
++ Test harness reworked. Faster testing.
++ Fixed all reported (and some unreported) bugs.
++ Documentation enhancements.
+
+Inline version 0.32 is a minor upgrade with the following changes:
+
++ Addition of UNTAINT, SAFEMODE, GLOBAL_LOAD, MAKE, and LDDLFLAGS
+  configuration options.
++ Fixed all reported (and some unreported) bugs.
++ Documentation enhancements.
+
+Inline version 0.31 is a minor upgrade with the following changes:
+
++ "use Inline C;" is now a synonym for "use Inline C => DATA;"
++ Default build/install directory changed from "blib_I/" to ".Inline/"
++ Build/Install directory structure simplified.
+  + Short install paths.
+  + Build areas in ".Inline/build/" subdirectory.
++ Added 'CC', 'CCFLAGS', 'LD', and 'LDFLAGS' config options to C.
++ More recipes in Cookbook.
+
+Inline version 0.30 is a major upgrade from previous verions. It includes:
+
++ Integrated support for typemap files in C.
+  + All the recognized types now come *only* from typemaps.
+  + The default types come from the default typemap installed with core Perl.
+  + Typemaps are used to modify the Parse::RecDescent grammar for parsing C.
+  + This means you can easily use your existing typemaps.
++ Language support completely separated from base Inline code.
+  + Beta supoort for C (Inline::C, included)
+  + Alpha support for C++ (Inline::CPP, available separately)
+  + Alpha support for Python (Inline::Python, available separately)
+  + Support for 'embedding' Perl in C with my new programming language, CPR.
+    (Inline::CPR, available separately) This one may warp your mind :^)
+  + Simple API for adding your own language support.
+    + Write your own Inline::Foo
+    + Write your own implementation of Inline::C, or just modify
+      Inline::C::grammar.
+  + Support for interpreted languages in addition to compiled ones.
++ Autodetection of new Inline language modules.
++ Much easier and more powerful configuration syntax.
+  + More XS and MakeMaker features exposed for configuration (for C and C++).
++ Flexible new syntax for specifying source code.
+  + Use DATA section for AutoLoader, Inline, and POD simultaneously.
++ Support for using Inline 'with' other modules.
+  + "use Inline with 'Event';" lets Event.pm pass config info to Inline.pm.
+  + Event.pm 0.80 has built in support for Inline.pm 0.30 and higher.
+    + Write Event callbacks in C with extreme ease.
++ More documentation
+  + perldoc Inline
+  + perldoc Inline-FAQ
+  + perldoc Inline-API
+  + perldoc Inline::C
+  + perldoc Inline::C-Cookbook
++ Better error messages and easier debugging.
++ Mailing list: inline@perl.org
+
+Other features of Inline.pm include:
+
+= Automatically compiles your source code and caches the shared object.
+= Automatically DynaLoads the shared object and binds it to Perl.
+= Recompiles only when the C code changes.
+= Changing the Perl code will not cause a recompile of the C code.
+= Support for writing extension modules, suitable for distributing to the CPAN.
+= Support for generating and binding Inline subs at run time. <bind()>
+= Works on all Unix and MS Windows configurations.
+
+-------------------------------------------------------------------------------
+INSTALLATION:
+
+This module requires the Digest::MD5 and Parse::RecDescent modules. It also
+requires the appropriate C compiler. (Where appropriate means the one referred
+to in your Config.pm)
+
+To install Inline do this:
+
+perl Makefile.PL
+make
+make test
+make install
+
+On ActivePerl for MSWin32, use nmake instead of make. Or just use:
+    ppm install Inline
+
+For convenience, Inline::C is packaged with Inline, and will be automatically
+installed as well.
+
+-------------------------------------------------------------------------------
+INFORMATION:
+
+= For more information on Inline, see 'perldoc Inline' and 'perldoc Inline-FAQ'
+= For information about Inline::, see 'perldoc Inline::C' and
+  'perldoc Inline::C-Cookbook'
+= For information on writing your own Inline extension see 'perldoc Inline-API'
+= For information about the Perl5 internal C API, see 'perldoc perlapi' or
+  try http://www.perldoc.com/perl5.6/pod/perlapi.html
+= The Fall 2000 edition of The Perl Journal has an article about Inline
+
+The Inline.pm mailing list is inline@perl.org. Send email to
+inline-subscribe@perl.org to subscribe.
+
+Please send questions and comments to "Brian Ingerson" <INGY@cpan.org>
+
+Copyright (c) 2000-2002. Brian Ingerson.
+Copyright (c) 2008, 2010, 2011. Sisyphus.
