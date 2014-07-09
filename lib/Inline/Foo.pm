@@ -50,7 +50,6 @@ sub build {
     my $pattern = $o->{ILSM}{PATTERN};
     $code =~ s/$pattern//g;
     $code =~ s/bar-//g if $o->{ILSM}{BAR};
-    sleep 1; # imitate compile delay
     {
 	package Foo::Tester;
 	eval $code;
