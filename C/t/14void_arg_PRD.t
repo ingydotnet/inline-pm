@@ -12,6 +12,7 @@ use strict;
 use warnings;
 use diagnostics;
 use Test::More;
+use AutoLoader 'AUTOLOAD';
 
 use Inline C => Config =>
     FORCE_BUILD => 1,
@@ -87,5 +88,3 @@ sub run_tests {
 
 run_tests();
 done_testing;
-
-
