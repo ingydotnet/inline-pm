@@ -1,726 +1,634 @@
-# Revision history for Perl extension Inline.
-# git log --format="     %s"
-
----version 0.56
-9 Jul 2014
-     Clean up formatting and whitespace
-     Removed a "sleep" from Inline::Foo::build
-
----version 0.55_05
-8 Jul 2014
-     Make "with" hook return undef croak, test that.
-
----version 0.55_04
-8 Jul 2014
-     Suppress warnings in older perls from C/t/14void_arg_PRD.t.
-     setruid throws exception not just on Win32 - trap in t/08taint.t.
-     C/t/14void_arg_PRD.t - Fix typo.
-
-
----version 0.55_03
-1 Jul 2014
-     Update ToDo to post 0.44(!)
-     repository cpan metadata added, typo fixes (thanks dsteinbrunner)
-     Update "with" hook to be class method, not function (and test).
-     "make dist" update C/C.pm and Inline::MakeMaker's $VERSION.
-     Undo change disabling BUILD_NOISY for Win32 when shell eq 'cmd'
-
----version 0.55_02
-date Sun 22 Jun 2014
-     Version updated to 0.55_02 and released to CPAN
-     Inline.pm - additional changes to -T handling. (Thanks Ed J).
-
----version 0.55_01
-date Thurs 19 Jun 2014
-     Version 0.55_01 released to CPAN
-
----version 0.55_01
-date Tues 17 Jun 2014
-     Inline.pm - Add subroutine satisfy_makefile_dep(Ticket #95809 - thanks Jason McCarver.)
-               - Some more changes relating to untainting (ticket #96291) and parallel testing.
-                 (Thanks Ed J.)
-     Inline-FAQ.pod - Fix typo. (Thanks Ed J.)
-     Makefile.PL - add 'Test::More=>0.88' to prerequsites (as 'done_testing' is called by both
+---
+version: 0.56
+date:    9 Jul 2014
+changes:
+- Clean up formatting and whitespace
+- Removed a "sleep" from Inline::Foo::build
+---
+version: 0.55_05
+date:    8 Jul 2014
+changes:
+- Make "with" hook return undef croak, test that.
+---
+version: 0.55_04
+date:    8 Jul 2014
+changes:
+- Suppress warnings in older perls from C/t/14void_arg_PRD.t.
+- setruid throws exception not just on Win32 - trap in t/08taint.t.
+- C/t/14void_arg_PRD.t - Fix typo.
+---
+version: 0.55_03
+date:    1 Jul 2014
+changes:
+- Update ToDo to post 0.44(!)
+- repository cpan metadata added, typo fixes (thanks dsteinbrunner)
+- Update "with" hook to be class method, not function (and test).
+- Make "make dist" update C/C.pm and Inline::MakeMaker's $VERSION.
+- Undo change disabling BUILD_NOISY for Win32 when shell eq 'cmd'
+---
+version: 0.55_02
+date:    date Sun 22 Jun 2014
+changes:
+- Version updated to 0.55_02 and released to CPAN
+- Inline.pm - additional changes to -T handling. (Thanks Ed J).
+---
+version: 0.55_01
+date:    date Thurs 19 Jun 2014
+changes:
+- Version 0.55_01 released to CPAN
+---
+version: 0.55_01
+date:    date Tues 17 Jun 2014
+changes:
+- Inline.pm - Add subroutine satisfy_makefile_dep(Ticket #95809 - thanks Jason McCarver.)
+- Some more changes relating to untainting (ticket #96291) and parallel testing. (Thanks Ed J.)
+- Inline-FAQ.pod - Fix typo. (Thanks Ed J.)
+- Makefile.PL - add 'Test::More=>0.88' to prerequsites (as 'done_testing' is called by both
                    C/t/09parser.t and C/t/08taint.t).
-
----version 0.55_01
-date Mon 5 May 2014
-     Update version number to 0.55_01
-
----version 0.55
-date Mon 28 Apr 2014
-     Version 0.55 released to CPAN
-
----version 0.54_05
-date Tues 15 Apr 2014
-     Version 0.54_05 released to CPAN
-
----version 0.54_05
-date Sun 13 Apr 2014
-     Update version number to 0.54_05.
-     Inline.pod - Add documentation regarding "with" and
-                  modules. (Thanks to Ed J.)
-
----version 0.54_04
-date Wed 10 Apr 2014
-     Add META.yml & META.json to distro
-     Released to CPAN.
-
----version 0.54_03
-date Wed 9 Apr 2014
-     Released to CPAN. (No changes from 0.54_01.)
-
---- version 0.54_01
-date Sat 5 Apr 2014
-     Inline.pm - import Fcntl constants for flock (rurban).
-     Inline.pm - flock only on supported platforms, would die on VMS,riscos,VOS (rurban).
-     Makefile.PL - simplify 5.6 PREREQ_PM handling (rurban).
-
---- version 0.54_01
-date Mon 31 Mar 2014
-     Update version nmuyber to 0.54_01
-     Makefile.PL - add META_MERGE info (thanks David Steinbrunner).
-     Inline.pod - Correct typos (thanks David Steinbrunner).
-
---- version 0.54
-date Sat 29 Mar 2014
-     Update version number to 0.54
-     Release version 0.54 to CPAN
-
---- version 0.53_02
-date Sun 16 Mar 2014
-     Version 0.53_02 released to CPAN
-
---- version 0.53_02
-date Fri 7 Mar 2014
-     Update version to 0.53_02
-
---- version 0.53_01
-date Thurs 6 Mar 2014
-     Version 0.53_01 released to CPAN
-     Update copyright notices (where approporiate) to include 2014
-     Modify env_untaint as per Alexander Haeckel's suggestion (Ticket #65703)
-
---- version 0.53_01
-date Thurs 6 Feb 2014
-     Inline.pm - in sub glue() cater for the possibility that ILSM_suffix might be
+---
+version: 0.55_01
+date:    date Mon 5 May 2014
+changes:
+- Update version number to 0.55_01
+---
+version: 0.55
+date:    date Mon 28 Apr 2014
+changes:
+- Version 0.55 released to CPAN
+---
+version: 0.54_05
+date:    date Tues 15 Apr 2014
+changes:
+- Version 0.54_05 released to CPAN
+---
+version: 0.54_05
+date:    date Sun 13 Apr 2014
+changes:
+- Update version number to 0.54_05.
+- Inline.pod - Add documentation regarding "with" and
+  modules. (Thanks to Ed J.)
+---
+version: 0.54_04
+date:    date Wed 10 Apr 2014
+changes:
+- Add META.yml & META.json to distro
+- Released to CPAN.
+---
+version: 0.54_03
+date:    date Wed 9 Apr 2014
+changes:
+- Released to CPAN. (No changes from 0.54_01.)
+---
+version: 0.54_01
+date:    Sat 5 Apr 2014
+changes:
+- Inline.pm - import Fcntl constants for flock (rurban).
+- Inline.pm - flock only on supported platforms, would die on VMS,riscos,VOS (rurban).
+- Makefile.PL - simplify 5.6 PREREQ_PM handling (rurban).
+---
+version: 0.54_01
+date:    Mon 31 Mar 2014
+changes:
+- Update version nmuyber to 0.54_01
+- Makefile.PL - add META_MERGE info (thanks David Steinbrunner).
+- Inline.pod - Correct typos (thanks David Steinbrunner).
+---
+version: 0.54
+date:    Sat 29 Mar 2014
+changes:
+- Update version number to 0.54
+- Release version 0.54 to CPAN
+---
+version: 0.53_02
+date:    Sun 16 Mar 2014
+changes:
+- Version 0.53_02 released to CPAN
+---
+version: 0.53_02
+date:    Fri 7 Mar 2014
+changes:
+- Update version to 0.53_02
+---
+version: 0.53_01
+date:    Thurs 6 Mar 2014
+changes:
+- Version 0.53_01 released to CPAN
+- Update copyright notices (where approporiate) to include 2014
+- Modify env_untaint as per Alexander Haeckel's suggestion (Ticket #65703)
+---
+version: 0.53_01
+date:    Thurs 6 Feb 2014
+changes:
+- Inline.pm - in sub glue() cater for the possibility that ILSM_suffix might be
                  'sl' (in addition to the 'so', 'dll', and 'bundle' possibilities).
-
---- version 0.53_01
-date Wed 13 Nov 2013
-     modules/Math/Simple/Simple.pm - spread the declaration of the package name over
-     two lines to prevent the module being picked up by the PAUSE indexer.
-     (Thanks Linda Walsh.)
-
---- version 0.53_01
-date Sat 28 Sep 2013
-      t/01usages.t - Fix typo.
-
---- version 0.53_01
-date Thurs 12 Sep 2013
-      Inline.pm - Update version number to 0.53_01
-
---- version 0.53
-date Wed 1 May 2013
-      Version 0.53 released to CPAN
-
---- version 0.52_02
-date Wed 24 Apr 2013
-      Version 0.52_02 released to CPAN
-
---- version 0.52_01
-date Thurs 11 Apr 2013
-      Version 0.52_01 released to CPAN
-      Inline.pm - in sub read_DATA() replace:
-                  @{$DATA{$pkg}} = split /(?m)(__\S+?__\n)/, $data
-                  with:
-                  @{$DATA{$pkg}} = split /(?m)^[ \t]{0,}(__\S+?__\n)/, $data;
-                  Otherwise some non-markers can be treated as markers.
-                  Thanks to Chris Nighswonger and Stefan Seifert.
-                  Added C/t/21read_DATA.t and C/t/22read_DATA_2.t as the test cases.
-                  NOTE: This is not a complete fix - it's still possible to
-                        write code (albeit in an unorthodox fashion) such
-                        that a non-marker can be treated as a marker.
-
---- version 0.52
-date Thurs 07 Mar 2013
-      Version 0.52 released to CPAN
-
---- version 0.51_03
-date Wed 28 Nov 2012
-      Version 0.51_03 released to CPAN
-
---- version 0.51_02
-date Tues 20 Nov 2012
-      Version 0.51_02 released to CPAN
-
---- version 0.51_01
-date Tues 20 Nov 2012
-      Version 0.51_01 released to CPAN
-
---- version 0.51
-date Sat 13 Oct 2012
-      Version 0.51 released to CPAN.
-
---- version 0.50_03
-date Mon 8 Oct 2012
-      Version 0.50_03 released to CPAN.
-
---- version 0.50_02
-date Thurs 24 May 2012
-      Version 0.50_02 released to CPAN.
-
-      Makefile.PL - Provide special handling of the Digest::MD5 dependency
-                    For pre-5.8.1 versions of perl.
-      Inline.pm - Replace "$lexwarn" with its actual value of "no warnings;".
-      Inline.pod - Document use of "Inline->init();" for Inline modules.
-      Inline-FAQ.pod - Document use of "Inline->init();" for Inline modules.
-
---- version 0.50_02
-date Mon 14 May 2012
-      Inline-FAQ.pod - Mention that the behaviour being documented in the
-                       first FAQ can be overridden by either the DIRECTORY
-                       config option or the PERL_INLINE_DIRECTORY
-                       environemnt variable.
-
---- version 0.50_02
-date Tues 14 Feb 2012
-      Inline.pm - Bump version number to 0.50_02
-
---- version 0.50_01
-date Sun 12 Feb 2012
-      Version 0.50_01 released to CPAN
-
---- version 0.50_01
-date Wed 8 Feb 2012
-      Inline.pm - Add a warning prior to croaking with M62_invalid_config_file().
-                  That way, we'll at least see what $config contains. This is in
-                  response to FAIL report:
-                  http://www.cpantesters.org/cpan/report/3287249c-5151-11e1-9dba-4238887bd19e
-                - Bump version number to 0.50_01
-
---- version 0.50
-date Tues 7 Feb 2012
-      Version 0.50 released to CPAN
-      Inline.pm - Bump version number to 0.50
-
---- version 0.49_02
-date Fri 3 Feb 2012
-      Version 0.49_02 released to CPAN
-      Inline.pm - Bring version numbering into line with recommendations made in
-                  http://perldoc.perl.org/perlmodstyle.html#Version-numbering
-
---- version 0.49_01
-date Thurs 2 Feb 2012
-      Version 0.49_01 released to CPAN.
-	Inline.pm - Rename create_config_file()'s private @INC to @_inc.
-                  (This is just to avoid any confusion that we might be
-                  messing with @INC.)
-                - In creating @_inc, we now additionally grep for the location
-                  of Parse::RecDescent - in case it's in a different PERL5LIB
-                  location to Inline (as generally happens with cpan smokers -
-                  but could happen anywhere).
-                - Update copyright dates throughout.
-
---- version 0.49_01
-date Mon 23 Jan 2012
-      C/t - Make alterations to all of the '.t' files in C/t (except
-            for 00init.t). This is in reponse to ticket 73448, which
-            raised the possibility that Inline may get built with the
-            PERL_INSTALL_ROOT environment variable set.
-      Inline.pod - mention the need to make provision for the
-                   PERL_INSTALL_ROOT environment variable iff it has
-                   been set.
-
---- version 0.49_01
-date Sun 25 Dec 2011
-      As the result of input from David Oswald:
-      Inline.pod - Changes relating to "CONFIGURE_REQUIRES" and fix
-                   typo reported in ticket 73108.
-      Inline-FAQ.pod - Changes relating to "CONFIGURE_REQUIRES"
-      Inline.pm - Bump version to 0.49_01
-      lib/Inline/MakeMaker.pm - Bump version to 0.49_01
-
 ---
-version 0.49
-date: Thurs 8 Dec 2011
-      Version 0.49 released to CPAN
-      Inline.pm - small alteration to M19_usage_language error message
-
+version: 0.53_01
+date:    Wed 13 Nov 2013
+changes:
+- modules/Math/Simple/Simple.pm - spread the declaration of the package name over
+- two lines to prevent the module being picked up by the PAUSE indexer.
+- (Thanks Linda Walsh.)
 ---
-version 0.48_02
-date: Mon 5 Dec 2011
-      Version 0.48_02 released to CPAN
-      Inline.pm - Have the config file re-created *before* we croak with
-                  M19_usage_language(). (Re-creating the config file should
-                  alleviate the need to croak, thus allowing the script to
-                  complete successfully.) Thanks to Patrick LeBoutillier for
-                  the patch, and to David Oswald for pursuing this.
-
+version: 0.53_01
+date:    Sat 28 Sep 2013
+changes:
+- t/01usages.t - Fix typo.
 ---
-version 0.48_02
-date: Fri 9 Sept 2011
-      Bump Inline version to 0.48_02
-
+version: 0.53_01
+date:    Thurs 12 Sep 2013
+changes:
+- Inline.pm - Update version number to 0.53_01
 ---
-version 0.48_01
-date: Mon 11 Apr 2011
-      Version 0.48_01 released to CPAN
-      t/05files.t - Have t/05files.t provide a reason for skipping the tests.
-      Inline.pm - Create REWRITE_CONFIG_FILE config option.
-      Makefile.PL - Test::Warn 0.23 or later needed for perl-5.13 and later.
-                   (Older perls need 0.21 or later).
-
+version: 0.53
+date:    Wed 1 May 2013
+changes:
+- Version 0.53 released to CPAN
+---
+version: 0.52_02
+date:    Wed 24 Apr 2013
+changes:
+- Version 0.52_02 released to CPAN
+---
+version: 0.52_01
+date:    Thurs 11 Apr 2013
+changes:
+- Version 0.52_01 released to CPAN
+- |
+  Inline.pm - in sub read_DATA() replace:
+    @{$DATA{$pkg}} = split /(?m)(__\S+?__\n)/, $data
+    with:
+    @{$DATA{$pkg}} = split /(?m)^[ \t]{0,}(__\S+?__\n)/, $data;
+    Otherwise some non-markers can be treated as markers.
+    Thanks to Chris Nighswonger and Stefan Seifert.
+    Added C/t/21read_DATA.t and C/t/22read_DATA_2.t as the test cases.
+    NOTE: This is not a complete fix - it's still possible to
+          write code (albeit in an unorthodox fashion) such
+          that a non-marker can be treated as a marker.
+---
+version: 0.52
+date:    Thurs 07 Mar 2013
+changes:
+- Version 0.52 released to CPAN
+---
+version: 0.51_03
+date:    Wed 28 Nov 2012
+changes:
+- Version 0.51_03 released to CPAN
+---
+version: 0.51_02
+date:    Tues 20 Nov 2012
+changes:
+- Version 0.51_02 released to CPAN
+---
+version: 0.51_01
+date:    Tues 20 Nov 2012
+changes:
+- Version 0.51_01 released to CPAN
+---
+version: 0.51
+date:    Sat 13 Oct 2012
+changes:
+- Version 0.51 released to CPAN.
+---
+version: 0.50_03
+date:    Mon 8 Oct 2012
+changes:
+- Version 0.50_03 released to CPAN.
+---
+version: 0.50_02
+date:    Thurs 24 May 2012
+changes:
+- Version 0.50_02 released to CPAN.
+- Makefile.PL - Provide special handling of the Digest::MD5 dependency
+  For pre-5.8.1 versions of perl.
+- Inline.pm - Replace "$lexwarn" with its actual value of "no warnings;".
+- Inline.pod - Document use of "Inline->init();" for Inline modules.
+- Inline-FAQ.pod - Document use of "Inline->init();" for Inline modules.
+---
+version: 0.50_02
+date:    Mon 14 May 2012
+changes:
+- Inline-FAQ.pod - Mention that the behaviour being documented in the first FAQ
+  can be overridden by either the DIRECTORY config option or the
+  PERL_INLINE_DIRECTORY environemnt variable.
+---
+version: 0.50_02
+date:    Tues 14 Feb 2012
+changes:
+- Inline.pm - Bump version number to 0.50_02
+---
+version: 0.50_01
+date:    Sun 12 Feb 2012
+changes:
+- Version 0.50_01 released to CPAN
+---
+version: 0.50_01
+date:    Wed 8 Feb 2012
+changes:
+- Inline.pm - Add a warning prior to croaking with M62_invalid_config_file().
+  That way, we'll at least see what $config contains. This is in
+  response to FAIL report
+  http://www.cpantesters.org/cpan/report/3287249c-5151-11e1-9dba-4238887bd19e
+- Bump version number to 0.50_01
+---
+version: 0.50
+date:    Tues 7 Feb 2012
+changes:
+- Version 0.50 released to CPAN
+- Inline.pm - Bump version number to 0.50
+---
+version: 0.49_02
+date:    Fri 3 Feb 2012
+changes:
+- Version 0.49_02 released to CPAN
+- Inline.pm - Bring version numbering into line with recommendations made in
+  http://perldoc.perl.org/perlmodstyle.html#Version-numbering
+---
+version: 0.49_01
+date:    Thurs 2 Feb 2012
+changes:
+- Version 0.49_01 released to CPAN.
+- Inline.pm - Rename create_config_file()'s private @INC to @_inc.
+  (This is just to avoid any confusion that we might be messing with @INC.)
+- In creating @_inc, we now additionally grep for the location
+  of Parse::RecDescent - in case it's in a different PERL5LIB
+  location to Inline (as generally happens with cpan smokers -
+  but could happen anywhere).
+- Update copyright dates throughout.
+---
+version: 0.49_01
+date:    Mon 23 Jan 2012
+changes:
+- C/t - Make alterations to all of the '.t' files in C/t (except
+  for 00init.t). This is in reponse to ticket 73448, which
+  raised the possibility that Inline may get built with the
+  PERL_INSTALL_ROOT environment variable set.
+- Inline.pod - mention the need to make provision for the
+  PERL_INSTALL_ROOT environment variable iff it has been set.
+---
+version: 0.49_01
+date:    Sun 25 Dec 2011
+changes:
+- As the result of input from David Oswald
+- Inline.pod - Changes relating to "CONFIGURE_REQUIRES" and fix
+  typo reported in ticket 73108.
+- Inline-FAQ.pod - Changes relating to "CONFIGURE_REQUIRES"
+- Inline.pm - Bump version to 0.49_01
+- lib/Inline/MakeMaker.pm - Bump version to 0.49_01
+---
+version: 0.49
+date:    Thurs 8 Dec 2011
+changes:
+- Version 0.49 released to CPAN
+- Inline.pm - small alteration to M19_usage_language error message
+---
+version: 0.48_02
+date:    Mon 5 Dec 2011
+changes:
+- Version 0.48_02 released to CPAN
+- Inline.pm - Have the config file re-created *before* we croak with
+  M19_usage_language(). (Re-creating the config file should
+  alleviate the need to croak, thus allowing the script to
+  complete successfully.) Thanks to Patrick LeBoutillier for
+  the patch, and to David Oswald for pursuing this.
+---
+version: 0.48_02
+date:    Fri 9 Sept 2011
+changes:
+- Bump Inline version to 0.48_02
+---
+version: 0.48_01
+date:    Mon 11 Apr 2011
+changes:
+- Version 0.48_01 released to CPAN
+- t/05files.t - Have t/05files.t provide a reason for skipping the tests.
+- Inline.pm - Create REWRITE_CONFIG_FILE config option.
+- Makefile.PL - Test::Warn 0.23 or later needed for perl-5.13 and later.
+  (Older perls need 0.21 or later).
 ---
 version: 0.48
-date: Mon 21 Feb 2011
-      Version 0.48 released to CPAN. (No changes from 0.47_02.)
-
+date:    Mon 21 Feb 2011
+changes:
+- Version 0.48 released to CPAN. (No changes from 0.47_02.)
 ---
 version: 0.47_02
-date: Tues 1 Feb 2011
-      Version 0.47_02 released to CPAN.
-Makefile.PL - Change the Test::Warn dependency from 0.22 to 0.21 and
-              specify it in top-level Makefile.PL instead of in C/Makefile.PL.
-
+date:    Tues 1 Feb 2011
+changes:
+- Version 0.47_02 released to CPAN.
+- Makefile.PL - Change the Test::Warn dependency from 0.22 to 0.21 and
+  specify it in top-level Makefile.PL instead of in C/Makefile.PL.
 ---
 version: 0.47_01
-date: Sun 30 January 2011
-      Version 0.47_01 released to CPAN.
-      Changes only to Inline::C test suite - see C/Changes.
-
+date:    Sun 30 January 2011
+changes:
+- Version 0.47_01 released to CPAN.
+  Changes only to Inline::C test suite - see C/Changes.
 ---
 version: 0.47
-date: Fri 21 January 2011
-      Version 0.47 released to CPAN. No changes from 0.46_02
-
+date:    Fri 21 January 2011
+changes:
+- Version 0.47 released to CPAN. No changes from 0.46_02
 ---
 version: 0.46_02
-date: Wed 29 December 2010
-lib/Inline/MakeMaker.pm - apply patch from Raymond Mroz to accommodate the modern
-                          h2xs directory structure. Bump Inline::MakeMaker version
-                          to 0.45.
-
+date:    Wed 29 December 2010
+changes:
+- lib/Inline/MakeMaker.pm - apply patch from Raymond Mroz to accommodate the modern
+  h2xs directory structure. Bump Inline::MakeMaker version to 0.45.
 ---
 version: 0.46_01
-date: Wed 31 March 2010 (and released to CPAN as 0.46_01)
-Inline.pm - warn about untainting of Inline configuration info (where applicable)
-          - quieten non-numeric warnings in relation to devel releases
-          - quieten uninitialized warning regarding $ENV{WIN64} that can occur
-            in certain circumstances on MS Windows
-Inline.pod - Documentation change relating to introduction of further _TESTING
-             capabilities in Inline::C
-
+date:    Wed 31 March 2010 (and released to CPAN as 0.46_01)
+changes:
+- Inline.pm - warn about untainting of Inline configuration info (where applicable)
+- quieten non-numeric warnings in relation to devel releases
+- quieten uninitialized warning regarding $ENV{WIN64} that can occur
+  in certain circumstances on MS Windows
+- Inline.pod - Documentation change relating to introduction of further _TESTING
+  capabilities in Inline::C
 ---
 version: 0.46_01
-date: Mon 8 March 2010
-Inline.pm - add '_TESTING' config option
-          - hide the 'redefined' warning introduced by the fix to ticket 49669,
-            by placing the offending code in a 'no warnings "redefine";' block.
-          - bump require from 5.005 to 5.006
-
+date:    Mon 8 March 2010
+changes:
+- Inline.pm - add '_TESTING' config option
+- hide the 'redefined' warning introduced by the fix to ticket 49669,
+  by placing the offending code in a 'no warnings "redefine";' block.
+- bump require from 5.005 to 5.006
 ---
 version: 0.46_01
-date: Sun 14 feb 2010
-Inline.pm - add archname and perlversion number to config filename.
-C/C.pm - Second attempt at accommodating 'ccache cc' compiler (RT ticket 40140).
-
+date:    Sun 14 feb 2010
+changes:
+- Inline.pm - add archname and perlversion number to config filename.
+- C/C.pm - Second attempt at accommodating 'ccache cc' compiler (RT ticket 40140).
 ---
 version: 0.46
 date:    Fri Feb 12 2010
- Same as 0.45_02 (plus some minor doc alterations in Inline.pod).
-
+changes:
+- Same as 0.45_02 (plus some minor doc alterations in Inline.pod).
 ---
 version: 0.45_02
 date:    Fri Feb 5 2010
- Changes to Inline.pm, denter.pm, and Inline.pod relating to "fixing" untainting
- (to the extent that untainting of -T inline scripts works as documented).
- Many thanks to Patrick LeBoutillier.
- Also added C/t/08taint.t (which contains -T on the shebang line) as a basic test
- of untainting. (RT ticket 13084)
-
+changes:
+- Changes to Inline.pm, denter.pm, and Inline.pod relating to "fixing" untainting
+  (to the extent that untainting of -T inline scripts works as documented).
+  Many thanks to Patrick LeBoutillier.
+- Also added C/t/08taint.t (which contains -T on the shebang line) as a basic test
+  of untainting. (RT ticket 13084)
 ---
 version: 0.45_01
 date:    Thurs Jan 28 2010
-C/C.pod - document that *fully qualified* paths for LIBS, INC, TYPEMAPS and MYEXTLIB
-          are needed. (RT ticket 5207)
-Inline.pm - remove "defined" from "defined %main::Inline::Config::" as that usage
-            causes a deprecation warning with perl-5.11 and later. (RT ticket 53227)
-Inline.pm - fix sub push_overrides (RT ticket 49669)
-            This change responsible for "Subroutine Inline::C::get_parser redefined"
-            warnings that can occur during build stage under certain circumstances.
-denter.pm - local()ise $_ (in four places) (RT ticket 16801)
-Inline.pod - doc correction (thanks Alejandro Ochoa).
-C/Makefile.PL - accommodate 'ccache cc' (RT ticket 40140)
-              - accommodate ActivePerl-5.10.1 and later (RT ticket 49419)
-C/Cookbook.pod - typo fixes (thanks Brad Barber)
-               - Change "NAME" from "C Cookbook ..." to "Inline::C-Cookbook ...".
-                (RT ticket 45417)
-
+changes:
+- C/C.pod - document that *fully qualified* paths for LIBS, INC, TYPEMAPS and MYEXTLIB
+  are needed. (RT ticket 5207)
+- Inline.pm - remove "defined" from "defined %main::Inline::Config::" as that usage
+  causes a deprecation warning with perl-5.11 and later. (RT ticket 53227)
+- Inline.pm - fix sub push_overrides (RT ticket 49669)
+  This change responsible for "Subroutine Inline::C::get_parser redefined"
+  warnings that can occur during build stage under certain circumstances.
+- denter.pm - local()ise $_ (in four places) (RT ticket 16801)
+- Inline.pod - doc correction (thanks Alejandro Ochoa).
+- C/Makefile.PL - accommodate 'ccache cc' (RT ticket 40140)
+- accommodate ActivePerl-5.10.1 and later (RT ticket 49419)
+- C/Cookbook.pod - typo fixes (thanks Brad Barber)
+- Change "NAME" from "C Cookbook ..." to "Inline::C-Cookbook ...".
+  (RT ticket 45417)
 ---
 version: 0.45
 date:    Sat Nov 22 2008
-No changes from 0.44_01
-
+changes:
+- No changes from 0.44_01
 ---
 version: 0.44_01
 date:    Tues Oct 11 2008
 changes:
-  - Apply patch to Inline.pm that addresses a problem with whitespace occurring
-    in the name of the build directory. (RT ticket 4150)
-  - Fix ParseRegExp.pm. (RT ticket 6327)
-  - Fix (in Inline.pm) problem regarding the calling of the same script from
-    different builds of perl. (RT ticket 29326)
-  - Allow Inline::install() subroutine to apply to languages other than C and
-    CPP. (RT ticket 35517)
-  - Fix C/Makefile.PL so that the C compiler can still be found when $Config{cc}
-    reports something like /some/place/cc. (RT ticket 8251)
-  - In C/C.pm, allow for the calling of multiple typemaps (RT ticket 5639), and
-    have the "No Inline C functions bound to Perl" warning specify the file for
-    which no bindings were found (RT ticket 17774).
-  - Minor doc fixes.
-
+- Apply patch to Inline.pm that addresses a problem with whitespace occurring
+  in the name of the build directory. (RT ticket 4150)
+- Fix ParseRegExp.pm. (RT ticket 6327)
+- Fix (in Inline.pm) problem regarding the calling of the same script from
+  different builds of perl. (RT ticket 29326)
+- Allow Inline::install() subroutine to apply to languages other than C and
+  CPP. (RT ticket 35517)
+- Fix C/Makefile.PL so that the C compiler can still be found when $Config{cc}
+  reports something like /some/place/cc. (RT ticket 8251)
+- In C/C.pm, allow for the calling of multiple typemaps (RT ticket 5639), and
+  have the "No Inline C functions bound to Perl" warning specify the file for
+  which no bindings were found (RT ticket 17774).
+- Minor doc fixes.
 ---
 version: 0.44
 date:    Mon Oct 28 10:31:51 PST 2002
 changes:
-  - Doc fixes. Thanks Mitchell.
-  - Put all current ILSMs in doc and Makefile.PL
-
+- Doc fixes. Thanks Mitchell.
+- Put all current ILSMs in doc and Makefile.PL
+- Applied some patches from Patrick LeBoutillier, including one to make
+  things work out of the box on Win95 and friends. Rob helped too.
+- Added a warning to help debug why certain ILSMs might be failing.
+- Changes to Inline-FAQ
+- Fixed ParseRecDescent to handle 'unsigned foo()' and 'long foo()'
+- Updated README
+- Fixed %INC problem
+- Used File::Spec::Unix for %INC keys (which are always in Unix form)
+- Applied Mitchell's patch for Inline::C::ParseRegExp
+- Updated pod docs
+- Shortened BUILD_TIMER precision, per Leon Brocard's suggestion.
+- Applied Mitchell Charity's patch to fix Piers Harding's CPP problem.
+- Fixed bug with USING keyword
+- Added the USING keyword. This allows you to specify a list of modules
+  which can override certain parts of the Inline process.
+- Added Inline::C::ParseRecDescent and Inline::C::ParseRegExp to
+  provide two (hopefully) functionally identical C parsers. You use
+  one of these by saying 'use Inline C => DATA => USING => "ParseRegExp"'.
+  Big thanks to Mitchell Charity for ParseRegExp. It's over two orders
+  of magnitude faster than ParseRecDescent.
+- Added the more diagnostics to BUILD_NOISY.
+- Added BUILD_TIMERS for benchmarking the Inline build process.
+- Applied a (BIG) patch to the Inline distribution to use File::Spec
+  to manipulate all file paths. Thanks Mitchell Charity!
+- Fixed a bug in OS X. Inline::C was being required even if the object was
+  cached. That's because Inline.pm wasn't checking for .bundle.
+- Added an option to Inline::C called BUILD_NOISY. Setting this to
+  true will cause the build process to dump output to the screen
+  instead of to a file. You can set it with 'BUILD_NOISY => 1,' or
+  'ENABLE => "BUILD_NOISY"'.
+- Honor the PERL_INLINE_BUILD_NOISY environment variable, to do the
+  same as above. Environment variable has higher precedence.
+- Print the contents of 'out.make' to the screen on failure. This will
+  happen when BUILD_NOISY is off. When its on, you'll see the messages
+  in real time, but they won't go to 'out.make'.
+- Provide the NOISY shortcut so you can say
+  'perl -MInline=force,noisy foo.pl'.
+- Inline::MakeMaker uses the NOISY shortcut for its build command.
+  This way module builds are noisy like they should be.
+- Integrated the new improved Inline::MakeMaker
+- WriteInlineMakefile is deprecated for WriteMakefile
+- Added a patch by Rafael Garcia-Suarez to use $^X when
+  $Config::Config{perlpath} is wrong. (It happens)
+- Refactored the Parse::RecDescent grammar
+- Moved grammar module to Inline::C::recdescent
+- Support 'const' in types. Requested by Nicholas Clark
+- Other modifiers seemed to be busted. Like 'unsigned'. Got them working.
+- Started integrating Mitchell Charity's parser. Don't know how to
+  turn it on yet. It's currently in Inline::C::charity
+- Allow C++ based modules to be installed as well as C ones. Requested
+  by Piers Harding.
+- Call validate() for interpreted ILSMs even on load(). This patch is
+  dedicated to the very patient Mark Fowler who waited almost a year
+  for it. I hope that never happens again.
 ---
-version: 0.44
-date:    Sun Oct 27 23:34:50 PST 2002
+version: 0.43
+date:    Sat Jul 21 14:58:46 PDT 2001
 changes:
-  - Applied some patches from Patrick LeBoutillier, including one to make
-    things work out of the box on Win95 and friends. Rob helped too.
-  - Added a warning to help debug why certain ILSMs might be failing.
-
+- Removed *old* deprecated functionality.
+- Inline now works with *all* Perl release versions 5.005 and above.
+- I was comparing a version number to a md5 hash. Oops. Thanks Marcel.
+- Changed M51 error message which was causing confusion. It would
+  often come up in places I didn't anticipate.
+- Use $Config{dlext} instead of $Config{so}. Thanks Marcel.
 ---
-version: 0.44
-date:    Fri Oct 25 10:12:16 PDT 2002
+version: 0.42
+date:    Sun Jun 10 18:21:06 PDT 2001
 changes:
-  - Changes to Inline-FAQ
-
+- Re-fixed config generator path bug prevents ILSMs like I::Python
+  and I::Tcl from installing. (NEILW)
 ---
-version: 0.44
-date:    Thu Oct 24 16:17:27 PDT 2002
+version: 0.41
+date:    Tue Jun  5 00:23:46 PDT 2001
 changes:
-  - Fixed ParseRecDescent to handle 'unsigned foo()' and 'long foo()'
-  - Updated README
-  - Fixed %INC problem
-
+- Don't install .inline or .inl files with Inline::MakeMaker.
+  Require object name to be same as package name for installation.
+  Put hack in INIT block to fix Sarathy's patch ;)
+- Fixed config generator path bug that would prevent other ILSMs
+  from installing. Thanks Patrick.
+- Applied patch to (hopefully) handle CRLF variations properly.
+  Thanks Binkley
 ---
-version: 0.44
-date:    Wed Oct 23 10:27:41 PDT 2002
+version: 0.40
+date:    Sun May 27 18:59:59 PDT 2001
 changes:
-  - Used File::Spec::Unix for %INC keys (which are always in Unix form)
-
+- Bugfix. NAME not set right without AUTONAME.
+- TRIAL8 of Inline-0.40
+  Added option to distribute binary PPM modules with or without source.
+  Got UNTAINT to work again.
+- TRIAL7 of Inline-0.40
+  Fixed path bus for MacOS. Thanks Marcel.
+  'with' works again (with Event)
+  Inline::MakeMaker adds WriteMakefile dependency for Inline 0.40
+- TRIAL6 of Inline-0.40
+- Made Denter YAML compliant
+- Croak on usage of SITE_INSTALL
+- Update Inline.pod for 0.40 features
+- Detect and croak on old config files
+- TRIAL5 of Inline-0.40
+- Added alpha support for Inline::Files
+- Made all internal path names canonical
+- Finished TRIAL1 version of Inline-0.40
+- Short object names
+- Safer config generation
+- AUTONAME support
+- Reinstituted AutoLoading
+- Put all messages into subroutines inside Inline.pm
+- Completely reorganized the Inline internal object into major groups
+- API - Contract space for the ILSMs. Guaranteed backwards compatible
+  after Inline 1.00.
+- ILSM - Private space for ILSMs
+- INLINE - Private Inline space. Subject to constant change.
+- CONFIG - Config options. Not for use by ILSMs
+- MATCH - Matching criteria for the object.
+- STRUCT - Reserved for Inline::Struct
+- Added command proxy logic for Inline::MakeMaker utilities
+  INSTALL, MAKEDIST, MAKEPPD
+- Got _INSTALL_ option working with Inline::MakeMaker
+- Replaced Inline's use of Data::Dumper with Inline::Denter.
+  This is a stripped down version of Data::Denter. This change
+  makes Inline more secure because it doesn't need to eval()
+  untrusted code. Also removes the dependency on Safe.pm which has
+  known security flaws. Yay!
 ---
-version: 0.44
-date:    Mon Oct 21 16:49:54 PDT 2002
+version: 0.33
+date:    Sat Apr 28 20:20:29 PDT 2001
 changes:
-  - Applied Mitchell's patch for Inline::C::ParseRegExp
-
+- Use 'require FindBin' instead of 'use FindBin' for mod_perl.
+- Fixed Win32 bug. Drive letter 'c:' can be lower case.
+- Changed 'make install' to 'make pure_install'
+- Fixed bug of assuminh ':' for PATH separator. (Windows bug)
+- Rearranged test harness. Removed dependency on C for tests.
+  Invented Inline::Foo for testing.
+- Added ENABLE and DISABLE config modifiers.
+- Changed the way ILSMs are detected.
 ---
-version: 0.44
-date:    Mon Oct 21 00:17:22 PDT 2002
+version: 0.32
+date:    Mon Feb 26 07:44:34 PST 2001
 changes:
-  - Updated pod docs
-
+- Add DIRECTORY path to applicable warnings and error msgs
+- Warn if UNTAINT && SAFEMODE && ! DIRECTORY (croak if root)
+- Added GLOBAL_LOAD option with GLOBAL shortcut.
+- Added SAFEMODE option.
+- Safe->reval(DIRECTORY/config) if SAFE.
+- Blindly untaint all %ENV variables for UNTAINT.
+- Fixed MSWin32 bug of getting full path parts in dll name.
+- Fixed the "cut & paste" bug. (DOS line endings in Unix.)
+- Fixed detection of using Inline::Config.
+- Added UNTAINT option, which lets you use Inline with Perl's -T flag.
 ---
-version: 0.44
-date:    Thu Oct 17 20:00:46 PDT 2002
+version: 0.31
+date:    Fri Jan 19 00:13:31 PST 2001
 changes:
-  - Shortened BUILD_TIMER precision, per Leon Brocard's suggestion.
-  - Applied Mitchell Charity's patch to fix Piers Harding's CPP problem.
-  - Fixed bug with USING keyword
-
+- Changed doc instances of 'C<Inline>' to 'Inline'.
+- Reorganized the internal structure of the Inline DIRECTORY
+- Shortened install path to .Inline/lib/auto/...
+- Lengthened the build path to .Inline/build/...
+- Changed BLIB option to DIRECTORY
+- Changed default DIRECTORY from blib_I to _Inline or .Inline
 ---
-version: 0.44
-date:    Fri Oct 11 18:09:03 PDT 2002
+version: 0.30
+date:    Fri Dec  8 02:00:17 PST 2000
 changes:
-  - Added the USING keyword. This allows you to specify a list of modules
-    which can override certain parts of the Inline process.
-  - Added Inline::C::ParseRecDescent and Inline::C::ParseRegExp to
-    provide two (hopefully) functionally identical C parsers. You use
-    one of these by saying 'use Inline C => DATA => USING => "ParseRegExp"'.
-    Big thanks to Mitchell Charity for ParseRegExp. It's over two orders
-    of magnitude faster than ParseRecDescent.
-  - Added the more diagnostics to BUILD_NOISY.
-  - Added BUILD_TIMERS for benchmarking the Inline build process.
-
+- Major reworking of Inline.pm
+- Sweeping changes to
+- Configuaration
+- Syntax
+- Language integration
+  Too much to list here. See ToDo
 ---
-version: 0.44
-date:    Wed Oct  9 19:03:34 PDT 2002
+version: 0.26
+date:    Thu Sep 14 20:51:11 PDT 2000
 changes:
-  - Applied a (BIG) patch to the Inline distribution to use File::Spec
-    to manipulate all file paths. Thanks Mitchell Charity!
-
+- localize $/ and $\ to shield them from things like 'perl -l'.
+  Thanks Michael Schwern.
 ---
-version: 0.44
-date:    Tue Oct  8 11:47:39 PDT 2002
+version: 0.25
+date:    Fri Sep  1 10:07:33 PDT 2000
 changes:
-  - Fixed a bug in OS X. Inline::C was being required even if the object was
-    cached. That's because Inline.pm wasn't checking for .bundle.
-
+- Use MD5 on unmodified code only. User must force recompile if
+  auto_headers change. This would have caused existing installs to break.
+- Don't determine build path unless really needed, since a blib_I might
+  be created. This might be annoying for someone who is only *using* an
+  Inline extension module.
+- Mangle $VERSION into object name for modules
+- Support Inline->import(C=><DATA>); syntax
+- Return an empty list when the C function is of type void and doesn't
+  use any stack manipulating macros. (ie dXSARGS) It used to return
+  whatever was passed in on the stack. :-(
+- Force rebuild when SITE_INSTALL option is set.
+- Figured out what was actually causing the 0.23 AutoLoader bug.
+- Can't autoload from "./blib" (relative path) when chdir() has been
+  used. Fixed properly now. Can AutoLoad fix_make() again. :-)
 ---
-version: 0.44
-date:    Tue Oct  8 10:33:13 PDT 2002
+version: 0.24
+date:    Fri Aug 18 03:03:06 PDT 2000
 changes:
-  - Added an option to Inline::C called BUILD_NOISY. Setting this to
-    true will cause the build process to dump output to the screen
-    instead of to a file. You can set it with 'BUILD_NOISY => 1,' or
-    'ENABLE => "BUILD_NOISY"'.
-  - Honor the PERL_INLINE_BUILD_NOISY environment variable, to do the
-    same as above. Environment variable has higher precedence.
-  - Print the contents of 'out.make' to the screen on failure. This will
-    happen when BUILD_NOISY is off. When its on, you'll see the messages
-    in real time, but they won't go to 'out.make'.
-  - Provide the NOISY shortcut so you can say
-    'perl -MInline=force,noisy foo.pl'.
-  - Inline::MakeMaker uses the NOISY shortcut for its build command.
-    This way module builds are noisy like they should be.
-
+- Fixed Autoload bug found during "make test" of Inline installation.
 ---
-version: 0.44
-date:    Thu Oct  3 17:40:27 PDT 2002
+version: 0.23
+date:    Wed Aug 16 18:10:07 PDT 2000
 changes:
-  - Integrated the new improved Inline::MakeMaker
-  - WriteInlineMakefile is deprecated for WriteMakefile
-
+- Added support for MSWin32 operating systems which use the Microsoft
+  Visual C++ compiler.
 ---
-version: 0.44
-date:    Thu Oct  3 17:09:20 PDT 2002
+version: 0.22
+date:    Wed Aug  9 18:55:54 PDT 2000
 changes:
-  - Added a patch by Rafael Garcia-Suarez to use $^X when
-    $Config::Config{perlpath} is wrong. (It happens)
-
+- First alpha release to CPAN
 ---
-version: 0.44
-date:    Thu Oct  3 16:51:39 PDT 2002
+version: 0.01
+date:    Mon Jul 24 11:23:25 2000
 changes:
-  - Refactored the Parse::RecDescent grammar
-  - Moved grammar module to Inline::C::recdescent
-  - Support 'const' in types. Requested by Nicholas Clark
-  - Other modifiers seemed to be busted. Like 'unsigned'. Got them working.
-  - Started integrating Mitchell Charity's parser. Don't know how to
-    turn it on yet. It's currently in Inline::C::charity
-
----
-version: 0.44
-date:    Thu Oct  3 16:20:56 PDT 2002
-changes:
-  - Allow C++ based modules to be installed as well as C ones. Requested
-    by Piers Harding.
-
----
-version: 0.44
-date:    Wed Oct  2 21:04:13 PDT 2002
-changes:
-  - Call validate() for interpreted ILSMs even on load(). This patch is
-    dedicated to the very patient Mark Fowler who waited almost a year
-    for it. I hope that never happens again.
-
-0.43  Sat Jul 21 14:58:46 PDT 2001
-        - Removed *old* deprecated functionality.
-
-0.43  Sat Jul 21 14:53:33 PDT 2001
-        - Inline now works with *all* Perl release versions 5.005 and above.
-
-0.43  Thu Jul 19 17:29:17 PDT 2001
-        - I was comparing a version number to a md5 hash. Oops. Thanks Marcel.
-
-0.43  Thu Jul 19 17:29:17 PDT 2001
-        - Changed M51 error message which was causing confusion. It would
-          often come up in places I didn't anticipate.
-
-0.43  Thu Jul 19 17:29:17 PDT 2001
-        - Use $Config{dlext} instead of $Config{so}. Thanks Marcel.
-
-0.42  Sun Jun 10 18:21:06 PDT 2001
-        - Re-fixed config generator path bug prevents ILSMs like I::Python
-          and I::Tcl from installing. (NEILW)
-
-0.41  Tue Jun  5 00:23:46 PDT 2001
-        - Don't install .inline or .inl files with Inline::MakeMaker.
-          Require object name to be same as package name for installation.
-          Put hack in INIT block to fix Sarathy's patch ;)
-
-0.41  Sat Jun  2 19:53:58 PDT 2001
-        - Fixed config generator path bug that would prevent other ILSMs
-          from installing. Thanks Patrick.
-
-0.41  Sat Jun  2 19:53:58 PDT 2001
-        - Applied patch to (hopefully) handle CRLF variations properly.
-          Thanks Binkley
-
-0.40  Sun May 27 18:59:59 PDT 2001
-        - Bugfix. NAME not set right without AUTONAME.
-
-0.40  Sat May 26 13:41:18 PDT 2001
-        - TRIAL8 of Inline-0.40
-          Added option to distribute binary PPM modules with or without source.
-          Got UNTAINT to work again.
-
-0.40  Wed May 23 18:19:16 PDT 2001
-        - TRIAL7 of Inline-0.40
-          Fixed path bus for MacOS. Thanks Marcel.
-          'with' works again (with Event)
-          Inline::MakeMaker adds WriteMakefile dependency for Inline 0.40
-
-0.40  Wed May 23 01:14:23 PDT 2001
-        - TRIAL6 of Inline-0.40
-          Made Denter YAML compliant
-          Croak on usage of SITE_INSTALL
-          Update Inline.pod for 0.40 features
-          Detect and croak on old config files
-
-0.40  Mon May 21 18:06:30 PDT 2001
-        - TRIAL5 of Inline-0.40
-          Added alpha support for Inline::Files
-          Made all internal path names canonical
-
-0.40  Sun May 13 23:38:26 PDT 2001
-        - Finished TRIAL1 version of Inline-0.40
-          Short object names
-          Safer config generation
-          AUTONAME support
-          Reinstituted AutoLoading
-          Put all messages into subroutines inside Inline.pm
-
-0.40  Wed May  9 11:14:47 PDT 2001
-        - Completely reorganized the Inline internal object into major groups:
-          API - Contract space for the ILSMs. Guaranteed backwards compatible
-                after Inline 1.00.
-          ILSM - Private space for ILSMs
-          INLINE - Private Inline space. Subject to constant change.
-          CONFIG - Config options. Not for use by ILSMs
-          MATCH - Matching criteria for the object.
-          STRUCT - Reserved for Inline::Struct
-
-0.40  Wed May  9 11:14:47 PDT 2001
-        - Added command proxy logic for Inline::MakeMaker utilities:
-          INSTALL, MAKEDIST, MAKEPPD
-
-0.40  Wed May  9 11:14:47 PDT 2001
-        - Got _INSTALL_ option working with Inline::MakeMaker
-
-0.40  Sun Apr 29 13:58:40 PDT 2001
-        - Replaced Inline's use of Data::Dumper with Inline::Denter.
-          This is a stripped down version of Data::Denter. This change
-          makes Inline more secure because it doesn't need to eval()
-          untrusted code. Also removes the dependency on Safe.pm which has
-          known security flaws. Yay!
-
-0.33  Sat Apr 28 20:20:29 PDT 2001
-        - 'require FindBin' instead of 'use FindBin' for mod_perl.
-
-0.33  Sat Apr 28 20:20:29 PDT 2001
-        - Fixed Win32 bug. Drive letter 'c:' can be lower case.
-
-0.33  Sat Apr 28 20:20:29 PDT 2001
-        - Changed 'make install' to 'make pure_install'
-
-0.33  Sat Apr 28 20:20:29 PDT 2001
-        - Fixed bug of assuminh ':' for PATH separator. (Windows bug)
-
-0.33  Sat Apr 28 20:20:29 PDT 2001
-        - Rearranged test harness. Removed dependency on C for tests.
-          Invented Inline::Foo for testing.
-
-0.33  Sat Apr 28 20:20:29 PDT 2001
-        - Added ENABLE and DISABLE config modifiers.
-
-0.33  Sat Apr 28 20:20:29 PDT 2001
-        - Changed the way ILSMs are detected.
-
-0.32  Mon Feb 26 07:44:34 PST 2001
-        - Add DIRECTORY path to applicable warnings and error msgs
-
-0.32  Mon Feb 26 07:42:32 PST 2001
-        - Warn if UNTAINT && SAFEMODE && ! DIRECTORY (croak if root)
-
-0.32  Mon Feb 26 01:07:15 PST 2001
-        - Added GLOBAL_LOAD option with GLOBAL shortcut.
-
-0.32  Mon Feb 26 01:00:00 PST 2001
-        - Added SAFEMODE option.
-        - Safe->reval(DIRECTORY/config) if SAFE.
-        - Blindly untaint all %ENV variables for UNTAINT.
-
-0.32  Fri Feb 23 03:20:19 PST 2001
-        - Fixed MSWin32 bug of getting full path parts in dll name.
-
-0.32  Thu Feb 22 02:35:04 PST 2001
-        - Fixed the "cut & paste" bug. (DOS line endings in Unix.)
-
-0.32  Thu Feb 22 02:10:07 PST 2001
-        - Fixed detection of using Inline::Config.
-
-0.32  Wed Feb 21 23:40:33 PST 2001
-        - Added UNTAINT option, which lets you use Inline with Perl's -T flag.
-
-0.31  Fri Jan 19 00:13:31 PST 2001
-        - Changed doc instances of 'C<Inline>' to 'Inline'.
-
-0.31  Sat Jan 13 11:49:14 PST 2001
-        - Reorganized the internal structure of the Inline DIRECTORY
-        - Shortened install path to .Inline/lib/auto/...
-        - Lengthened the build path to .Inline/build/...
-
-0.31  Sat Jan 13 11:18:22 PST 2001
-        - Changed BLIB option to DIRECTORY
-        - Changed default DIRECTORY from blib_I to _Inline or .Inline
-
-0.30  Fri Dec  8 02:00:17 PST 2000
-        - Major reworking of Inline.pm
-        Sweeping changes to:
-        - Configuaration
-        - Syntax
-        - Language integration
-        Too much to list here. See ToDo
-
-0.26  Thu Sep 14 20:51:11 PDT 2000
-        - localize $/ and $\ to shield them from things like 'perl -l'.
-        Thanks Michael Schwern.
-
-0.25  Fri Sep  1 10:07:33 PDT 2000
-        - Use MD5 on unmodified code only. User must force recompile if
-        auto_headers change. This would have caused existing installs to break.
-
-0.25  Fri Sep  1 10:04:14 PDT 2000
-        - Don't determine build path unless really needed, since a blib_I might
-        be created. This might be annoying for someone who is only *using* an
-        Inline extension module.
-
-0.25  Fri Sep  1 08:35:53 PDT 2000
-        - Mangle $VERSION into object name for modules
-
-0.25  Thu Aug 31 22:46:25 PDT 2000
-        - Support Inline->import(C=><DATA>); syntax
-
-0.25  Sun Aug 20 20:52:24 PDT 2000
-        - Return an empty list when the C function is of type void and doesn't
-        use any stack manipulating macros. (ie dXSARGS) It used to return
-        whatever was passed in on the stack. :-(
-
-0.25  Fri Aug 18 18:45:24 PDT 2000
-        - Force rebuild when SITE_INSTALL option is set.
-
-0.25  Fri Aug 18 18:15:34 PDT 2000
-        - Figured out what was actually causing the 0.23 AutoLoader bug.
-        Can't autoload from "./blib" (relative path) when chdir() has been
-        used. Fixed properly now. Can AutoLoad fix_make() again. :-)
-
-0.24  Fri Aug 18 03:03:06 PDT 2000
-        - Fixed Autoload bug found during "make test" of Inline installation.
-
-0.23  Wed Aug 16 18:10:07 PDT 2000
-        - Added support for MSWin32 operating systems which use the Microsoft
-        Visual C++ compiler.
-
-0.22  Wed Aug  9 18:55:54 PDT 2000
-        - First alpha release to CPAN
-
-0.01  Mon Jul 24 11:23:25 2000
-        - original version; created by h2xs 1.19
+- original version; created by h2xs 1.19
