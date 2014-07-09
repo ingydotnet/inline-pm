@@ -2,7 +2,7 @@ package Inline;
 
 use strict;
 require 5.006;
-our $VERSION = '0.55_03';
+our $VERSION = '0.55_05';
 $VERSION = eval $VERSION;
 
 use AutoLoader 'AUTOLOAD';
@@ -1050,6 +1050,7 @@ sub with_configs {
     for my $mod (@{$o->{CONFIG}{WITH}}) {
 	my $ref = eval { $mod->Inline($o->{API}{language}); };
 	croak M25_no_WITH_support($mod, $@) if $@;
+	croak M65_WITH_not_lang($mod, $o->{API}{language}) unless $ref;
 	push @configs, %$ref;
     }
     return @configs;
@@ -2050,6 +2051,13 @@ Invalid attempt to install an Inline module using the '$lang' language.
 
 Only C and CPP (C++) based modules are currently supported.
 
+END
+}
+
+sub M65_WITH_not_lang {
+    my ($mod, $lang) = @_;
+    return <<END;
+$mod gave no 'with' hints for $lang.
 END
 }
 

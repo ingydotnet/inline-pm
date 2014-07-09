@@ -5,7 +5,7 @@ use Test;
 use diagnostics;
 
 BEGIN {
-    plan(tests => 8,
+    plan(tests => 9,
 	 todo => [],
 	 onfail => sub {},
 	);
@@ -75,15 +75,14 @@ print "$@\nnot ok 2\n" if $@;
   $INC{__PACKAGE__.'.pm'} = 1;
   sub Inline { return unless $_[1] eq 'Foo'; { PATTERN=>'qunx-' } }
 }
-eval <<'END';
 Inline->import(with => 'FakeMod');
-Inline->bind(Foo => <<'EOFOO');
-qunx-sub subtract2 {
-    qunx-return $_[0] qunx-- $_[1];
-}
-EOFOO
+Inline->bind(Foo => 'qunx-sub subtract2 { qunx-return $_[0] qunx-- $_[1]; }');
 ok(subtract2(3, 7) == -4);
-END
+
+{ package NoWith; $INC{__PACKAGE__.'.pm'} = 1; sub Inline { } }
+Inline->import(with => 'NoWith');
+eval { Inline->bind(NoWith => 'whatever'); };
+ok($@);
 
 __END__
 

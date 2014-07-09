@@ -5,7 +5,7 @@ use base 'Exporter';
 use ExtUtils::MakeMaker();
 use Carp;
 
-our $VERSION = "0.55_03";
+our $VERSION = "0.55_05";
 $VERSION = eval $VERSION;
 our @EXPORT = qw(WriteMakefile WriteInlineMakefile);
 
