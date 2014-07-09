@@ -1,4 +1,16 @@
 # Revision history for Perl extension Inline.
+# git log --format="     %s"
+
+---version 0.55_05
+8 Jul 2014
+     Make "with" hook return undef croak, test that.
+
+---version 0.55_04
+8 Jul 2014
+     Suppress warnings in older perls from C/t/14void_arg_PRD.t.
+     setruid throws exception not just on Win32 - trap in t/08taint.t.
+     C/t/14void_arg_PRD.t - Fix typo.
+
 
 ---version 0.55_03
 1 Jul 2014
