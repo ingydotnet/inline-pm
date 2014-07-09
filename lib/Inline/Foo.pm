@@ -1,6 +1,5 @@
 use strict;
 package Inline::Foo;
-$Inline::Foo::VERSION = '0.01';
 
 require Inline;
 @Inline::Foo::ISA = qw(Inline);
