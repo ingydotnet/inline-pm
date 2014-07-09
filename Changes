@@ -1,6 +1,11 @@
 # Revision history for Perl extension Inline.
 # git log --format="     %s"
 
+---version 0.56
+9 Jul 2014
+     Clean up formatting and whitespace
+     Removed a "sleep" from Inline::Foo::build
+
 ---version 0.55_05
 8 Jul 2014
      Make "with" hook return undef croak, test that.
