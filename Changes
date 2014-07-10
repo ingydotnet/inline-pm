@@ -2,7 +2,7 @@
 version: 0.60
 date:    
 changes:
-- "with" interface changed slightly - to get right $language use $_[-1].
+- The "with" interface changed slightly - to get right $language use $_[-1].
 ---
 version: 0.56_02
 date:    Thu Jul 10 03:36:04 BST 2014
