@@ -18,9 +18,9 @@ use Inline::Files;
 
 BEGIN {
     plan(tests => 1,
-	 todo => [],
-	 onfail => sub {},
-	);
+         todo => [],
+         onfail => sub {},
+        );
 }
 
 use Inline Config => DIRECTORY => '_Inline_test';
