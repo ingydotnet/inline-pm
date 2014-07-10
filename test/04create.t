@@ -6,9 +6,9 @@ use diagnostics;
 
 BEGIN {
     plan(tests => 1, 
-	 todo => [],
-	 onfail => sub {},
-	);
+         todo => [],
+         onfail => sub {},
+        );
     delete $ENV{PERL_INLINE_DIRECTORY};
     delete $ENV{HOME};
 }

@@ -7,9 +7,9 @@ use Inline Config => DIRECTORY => '_Inline_test';
 
 BEGIN {
     plan(tests => 3,
-	 todo => [],
-	 onfail => sub {},
-	);
+         todo => [],
+         onfail => sub {},
+        );
 }
 
 # test 1
