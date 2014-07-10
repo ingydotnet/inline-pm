@@ -87,8 +87,8 @@ sub import {
     # $pkg =~ s/^.*[\/\\]//;
     my $class = shift;
     if ($class ne 'Inline') {
-	croak M01_usage_use($class) if $class =~ /^Inline::/;
-	croak M02_usage();
+        croak M01_usage_use($class) if $class =~ /^Inline::/;
+        croak M02_usage();
     }
 
     $CONFIG{$pkg}{template} ||= $default_config;
@@ -100,54 +100,54 @@ sub import {
     my $control = shift;
 
     if ($control eq 'with') {
-	return handle_with($pkg, @_);
+        return handle_with($pkg, @_);
     }
     elsif ($control eq 'Config') {
-	return handle_global_config($pkg, @_);
+        return handle_global_config($pkg, @_);
     }
     elsif (exists $shortcuts{uc($control)}) {
-	handle_shortcuts($pkg, $control, @_);
-	$version_requested = $CONFIG{$pkg}{template}{PRINT_VERSION};
-	return;
+        handle_shortcuts($pkg, $control, @_);
+        $version_requested = $CONFIG{$pkg}{template}{PRINT_VERSION};
+        return;
     }
     elsif ($control =~ /^\S+$/ and $control !~ /\n/) {
-	my $language_id = $control;
-	my $option = shift || '';
-	my @config = @_;
-	my $next = 0;
-	for (@config) {
-	    next if $next++ % 2;
-	    croak M02_usage() if /[\s\n]/;
-	}
-	$o = bless {}, $class;
-	$o->{INLINE}{version} = $VERSION;
-	$o->{API}{pkg} = $pkg;
-	$o->{API}{script} = $script;
-	$o->{API}{language_id} = $language_id;
-	if ($option =~ /^(FILE|BELOW)$/ or
-	    not $option and
+        my $language_id = $control;
+        my $option = shift || '';
+        my @config = @_;
+        my $next = 0;
+        for (@config) {
+            next if $next++ % 2;
+            croak M02_usage() if /[\s\n]/;
+        }
+        $o = bless {}, $class;
+        $o->{INLINE}{version} = $VERSION;
+        $o->{API}{pkg} = $pkg;
+        $o->{API}{script} = $script;
+        $o->{API}{language_id} = $language_id;
+        if ($option =~ /^(FILE|BELOW)$/ or
+            not $option and
             defined $INC{File::Spec::Unix->catfile('Inline','Files.pm')} and
-	    Inline::Files::get_filename($pkg)
-	   ) {
-	    $o->read_inline_file;
-	    $o->{CONFIG} = handle_language_config(@config);
-	}
-	elsif ($option eq 'DATA' or not $option) {
-	    $o->{CONFIG} = handle_language_config(@config);
-	    push @DATA_OBJS, $o;
-	    return;
-	}
-	elsif ($option eq 'Config') {
-	    $CONFIG{$pkg}{$language_id} = handle_language_config(@config);
-	    return;
-	}
-	else {
-	    $o->receive_code($option);
-	    $o->{CONFIG} = handle_language_config(@config);
-	}
+            Inline::Files::get_filename($pkg)
+           ) {
+            $o->read_inline_file;
+            $o->{CONFIG} = handle_language_config(@config);
+        }
+        elsif ($option eq 'DATA' or not $option) {
+            $o->{CONFIG} = handle_language_config(@config);
+            push @DATA_OBJS, $o;
+            return;
+        }
+        elsif ($option eq 'Config') {
+            $CONFIG{$pkg}{$language_id} = handle_language_config(@config);
+            return;
+        }
+        else {
+            $o->receive_code($option);
+            $o->{CONFIG} = handle_language_config(@config);
+        }
     }
     else {
-	croak M02_usage();
+        croak M02_usage();
     }
     $o->glue;
 }
@@ -174,8 +174,8 @@ sub bind {
 
     my $next = 0;
     for (@config) {
-	next if $next++ % 2;
-	croak M03_usage_bind() if /[\s\n]/;
+        next if $next++ % 2;
+        croak M03_usage_bind() if /[\s\n]/;
     }
     $o = bless {}, $class;
     $o->{INLINE}{version} = $VERSION;
@@ -208,8 +208,8 @@ sub init {
     local ($/, $") = ("\n", ' '); local ($\, $,);
 
     while (my $o = shift(@DATA_OBJS)) {
-	$o->read_DATA;
-	$o->glue;
+        $o->read_DATA;
+        $o->glue;
     }
 }
 
@@ -237,54 +237,54 @@ sub glue {
     my $o = shift;
     my ($pkg, $language_id) = @{$o->{API}}{qw(pkg language_id)};
     my @config = (%{$CONFIG{$pkg}{template}},
-		  %{$CONFIG{$pkg}{$language_id} || {}},
-		  %{$o->{CONFIG} || {}},
-		 );
+                  %{$CONFIG{$pkg}{$language_id} || {}},
+                  %{$o->{CONFIG} || {}},
+                 );
     @config = $o->check_config(@config);
     $o->fold_options;
 
     $o->check_installed;
     $o->env_untaint if UNTAINT;
     if (not $o->{INLINE}{object_ready}) {
-	$o->check_config_file;                # Final DIRECTORY set here.
-	push @config, $o->with_configs;
-	my $language = $o->{API}{language};
-	croak M04_error_nocode($language_id) unless $o->{API}{code};
-	$o->check_module;
+        $o->check_config_file;                # Final DIRECTORY set here.
+        push @config, $o->with_configs;
+        my $language = $o->{API}{language};
+        croak M04_error_nocode($language_id) unless $o->{API}{code};
+        $o->check_module;
     }
     $o->env_untaint if UNTAINT;
     $o->obj_untaint if UNTAINT;
     print_version() if $version_requested;
     $o->reportbug() if $o->{CONFIG}{REPORTBUG};
     if (not $o->{INLINE}{object_ready}
-	or $o->{CONFIG}{PRINT_INFO}
+        or $o->{CONFIG}{PRINT_INFO}
        ) {
-	eval "require $o->{INLINE}{ILSM_module}";
-	croak M05_error_eval('glue', $@) if $@;
+        eval "require $o->{INLINE}{ILSM_module}";
+        croak M05_error_eval('glue', $@) if $@;
         $o->push_overrides;
-	bless $o, $o->{INLINE}{ILSM_module};
-	$o->validate(@config);
+        bless $o, $o->{INLINE}{ILSM_module};
+        $o->validate(@config);
     }
     else {
-	$o->{CONFIG} = {(%{$o->{CONFIG}}, @config)};
+        $o->{CONFIG} = {(%{$o->{CONFIG}}, @config)};
     }
     $o->print_info if $o->{CONFIG}{PRINT_INFO};
     unless ($o->{INLINE}{object_ready} or
-	    not length $o->{INLINE}{ILSM_suffix}) {
-	$o->build();
-	$o->write_inl_file() unless $o->{CONFIG}{_INSTALL_};
+            not length $o->{INLINE}{ILSM_suffix}) {
+        $o->build();
+        $o->write_inl_file() unless $o->{CONFIG}{_INSTALL_};
     }
     if ($o->{INLINE}{ILSM_suffix} ne 'so' and
-	$o->{INLINE}{ILSM_suffix} ne 'dll' and
-	$o->{INLINE}{ILSM_suffix} ne 'bundle' and
-	$o->{INLINE}{ILSM_suffix} ne 'sl' and
-	ref($o) eq 'Inline'
+        $o->{INLINE}{ILSM_suffix} ne 'dll' and
+        $o->{INLINE}{ILSM_suffix} ne 'bundle' and
+        $o->{INLINE}{ILSM_suffix} ne 'sl' and
+        ref($o) eq 'Inline'
        ) {
-	eval "require $o->{INLINE}{ILSM_module}";
-	croak M05_error_eval('glue', $@) if $@;
+        eval "require $o->{INLINE}{ILSM_module}";
+        croak M05_error_eval('glue', $@) if $@;
         $o->push_overrides;
-	bless $o, $o->{INLINE}{ILSM_module};
-	$o->validate(@config);
+        bless $o, $o->{INLINE}{ILSM_module};
+        $o->validate(@config);
     }
     $o->load;
     $o->pop_overrides;
@@ -346,13 +346,13 @@ sub read_DATA {
     my $o = shift;
     my ($pkg, $language_id) = @{$o->{API}}{qw(pkg language_id)};
     unless ($DATA_read{$pkg}++) {
-	no strict 'refs';
-	*Inline::DATA = *{$pkg . '::DATA'};
-	local ($/);
-	my ($CR, $LF) = (&Socket::CR, &Socket::LF);
-	(my $data = <Inline::DATA>) =~ s/$CR?$LF/\n/g;
-	@{$DATA{$pkg}} = split /(?m)^[ \t]{0,}(__\S+?__\n)/, $data;
-	shift @{$DATA{$pkg}} unless ($ {$DATA{$pkg}}[0] || '') =~ /__\S+?__\n/;
+        no strict 'refs';
+        *Inline::DATA = *{$pkg . '::DATA'};
+        local ($/);
+        my ($CR, $LF) = (&Socket::CR, &Socket::LF);
+        (my $data = <Inline::DATA>) =~ s/$CR?$LF/\n/g;
+        @{$DATA{$pkg}} = split /(?m)^[ \t]{0,}(__\S+?__\n)/, $data;
+        shift @{$DATA{$pkg}} unless ($ {$DATA{$pkg}}[0] || '') =~ /__\S+?__\n/;
     }
     ($marker, $o->{API}{code}) = splice @{$DATA{$pkg}}, 0, 2;
     croak M08_no_DATA_source_code($language_id)
@@ -369,32 +369,32 @@ sub check_config {
     my $o = shift;
     my @others;
     while (@_) {
-	my ($key, $value) = (shift, shift);
-	if (defined $default_config->{$key}) {
-	    if ($key =~ /^(WITH|USING)$/) {
-		croak M10_usage_WITH_USING()
+        my ($key, $value) = (shift, shift);
+        if (defined $default_config->{$key}) {
+            if ($key =~ /^(WITH|USING)$/) {
+                croak M10_usage_WITH_USING()
                   if (ref $value and ref $value ne 'ARRAY');
-		$value = [$value] unless ref $value;
-		$o->{CONFIG}{$key} = $value;
-		next;
-	    }
-	    $o->{CONFIG}{$key} = $value, next if not $value;
-	    if ($key eq 'DIRECTORY') {
-		croak M11_usage_DIRECTORY($value) unless (-d $value);
-		$value = abs_path($value);
-	    }
-	    elsif ($key eq 'NAME') {
-		croak M12_usage_NAME($value)
-		  unless $value =~ /^[a-zA-Z_](\w|::)*$/;
-	    }
-	    elsif ($key eq 'VERSION') {
-		croak M13_usage_VERSION($value) unless $value =~ /^\d\.\d\d*$/;
-	    }
-	    $o->{CONFIG}{$key} = $value;
-	}
-	else {
-	    push @others, $key, $value;
-	}
+                $value = [$value] unless ref $value;
+                $o->{CONFIG}{$key} = $value;
+                next;
+            }
+            $o->{CONFIG}{$key} = $value, next if not $value;
+            if ($key eq 'DIRECTORY') {
+                croak M11_usage_DIRECTORY($value) unless (-d $value);
+                $value = abs_path($value);
+            }
+            elsif ($key eq 'NAME') {
+                croak M12_usage_NAME($value)
+                  unless $value =~ /^[a-zA-Z_](\w|::)*$/;
+            }
+            elsif ($key eq 'VERSION') {
+                croak M13_usage_VERSION($value) unless $value =~ /^\d\.\d\d*$/;
+            }
+            $o->{CONFIG}{$key} = $value;
+        }
+        else {
+            push @others, $key, $value;
+        }
     }
     return (@others);
 }
@@ -428,17 +428,17 @@ sub fold_options {
 ##
     $untaint = $o->{CONFIG}{UNTAINT} || 0;
     $safemode = (($o->{CONFIG}{SAFEMODE} == -1) ?
-		 ($untaint ? 1 : 0) :
-		 $o->{CONFIG}{SAFEMODE}
-		);
+                 ($untaint ? 1 : 0) :
+                 $o->{CONFIG}{SAFEMODE}
+                );
     if (UNTAINT and
-	SAFEMODE and
-	not $o->{CONFIG}{DIRECTORY}) {
-	croak M49_usage_unsafe(1) if ($< == 0 or $> == 0);
-	warn M49_usage_unsafe(0) if $^W;
+        SAFEMODE and
+        not $o->{CONFIG}{DIRECTORY}) {
+        croak M49_usage_unsafe(1) if ($< == 0 or $> == 0);
+        warn M49_usage_unsafe(0) if $^W;
     }
     if ($o->{CONFIG}{AUTONAME} == -1) {
-	$o->{CONFIG}{AUTONAME} = length($o->{CONFIG}{NAME}) ? 0 : 1;
+        $o->{CONFIG}{AUTONAME} = length($o->{CONFIG}{NAME}) ? 0 : 1;
     }
     $o->{API}{cleanup} =
       ($o->{CONFIG}{CLEAN_AFTER_BUILD} and not $o->{CONFIG}{REPORTBUG});
@@ -451,11 +451,11 @@ sub check_installed {
     my $o = shift;
     $o->{INLINE}{object_ready} = 0;
     unless ($o->{API}{code} =~ /^[A-Fa-f0-9]{32}$/) {
-	require Digest::MD5;
-	$o->{INLINE}{md5} = Digest::MD5::md5_hex($o->{API}{code});
+        require Digest::MD5;
+        $o->{INLINE}{md5} = Digest::MD5::md5_hex($o->{API}{code});
     }
     else {
-	$o->{INLINE}{md5} = $o->{API}{code};
+        $o->{INLINE}{md5} = $o->{API}{code};
     }
     return if $o->{CONFIG}{_INSTALL_};
     return unless $o->{CONFIG}{VERSION};
@@ -491,13 +491,13 @@ sub check_installed {
     my $obj = File::Spec->catfile($realpath,'auto',$o->{API}{modpname},
                                   "$o->{API}{modfname}.$suffix");
     croak M30_error_no_obj($o->{CONFIG}{NAME}, $o->{API}{pkg},
-			   $realpath) unless -f $obj;
+                           $realpath) unless -f $obj;
 
     @{$o->{CONFIG}}{qw( PRINT_INFO
-			REPORTBUG
-			FORCE_BUILD
-			_INSTALL_
-		      )} = (0, 0, 0, 0);
+                        REPORTBUG
+                        FORCE_BUILD
+                        _INSTALL_
+                      )} = (0, 0, 0, 0);
 
     $o->{install_lib} = $realpath;
     $o->{INLINE}{ILSM_type} = 'compiled';
@@ -524,15 +524,15 @@ sub load {
     my $version = $o->{API}{version} || '0.00';
 
     eval <<END;
-	package $pkg;
-	push \@$ {pkg}::ISA, qw($module)
+        package $pkg;
+        push \@$ {pkg}::ISA, qw($module)
           unless \$module eq "$pkg";
         local \$$ {module}::VERSION = '$version';
 
-	package $module;
-	push \@$ {module}::ISA, qw(Exporter DynaLoader);
+        package $module;
+        push \@$ {module}::ISA, qw(Exporter DynaLoader);
         sub dl_load_flags { $global }
-	${module}::->bootstrap;
+        ${module}::->bootstrap;
 END
     croak M43_error_bootstrap($module, $@) if $@;
 }
@@ -560,20 +560,20 @@ sub satisfy_makefile_dep {
 sub handle_global_config {
     my $pkg = shift;
     while (@_) {
-	my ($key, $value) = (shift, shift);
-	croak M02_usage() if $key =~ /[\s\n]/;
-	$key = $value if $key =~ /^(ENABLE|DISABLE)$/;
-	croak M47_invalid_config_option($key)
-	  unless defined $default_config->{$key};
-	if ($key eq 'ENABLE') {
-	    $CONFIG{$pkg}{template}{$value} = 1;
-	}
-	elsif ($key eq 'DISABLE') {
-	    $CONFIG{$pkg}{template}{$value} = 0;
-	}
-	else {
-	    $CONFIG{$pkg}{template}{$key} = $value;
-	}
+        my ($key, $value) = (shift, shift);
+        croak M02_usage() if $key =~ /[\s\n]/;
+        $key = $value if $key =~ /^(ENABLE|DISABLE)$/;
+        croak M47_invalid_config_option($key)
+          unless defined $default_config->{$key};
+        if ($key eq 'ENABLE') {
+            $CONFIG{$pkg}{template}{$value} = 1;
+        }
+        elsif ($key eq 'DISABLE') {
+            $CONFIG{$pkg}{template}{$value} = 0;
+        }
+        else {
+            $CONFIG{$pkg}{template}{$key} = $value;
+        }
     }
 }
 
@@ -583,17 +583,17 @@ sub handle_global_config {
 sub handle_language_config {
     my @values;
     while (@_) {
-	my ($key, $value) = (shift, shift);
-	croak M02_usage() if $key =~ /[\s\n]/;
-	if ($key eq 'ENABLE') {
-	    push @values, $value, 1;
-	}
-	elsif ($key eq 'DISABLE') {
-	    push @values, $value, 0;
-	}
-	else {
-	    push @values, $key, $value;
-	}
+        my ($key, $value) = (shift, shift);
+        croak M02_usage() if $key =~ /[\s\n]/;
+        if ($key eq 'ENABLE') {
+            push @values, $value, 1;
+        }
+        elsif ($key eq 'DISABLE') {
+            push @values, $value, 0;
+        }
+        else {
+            push @values, $key, $value;
+        }
     }
     return {@values};
 }
@@ -605,17 +605,17 @@ sub handle_shortcuts {
     my $pkg = shift;
 
     for my $option (@_) {
-	my $OPTION = uc($option);
-	if ($OPTION eq 'SITE_INSTALL') {
-	    croak M58_site_install();
-	}
-	elsif ($shortcuts{$OPTION}) {
-	    my ($method, $arg) = @{$shortcuts{$OPTION}};
-	    $CONFIG{$pkg}{template}{$method} = $arg;
-	}
-	else {
-	    croak M48_usage_shortcuts($option);
-	}
+        my $OPTION = uc($option);
+        if ($OPTION eq 'SITE_INSTALL') {
+            croak M58_site_install();
+        }
+        elsif ($shortcuts{$OPTION}) {
+            my ($method, $arg) = @{$shortcuts{$OPTION}};
+            $CONFIG{$pkg}{template}{$method} = $arg;
+        }
+        else {
+            croak M48_usage_shortcuts($option);
+        }
     }
 }
 
@@ -626,10 +626,10 @@ sub handle_with {
     my $pkg = shift;
     croak M45_usage_with() unless @_;
     for (@_) {
-	croak M02_usage() unless /^[\w:]+$/;
-	eval "require $_;";
-	croak M46_usage_with_bad($_) . $@ if $@;
-	push @{$CONFIG{$pkg}{template}{WITH}}, $_;
+        croak M02_usage() unless /^[\w:]+$/;
+        eval "require $_;";
+        croak M46_usage_with_bad($_) . $@ if $@;
+        push @{$CONFIG{$pkg}{template}{WITH}}, $_;
     }
 }
 
@@ -651,24 +651,24 @@ sub receive_code {
     croak M02_usage() unless (defined $code and $code);
 
     if (ref $code eq 'CODE') {
-	$o->{API}{code} = &$code;
+        $o->{API}{code} = &$code;
     }
     elsif (ref $code eq 'ARRAY') {
         $o->{API}{code} = join '', @$code;
     }
     elsif ($code =~ m|[/\\:]| and
            $code =~ m|^[/\\:\w.\-\ \$\[\]<>]+$|) {
-	if (-f $code) {
-	    local ($/, *CODE);
-	    open CODE, "< $code" or croak M06_code_file_failed_open($code);
-	    $o->{API}{code} = <CODE>;
-	}
-	else {
-	    croak M07_code_file_does_not_exist($code);
-	}
+        if (-f $code) {
+            local ($/, *CODE);
+            open CODE, "< $code" or croak M06_code_file_failed_open($code);
+            $o->{API}{code} = <CODE>;
+        }
+        else {
+            croak M07_code_file_does_not_exist($code);
+        }
     }
     else {
-	$o->{API}{code} = $code;
+        $o->{API}{code} = $code;
     }
 }
 
@@ -686,12 +686,12 @@ sub read_inline_file {
              $Inline::Files::VERSION ge '0.51');
     croak M61_not_parsed() unless $lang = Inline::Files::get_filename($pkg);
     {
-	no strict 'refs';
-	local $/;
-	$Inline::FILE = \*{"${pkg}::$langfile"};
-#	open $Inline::FILE;
-	$o->{API}{code} = <$Inline::FILE>;
-#	close $Inline::FILE;
+        no strict 'refs';
+        local $/;
+        $Inline::FILE = \*{"${pkg}::$langfile"};
+#       open $Inline::FILE;
+        $o->{API}{code} = <$Inline::FILE>;
+#       close $Inline::FILE;
     }
 }
 
@@ -709,19 +709,19 @@ sub check_config_file {
 
     # First make sure we have the DIRECTORY
     if ($o->{CONFIG}{_INSTALL_}) {
-	croak M15_usage_install_directory()
-	  if $o->{CONFIG}{DIRECTORY};
-	my $cwd = Cwd::cwd();
+        croak M15_usage_install_directory()
+          if $o->{CONFIG}{DIRECTORY};
+        my $cwd = Cwd::cwd();
         $DIRECTORY =
           $o->{INLINE}{DIRECTORY} = File::Spec->catdir($cwd, $did);
-	if (not -d $DIRECTORY) {
-	    _mkdir($DIRECTORY, 0777)
-	      or croak M16_DIRECTORY_mkdir_failed($DIRECTORY);
-	}
+        if (not -d $DIRECTORY) {
+            _mkdir($DIRECTORY, 0777)
+              or croak M16_DIRECTORY_mkdir_failed($DIRECTORY);
+        }
     }
     else {
-	$DIRECTORY = $o->{INLINE}{DIRECTORY} =
-	  $o->{CONFIG}{DIRECTORY} || $o->find_temp_dir;
+        $DIRECTORY = $o->{INLINE}{DIRECTORY} =
+          $o->{CONFIG}{DIRECTORY} || $o->find_temp_dir;
     }
 
     if($o->{CONFIG}{REWRITE_CONFIG_FILE}) {
@@ -770,19 +770,19 @@ sub check_config_file {
                              # If there's a problem with the version number, the
                              # error message will output $config{version} anyway.
     croak M18_error_old_version($config{version}, $DIRECTORY)
-	unless (defined $config{version} and
+        unless (defined $config{version} and
                 $config{version} =~ /TRIAL/ or
-		$config{version} >= 0.40);
+                $config{version} >= 0.40);
     } # numeric warnings re-enabled.
 
     croak M19_usage_language($o->{API}{language_id}, $DIRECTORY)
       unless defined $config{languages}->{$o->{API}{language_id}};
     $o->{API}{language} = $config{languages}->{$o->{API}{language_id}};
     if ($o->{API}{language} ne $o->{API}{language_id}) {
-	if (defined $o->{$o->{API}{language_id}}) {
-	    $o->{$o->{API}{language}} = $o->{$o->{API}{language_id}};
-	    delete $o->{$o->{API}{language_id}};
-	}
+        if (defined $o->{$o->{API}{language_id}}) {
+            $o->{$o->{API}{language}} = $o->{$o->{API}{language_id}};
+            delete $o->{$o->{API}{language_id}};
+        }
     }
 
     $o->{INLINE}{ILSM_type} = $config{types}->{$o->{API}{language}};
@@ -800,13 +800,13 @@ sub create_config_file {
     # with arguments that make this routine get called again.
     # That way the queried modules don't stay loaded.
     if (defined $o) {
-	($dir) = $dir =~ /(.*)/s if UNTAINT;
-	my $perl = $Config{perlpath};
+        ($dir) = $dir =~ /(.*)/s if UNTAINT;
+        my $perl = $Config{perlpath};
         $perl = $^X unless -f $perl;
-	($perl) = $perl =~ /(.*)/s if UNTAINT;
-	local $ENV{PERL5LIB} if defined $ENV{PERL5LIB};
-	local $ENV{PERL5OPT} if defined $ENV{PERL5OPT};
-	my $inline = $INC{'Inline.pm'};
+        ($perl) = $perl =~ /(.*)/s if UNTAINT;
+        local $ENV{PERL5LIB} if defined $ENV{PERL5LIB};
+        local $ENV{PERL5OPT} if defined $ENV{PERL5OPT};
+        my $inline = $INC{'Inline.pm'};
         $inline ||= File::Spec->curdir();
         my($v,$d,$f) = File::Spec->splitpath($inline);
         $f = "" if $f eq 'Inline.pm';
@@ -820,45 +820,45 @@ sub create_config_file {
        ($inline,
         grep {(-d File::Spec->catdir($_,"Inline") or -d File::Spec->catdir($_,"auto","Inline") or -e File::Spec->catdir($_,"Parse/RecDescent.pm"))} @INC);
        system $perl, @_inc, "-MInline=_CONFIG_", "-e1", "$dir"
-	  and croak M20_config_creation_failed($dir);
-	return;
+          and croak M20_config_creation_failed($dir);
+        return;
     }
 
     my ($lib, $mod, $register, %checked,
-	%languages, %types, %modules, %suffixes);
+        %languages, %types, %modules, %suffixes);
   LIB:
     for my $lib (@INC) {
         next unless -d File::Spec->catdir($lib,"Inline");
         opendir LIB, File::Spec->catdir($lib,"Inline")
           or warn(M21_opendir_failed(File::Spec->catdir($lib,"Inline"))), next;
-	while ($mod = readdir(LIB)) {
-	    next unless $mod =~ /\.pm$/;
-	    $mod =~ s/\.pm$//;
-	    next LIB if ($checked{$mod}++);
-	    if ($mod eq 'Config') {     # Skip Inline::Config
-		warn M14_usage_Config();
-		next;
-	    }
-	    next if $mod =~ /^(MakeMaker|denter|messages)$/;
-	    # @INC is made safe by -T disallowing PERL5LIB et al
-	    ($mod) = $mod =~ /(.*)/;
-	    eval "require Inline::$mod;";
+        while ($mod = readdir(LIB)) {
+            next unless $mod =~ /\.pm$/;
+            $mod =~ s/\.pm$//;
+            next LIB if ($checked{$mod}++);
+            if ($mod eq 'Config') {     # Skip Inline::Config
+                warn M14_usage_Config();
+                next;
+            }
+            next if $mod =~ /^(MakeMaker|denter|messages)$/;
+            # @INC is made safe by -T disallowing PERL5LIB et al
+            ($mod) = $mod =~ /(.*)/;
+            eval "require Inline::$mod;";
             warn($@), next if $@;
-	    eval "\$register=&Inline::${mod}::register";
-	    next if $@;
-	    my $language = ($register->{language})
-	      or warn(M22_usage_register($mod)), next;
-	    for (@{$register->{aliases}}) {
-		warn(M23_usage_alias_used($mod, $_, $languages{$_})), next
-		  if defined $languages{$_};
-		$languages{$_} = $language;
-	    }
-	    $languages{$language} = $language;
-	    $types{$language} = $register->{type};
-	    $modules{$language} = "Inline::$mod";
-	    $suffixes{$language} = $register->{suffix};
-	}
-	closedir LIB;
+            eval "\$register=&Inline::${mod}::register";
+            next if $@;
+            my $language = ($register->{language})
+              or warn(M22_usage_register($mod)), next;
+            for (@{$register->{aliases}}) {
+                warn(M23_usage_alias_used($mod, $_, $languages{$_})), next
+                  if defined $languages{$_};
+                $languages{$_} = $language;
+            }
+            $languages{$language} = $language;
+            $types{$language} = $register->{type};
+            $modules{$language} = "Inline::$mod";
+            $suffixes{$language} = $register->{suffix};
+        }
+        closedir LIB;
     }
 
     my $file = File::Spec->catfile($ARGV[0], $configuration_file);
@@ -866,11 +866,11 @@ sub create_config_file {
     flock(CONFIG, LOCK_EX) if $^O !~ /^VMS|riscos|VOS$/;
     print CONFIG Inline::denter->new()
       ->indent(*version => $Inline::VERSION,
-	       *languages => \%languages,
-	       *types => \%types,
-	       *modules => \%modules,
-	       *suffixes => \%suffixes,
-	      );
+               *languages => \%languages,
+               *types => \%types,
+               *modules => \%modules,
+               *suffixes => \%suffixes,
+              );
     flock(CONFIG, LOCK_UN) if $^O !~ /^VMS|riscos|VOS$/;
     close CONFIG;
     exit 0;
@@ -885,20 +885,20 @@ sub check_module {
     return $o->install if $o->{CONFIG}{_INSTALL_};
 
     if ($o->{CONFIG}{NAME}) {
-	$module = $o->{CONFIG}{NAME};
+        $module = $o->{CONFIG}{NAME};
     }
     elsif ($o->{API}{pkg} eq 'main') {
-	$module = $o->{API}{script};
+        $module = $o->{API}{script};
         my($v,$d,$file) = File::Spec->splitpath($module);
         $module = $file;
-	$module =~ s|\W|_|g;
-	$module =~ s|^_+||;
-	$module =~ s|_+$||;
-	$module = 'FOO' if $module =~ /^_*$/;
-	$module = "_$module" if $module =~ /^\d/;
+        $module =~ s|\W|_|g;
+        $module =~ s|^_+||;
+        $module =~ s|_+$||;
+        $module = 'FOO' if $module =~ /^_*$/;
+        $module = "_$module" if $module =~ /^\d/;
     }
     else {
-	$module = $o->{API}{pkg};
+        $module = $o->{API}{pkg};
     }
 
     $o->{API}{suffix} = $o->{INLINE}{ILSM_suffix};
@@ -906,19 +906,19 @@ sub check_module {
 
     my $auto_level = 2;
     while ($auto_level <= 5) {
-	if ($o->{CONFIG}{AUTONAME}) {
-	    $module2 =
-	      $module . '_' . substr($o->{INLINE}{md5}, 0, 2 + $auto_level);
-	    $auto_level++;
-	} else {
-	    $module2 = $module;
-	    $auto_level = 6; # Don't loop on non-autoname objects
-	}
-	$o->{API}{module} = $module2;
-	my @modparts = split /::/, $module2;
-	$o->{API}{modfname} = $modparts[-1];
+        if ($o->{CONFIG}{AUTONAME}) {
+            $module2 =
+              $module . '_' . substr($o->{INLINE}{md5}, 0, 2 + $auto_level);
+            $auto_level++;
+        } else {
+            $module2 = $module;
+            $auto_level = 6; # Don't loop on non-autoname objects
+        }
+        $o->{API}{module} = $module2;
+        my @modparts = split /::/, $module2;
+        $o->{API}{modfname} = $modparts[-1];
         $o->{API}{modpname} = File::Spec->catdir(@modparts);
-	$o->{API}{build_dir} =
+        $o->{API}{build_dir} =
           File::Spec->catdir($o->{INLINE}{DIRECTORY},
                              'build',$o->{API}{modpname});
         $o->{API}{install_lib} =
@@ -929,25 +929,25 @@ sub check_module {
         $o->{API}{location} =
           File::Spec->catfile($o->{API}{install_lib},"auto",$o->{API}{modpname},
                               "$o->{API}{modfname}.$o->{INLINE}{ILSM_suffix}");
-	last unless -f $inl;
-	my %inl;
-	{   local ($/, *INL);
-	    open INL, $inl or croak M31_inline_open_failed($inl);
-	    %inl = Inline::denter->new()->undent(<INL>);
-	}
-	next unless ($o->{INLINE}{md5} eq $inl{md5});
-	next unless ($inl{inline_version} ge '0.40');
+        last unless -f $inl;
+        my %inl;
+        {   local ($/, *INL);
+            open INL, $inl or croak M31_inline_open_failed($inl);
+            %inl = Inline::denter->new()->undent(<INL>);
+        }
+        next unless ($o->{INLINE}{md5} eq $inl{md5});
+        next unless ($inl{inline_version} ge '0.40');
       next unless ($inl{Config}{version} eq $Config::Config{version});
       next unless ($inl{Config}{archname} eq $Config::Config{archname});
-	unless (-f $o->{API}{location}) {
-	    warn <<END if $^W;
+        unless (-f $o->{API}{location}) {
+            warn <<END if $^W;
 Missing object file: $o->{API}{location}
 For Inline file: $inl
 END
-	    next;
-	}
-	$o->{INLINE}{object_ready} = 1 unless $o->{CONFIG}{FORCE_BUILD};
-	last;
+            next;
+        }
+        $o->{INLINE}{object_ready} = 1 unless $o->{CONFIG}{FORCE_BUILD};
+        last;
     }
     unshift @::INC, $o->{API}{install_lib};
 }
@@ -972,13 +972,13 @@ sub install {
       unless $o->{CONFIG}{VERSION};
     croak M40_usage_install_badname($o->{CONFIG}{NAME}, $o->{API}{pkg})
       unless $o->{CONFIG}{NAME} eq $o->{API}{pkg};
-#	      $o->{CONFIG}{NAME} =~ /^$o->{API}{pkg}::\w(\w|::)+$/
-#	     );
+#             $o->{CONFIG}{NAME} =~ /^$o->{API}{pkg}::\w(\w|::)+$/
+#            );
 
     my ($mod_name, $mod_ver, $ext_name, $ext_ver) =
       ($o->{API}{pkg}, $ARGV[0], @{$o->{CONFIG}}{qw(NAME VERSION)});
     croak M41_usage_install_version_mismatch($mod_name, $mod_ver,
-					     $ext_name, $ext_ver)
+                                             $ext_name, $ext_ver)
       unless ($mod_ver eq $ext_ver);
     $o->{INLINE}{INST_ARCHLIB} = $ARGV[1];
 
@@ -1015,23 +1015,23 @@ sub write_inl_file {
     my $apiversion = $Config{apiversion} || $Config{xs_apiversion};
     print INL Inline::denter->new()
       ->indent(*md5, $o->{INLINE}{md5},
-	       *name, $o->{API}{module},
-	       *version, $o->{CONFIG}{VERSION},
-	       *language, $o->{API}{language},
-	       *language_id, $o->{API}{language_id},
-	       *installed, $o->{CONFIG}{_INSTALL_},
-	       *date_compiled, scalar localtime,
-	       *inline_version, $Inline::VERSION,
-	       *ILSM, { map {($_, $o->{INLINE}{"ILSM_$_"})}
-			(qw( module suffix type ))
-		      },
-	       *Config, { (map {($_,$Config{$_})}
-			   (qw( archname osname osvers
-				cc ccflags ld so version
-			      ))),
-			  (apiversion => $apiversion),
-			},
-	      );
+               *name, $o->{API}{module},
+               *version, $o->{CONFIG}{VERSION},
+               *language, $o->{API}{language},
+               *language_id, $o->{API}{language_id},
+               *installed, $o->{CONFIG}{_INSTALL_},
+               *date_compiled, scalar localtime,
+               *inline_version, $Inline::VERSION,
+               *ILSM, { map {($_, $o->{INLINE}{"ILSM_$_"})}
+                        (qw( module suffix type ))
+                      },
+               *Config, { (map {($_,$Config{$_})}
+                           (qw( archname osname osvers
+                                cc ccflags ld so version
+                              ))),
+                          (apiversion => $apiversion),
+                        },
+              );
     close INL;
 }
 
@@ -1042,10 +1042,10 @@ sub with_configs {
     my $o = shift;
     my @configs;
     for my $mod (@{$o->{CONFIG}{WITH}}) {
-	my $ref = eval { $mod->Inline($o->{API}{language}); };
-	croak M25_no_WITH_support($mod, $@) if $@;
-	croak M65_WITH_not_lang($mod, $o->{API}{language}) unless $ref;
-	push @configs, %$ref;
+        my $ref = eval { $mod->Inline($o->{API}{language}); };
+        croak M25_no_WITH_support($mod, $@) if $@;
+        croak M65_WITH_not_lang($mod, $o->{API}{language}) unless $ref;
+        push @configs, %$ref;
     }
     return @configs;
 }
@@ -1060,14 +1060,14 @@ sub env_untaint {
     {
     no warnings ('uninitialized'); # In case $ENV{$_} is set to undef.
       for (keys %ENV) {
-	  ($ENV{$_}) = $ENV{$_} =~ /(.*)/;
+          ($ENV{$_}) = $ENV{$_} =~ /(.*)/;
       }
     }
 
     # only accept dirs that are absolute and not world-writable
     $ENV{PATH} = $^O eq 'MSWin32' ?
                  join ';', grep {not /^\./ and -d $_
-				  } split /;/, $ENV{PATH}
+                                  } split /;/, $ENV{PATH}
                  :
                  join ':', grep {/^\// and -d $_ and $< == $> ? 1 : not (-W $_ or -O $_)
                                   } split /:/, $ENV{PATH};
@@ -1114,7 +1114,7 @@ sub clean_build {
         my $maybedir = File::Spec->catdir($prefix,$dir);
         if (($maybedir and -d $maybedir) and ($dir =~ /\w{36,}/)) {
             $o->rmpath($prefix,$dir);
-	}
+        }
     }
 
     close BUILD;
@@ -1127,13 +1127,13 @@ sub filter {
     my $o = shift;
     my $new_code = $o->{API}{code};
     for (@_) {
-	croak M52_invalid_filter($_) unless ref;
-	if (ref eq 'CODE') {
-	    $new_code = $_->($new_code);
-	}
-	else {
-	    $new_code = $_->filter($o, $new_code);
-	}
+        croak M52_invalid_filter($_) unless ref;
+        if (ref eq 'CODE') {
+            $new_code = $_->($new_code);
+        }
+        else {
+            $new_code = $_->filter($o, $new_code);
+        }
     }
     return $new_code;
 }
@@ -1173,12 +1173,12 @@ you think might be helpful. Patches are welcome! :-\)
 END
     my %versions;
     {
-	no strict 'refs';
-	%versions = map {eval "use $_();"; ($_, $ {$_ . '::VERSION'})}
-	qw (Digest::MD5 Parse::RecDescent
-	    ExtUtils::MakeMaker File::Path FindBin
-	    Inline
-	   );
+        no strict 'refs';
+        %versions = map {eval "use $_();"; ($_, $ {$_ . '::VERSION'})}
+        qw (Digest::MD5 Parse::RecDescent
+            ExtUtils::MakeMaker File::Path FindBin
+            Inline
+           );
     }
 
     $o->mkpath($o->{API}{build_dir});
@@ -1190,9 +1190,9 @@ END
     %Inline::REPORTBUG_Module_Versions = ();
     print REPORTBUG Inline::denter->new()
       ->indent(*REPORTBUG_Inline_Object, $o,
-	       *REPORTBUG_Perl_Config, \%Config::Config,
-	       *REPORTBUG_Module_Versions, \%versions,
-	      );
+               *REPORTBUG_Perl_Config, \%Config::Config,
+               *REPORTBUG_Module_Versions, \%versions,
+              );
     close REPORTBUG;
 }
 
@@ -1235,7 +1235,7 @@ $o->{API}{location}
 END
 
     eval {
-	print STDERR $o->info;
+        print STDERR $o->info;
     };
     print $@ if $@;
 
@@ -1289,8 +1289,8 @@ sub rmpath {
         $rmpath = File::Spec->catdir($prefix ? ($prefix,@parts) : @parts);
         ($rmpath) = $rmpath =~ /(.*)/ if UNTAINT;
         rmdir $rmpath
-	  or last; # rmdir failed because dir was not empty
-	pop @parts;
+          or last; # rmdir failed because dir was not empty
+        pop @parts;
     }
 }
 
@@ -1319,12 +1319,12 @@ sub _rmtree {
             }
 
             _rmtree(\@paths);
-	    ($root) = $root =~ /(.*)/ if UNTAINT;
+            ($root) = $root =~ /(.*)/ if UNTAINT;
             rmdir($root) or croak M54_rmdir_failed($root);
         }
         else {
-	    ($root) = $root =~ /(.*)/ if UNTAINT;
-	    unlink($root) or croak M55_unlink_failed($root);
+            ($root) = $root =~ /(.*)/ if UNTAINT;
+            unlink($root) or croak M55_unlink_failed($root);
         }
     }
 }
@@ -1342,12 +1342,12 @@ sub find_temp_dir {
     $home = $ENV{HOME} ? abs_path($ENV{HOME}) : '';
 
     if ($env and
-	-d $env and
-	-w $env) {
-	$temp_dir = $env;
+        -d $env and
+        -w $env) {
+        $temp_dir = $env;
     }
     elsif ($cwd = abs_path('.') and
-	   $cwd ne $home and
+           $cwd ne $home and
            -d File::Spec->catdir($cwd,".Inline") and
            -w File::Spec->catdir($cwd,".Inline")) {
         $temp_dir = File::Spec->catdir($cwd,".Inline");
