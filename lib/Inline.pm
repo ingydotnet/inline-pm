@@ -2,7 +2,7 @@ package Inline;
 
 use strict;
 require 5.006;
-our $VERSION = '0.56_01';
+our $VERSION = '0.56_02';
 $VERSION = eval $VERSION;
 
 use Inline::denter;

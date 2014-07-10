@@ -1,4 +1,9 @@
 ---
+version: 0.56_02
+date:    Thu Jul 10 03:36:04 BST 2014
+changes:
+- Remove AutoLoader stuff.
+---
 version: 0.56_01
 date:    Wed Jul  9 17:10:04 PDT 2014
 changes:
