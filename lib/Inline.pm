@@ -2,8 +2,8 @@ package Inline;
 
 use strict;
 require 5.006;
-our $VERSION = '0.56';
-$VERSION = eval $VERSION;
+our $VERSION = '0.56_01';
+$VERSION = '0.56_01';
 
 use AutoLoader 'AUTOLOAD';
 use Inline::denter;
@@ -688,8 +688,7 @@ sub read_inline_file {
     croak M59_bad_inline_file($lang) unless $langfile =~ /^[A-Z]\w*$/;
     croak M60_no_inline_files()
       unless (defined $INC{File::Spec::Unix->catfile("Inline","Files.pm")} and
-	      $Inline::Files::VERSION =~ /^\d\.\d\d$/ and
-	      $Inline::Files::VERSION ge '0.51');
+	      $Inline::Files::VERSION ='0.56_01';
     croak M61_not_parsed() unless $lang = Inline::Files::get_filename($pkg);
     {
 	no strict 'refs';
