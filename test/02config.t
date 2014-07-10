@@ -7,9 +7,9 @@ use Inline Config => DIRECTORY => '_Inline_test';
 
 BEGIN {
     plan(tests => 2,
-	 todo => [],
-	 onfail => sub {},
-	);
+         todo => [],
+         onfail => sub {},
+        );
 }
 
 # test 1
@@ -30,5 +30,3 @@ gogo-sub test2 {
     bar-return $_[0] gogo-eq 'test2';
 }
 END_OF_FOO
-
-
