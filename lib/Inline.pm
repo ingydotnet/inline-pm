@@ -3,9 +3,8 @@ package Inline;
 use strict;
 require 5.006;
 our $VERSION = '0.56_01';
-$VERSION = '0.56_01';
+$VERSION = eval $VERSION;
 
-use AutoLoader 'AUTOLOAD';
 use Inline::denter;
 use Config;
 use Carp;
@@ -643,10 +642,6 @@ sub DESTROY {
     $o->clean_build if $o->{CONFIG}{CLEAN_BUILD_AREA};
 }
 
-# Comment out the next 2 lines to stop autoloading of subroutines (testing)
-1;
-__END__
-
 #==============================================================================
 # Get the source code
 #==============================================================================
@@ -688,7 +683,8 @@ sub read_inline_file {
     croak M59_bad_inline_file($lang) unless $langfile =~ /^[A-Z]\w*$/;
     croak M60_no_inline_files()
       unless (defined $INC{File::Spec::Unix->catfile("Inline","Files.pm")} and
-	      $Inline::Files::VERSION ='0.56_01';
+             $Inline::Files::VERSION =~ /^\d\.\d\d$/ and
+             $Inline::Files::VERSION ge '0.51');
     croak M61_not_parsed() unless $lang = Inline::Files::get_filename($pkg);
     {
 	no strict 'refs';

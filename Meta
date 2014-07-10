@@ -27,5 +27,3 @@ devel:
 =travis:
   type: perl
   irc: irc.perl.org#inline
-
-branch: zd
