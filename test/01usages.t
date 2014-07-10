@@ -15,9 +15,11 @@ BEGIN {
 
 use Inline Config => DIRECTORY => '_Inline_test';
 
+my $t; BEGIN { $t = -d 't' ? 't' : 'test' }
+
 # test 1
 # Make sure that the syntax for reading external files works.
-use Inline Foo => File::Spec->catfile(File::Spec->curdir(),'t','file');
+use Inline Foo => File::Spec->catfile(File::Spec->curdir(),$t,'file');
 ok(test1('test1'));
 
 # test 2 & 3

@@ -17,12 +17,11 @@ use Test::Warn;
 # (Affects ActivePerl only.)
 $ENV{ACTIVEPERL_CONFIG_SILENT} = 1;
 
-my $w = 'config file removed';
+my $w = 'config file removal successful';
 
 warnings_like {require_rewrite()} [qr/$w/], 'warn_test';
 
-ok($@, '"Inline Bogus" test');
-
 sub require_rewrite {
-    eval {require './t/07rewrite2_config.p';};
+    my $t = -d 't' ? 't' : 'test';
+    require "./$t/06rewrite_config.p";
 }
