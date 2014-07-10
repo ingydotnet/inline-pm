@@ -18,6 +18,7 @@ author:
 requires:
   perl: 5.6.0
   Digest::MD5: 0
+  Inline::C: 0
 
 devel:
   git: git@github.org/ingydotnet/inline-pm
