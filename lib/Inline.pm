@@ -1,9 +1,7 @@
+use strict; use warnings;
 package Inline;
 
-use strict;
-require 5.006;
 our $VERSION = '0.56_02';
-$VERSION = eval $VERSION;
 
 use Inline::denter;
 use Config;
@@ -20,7 +18,8 @@ my $version_requested = 0;
 my $version_printed = 0;
 my $untaint = 0;
 my $safemode = 0;
-$Inline::languages = undef; #needs to be global for AutoLoaded error messages
+
+our $languages = undef;
 
 our $did = '_Inline'; # Default Inline Directory
 
@@ -121,7 +120,7 @@ sub import {
 	    croak M02_usage() if /[\s\n]/;
 	}
 	$o = bless {}, $class;
-	$o->{INLINE}{version} = $Inline::VERSION;
+	$o->{INLINE}{version} = $VERSION;
 	$o->{API}{pkg} = $pkg;
 	$o->{API}{script} = $script;
 	$o->{API}{language_id} = $language_id;
@@ -179,7 +178,7 @@ sub bind {
 	croak M03_usage_bind() if /[\s\n]/;
     }
     $o = bless {}, $class;
-    $o->{INLINE}{version} = $Inline::VERSION;
+    $o->{INLINE}{version} = $VERSION;
     $o->{API}{pkg} = $pkg;
     $o->{API}{script} = $script;
     $o->{API}{language_id} = $language_id;
@@ -226,7 +225,7 @@ sub print_version {
     return if $version_printed++;
     print STDERR <<END;
 
-    You are using Inline.pm version $Inline::VERSION
+    You are using Inline.pm version $VERSION
 
 END
 }
@@ -1402,12 +1401,8 @@ sub _mkdir {
     return mkdir($dir, $mode);
 }
 
-# Comment out the next 2 lines to stop autoloading of messages (for testing)
-#1;
-#__END__
-
 #==============================================================================
-# Error messages are autoloaded
+# Error messages
 #==============================================================================
 
 sub M01_usage_use {
@@ -2057,4 +2052,3 @@ END
 }
 
 1;
-__END__
