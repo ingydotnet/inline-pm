@@ -89,7 +89,7 @@ MAKEFILE
     for (0..$#objects) {
         print MAKEFILE <<MAKEFILE;
 $obj_rules[$_]: \$(TO_INST_PM)
-	\$(PERL) -Mblib -MInline=NOISY,_INSTALL_ -M$objects[$_] -e"Inline::satisfy_makefile_dep({API => {modinlname => '$obj_rules[$_]', module => '$objects[$_]'}});" $version \$(INST_ARCHLIB)
+        \$(PERL) -Mblib -MInline=NOISY,_INSTALL_ -M$objects[$_] -e"Inline::satisfy_makefile_dep({API => {modinlname => '$obj_rules[$_]', module => '$objects[$_]'}});" $version \$(INST_ARCHLIB)
 MAKEFILE
     }
 
