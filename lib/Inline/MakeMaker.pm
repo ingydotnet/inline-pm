@@ -61,6 +61,7 @@ END
                     my ($vol, $dirs, $file) = File::Spec->splitpath(substr($path, length($lib)+1));
                     my @dirs = File::Spec->splitdir($dirs);
                     pop @dirs unless length($dirs[$#dirs]);
+                    next unless ($file =~ /.pm$/);
                     $file =~ s/\.[^.]+$//;
 
                     push @objects, join('::', @dirs, $file);
