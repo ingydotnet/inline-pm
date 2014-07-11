@@ -14,9 +14,9 @@ use Test::More tests => 2;
 use Test::Warn;
 
 BEGIN {
-    mkdir('_Inline_test');
+    mkdir('_Inline_06');
 }
-use Inline Config => DIRECTORY => '_Inline_test';
+use Inline Config => DIRECTORY => '_Inline_06';
 eval q{use Inline 'Bogus' => 'code';};
 
 # Suppress "Set up gcc environment ..." warning.
@@ -34,5 +34,5 @@ sub require_rewrite {
 
 use File::Path;
 END {
-    rmtree('_Inline_test');
+    rmtree('_Inline_06');
 }
