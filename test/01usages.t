@@ -1,8 +1,9 @@
-use File::Spec;
-use lib (File::Spec->catdir(File::Spec->curdir(),'blib','lib'), File::Spec->curdir());
-use strict;
-use Test;
-use diagnostics;
+use strict; use warnings;
+use File::Basename;
+use lib dirname(__FILE__), 'inc';
+use TestInlineSetup;
+
+use Test::More;
 
 BEGIN {
     # XXX Not working with `prove -lv t` yet
@@ -13,7 +14,7 @@ BEGIN {
         );
 }
 
-use Inline Config => DIRECTORY => '_Inline_test';
+use Inline Config => DIRECTORY => '_Inline_01usages';
 
 my $t; BEGIN { $t = -d 't' ? 't' : 'test' }
 
