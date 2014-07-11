@@ -2,7 +2,8 @@ use strict;
 package Inline::Foo;
 
 require Inline;
-@Inline::Foo::ISA = qw(Inline);
+our @ISA = qw(Inline);
+our $VERSION = '0.02';
 
 use Carp;
 use File::Spec;
@@ -53,6 +54,7 @@ sub build {
     $code =~ s/bar-//g if $o->{ILSM}{BAR};
     {
         package Foo::Tester;
+	our $VERSION = '0.02';
         eval $code;
     }
     croak "Foo build failed:\n$@" if $@;
