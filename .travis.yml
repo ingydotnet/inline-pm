@@ -19,6 +19,9 @@ install:
 - cpanm --quiet --notest
   Devel::Cover::Report::Coveralls
   Digest::MD5
+  File::Spec
+  Test::More
+  Test::Warn
 
 script:
 - PERL5OPT=-MDevel::Cover=-coverage,statement,branch,condition,path,subroutine

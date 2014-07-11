@@ -1,4 +1,9 @@
 ---
+version: 0.58
+date:    Fri Jul 11 07:02:12 BST 2014
+changes:
+- Fix tabs, add $VERSIONs, fix prereqs
+---
 version: 0.57
 date:    Fri Jul 11 02:05:00 BST 2014
 changes:

@@ -1,7 +1,7 @@
 =meta: 0.0.1
 
 name: Inline
-version: 0.57
+version: 0.58
 abstract: Write Perl subroutines in other programming languages
 homepage: https://metacpan.org/release/Inline
 
