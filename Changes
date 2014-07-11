@@ -1,4 +1,9 @@
 ---
+version: 0.57
+date:    Fri Jul 11 02:05:00 BST 2014
+changes:
+- Inline::C separated from Inline
+---
 version: 0.56_03
 date:    
 changes:
