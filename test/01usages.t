@@ -33,23 +33,19 @@ is($@, '', 'init');
 Inline->bind(Foo => 'foo-sub subtract { foo-return $_[0] foo-- $_[1]; }');
 is(subtract(3, 7), -4, 'bind');
 
-# XXX Not working with `prove -lv t` yet
+{
+  package FakeMod;
+  $INC{__PACKAGE__.'.pm'} = 1;
+  sub Inline { return unless $_[1] eq 'Foo'; { PATTERN=>'qunx-' } }
+}
+Inline->import(with => 'FakeMod');
+Inline->bind(Foo => 'qunx-sub subtract2 { qunx-return $_[0] qunx-- $_[1]; }');
+is(subtract2(3, 7), -4, 'with works');
 
-# # test 8
-# # Make sure 'with' works
-# {
-#   package FakeMod;
-#   $INC{__PACKAGE__.'.pm'} = 1;
-#   sub Inline { return unless $_[1] eq 'Foo'; { PATTERN=>'qunx-' } }
-# }
-# Inline->import(with => 'FakeMod');
-# Inline->bind(Foo => 'qunx-sub subtract2 { qunx-return $_[0] qunx-- $_[1]; }');
-# ok(subtract2(3, 7) == -4);
-# 
-# { package NoWith; $INC{__PACKAGE__.'.pm'} = 1; sub Inline { } }
-# Inline->import(with => 'NoWith');
-# eval { Inline->bind(NoWith => 'whatever'); };
-# ok($@);
+{ package NoWith; $INC{__PACKAGE__.'.pm'} = 1; sub Inline { } }
+Inline->import(with => 'NoWith');
+eval { Inline->bind(NoWith => 'whatever'); };
+isnt($@, '', 'check "with" croaks if no info returned');
 
 done_testing;
 
