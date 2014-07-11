@@ -3,6 +3,7 @@ version: 0.56_03
 date:    
 changes:
 - The "with" interface changed slightly - to get right $language use $_[-1].
+- Add Contrib file
 ---
 version: 0.56_02
 date:    Thu Jul 10 03:36:04 BST 2014
