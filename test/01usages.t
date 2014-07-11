@@ -7,70 +7,31 @@ use Test::More;
 
 use Inline Config => DIRECTORY => '_Inline_01usages';
 
-BEGIN {
-    # plan(tests => 9,
-    plan(tests => 7,
-         todo => [],
-         onfail => sub {},
-    );
-}
-
 my $t; BEGIN { $t = -d 't' ? 't' : 'test' }
 
-# test 1
-# Make sure that the syntax for reading external files works.
 use Inline Foo => File::Spec->catfile(File::Spec->curdir(),$t,'file');
-ok(test1('test1'));
+ok(test1('test1'), 'read external file');
 
-# test 2 & 3
-# Make sure that data files work
 use Inline Foo => 'DATA';
-ok(test2('test2'));
+ok(test2('test2'), 'DATA handle');
 use Inline 'Foo';
-ok(not test3('test3'));
+ok(!test3('test3'), 'unspecified = DATA handle');
 
-# test 4
-# Make sure string form works
-ok(test4('test4'));
-use Inline Foo => <<'END_OF_FOO';
-foo-sub test4 {
-    foo-return $_[0] foo-eq 'test4';
-}
-END_OF_FOO
+ok(test4('test4'), 'given as string');
+use Inline Foo => 'foo-sub test4 { foo-return $_[0] foo-eq "test4"; }';
 
-# test 5
-# Make sure language name aliases work ('foo' instead of 'Foo')
-ok(test5('test5'));
-use Inline foo => <<'END_OF_FOO';
-foo-sub test5 {
-    foo-return $_[0] foo-eq 'test5';
-}
-END_OF_FOO
+ok(test5('test5'), 'lang alias');
+use Inline foo => 'foo-sub test5 { foo-return $_[0] foo-eq "test5"; }';
 
-# test 6
-# Make sure Inline->init works
 eval <<'END';
 use Inline Foo => 'DATA';
 Inline->init;
-ok(add(3, 7) == 10);
-
+ok(add(3, 7) == 10, 'Inline->init actual');
 END
+is($@, '', 'init');
 
-print "$@\nnot ok 1\n" if $@;
-
-# test 7
-# Make sure bind works
-eval <<'END';
-Inline->bind(Foo => <<'EOFOO');
-foo-sub subtract {
-    foo-return $_[0] foo-- $_[1];
-}
-EOFOO
-ok(subtract(3, 7) == -4);
-
-END
-
-print "$@\nnot ok 2\n" if $@;
+Inline->bind(Foo => 'foo-sub subtract { foo-return $_[0] foo-- $_[1]; }');
+is(subtract(3, 7), -4, 'bind');
 
 # XXX Not working with `prove -lv t` yet
 
@@ -89,6 +50,8 @@ print "$@\nnot ok 2\n" if $@;
 # Inline->import(with => 'NoWith');
 # eval { Inline->bind(NoWith => 'whatever'); };
 # ok($@);
+
+done_testing;
 
 __END__
 
