@@ -1,16 +1,18 @@
-use File::Spec;
-use lib (File::Spec->catdir(File::Spec->curdir(),'blib','lib'), File::Spec->curdir());
-use strict;
-use Test;
-use diagnostics;
-use Inline Config => DIRECTORY => '_Inline_test';
+use strict; use warnings;
+use File::Basename;
+use lib dirname(__FILE__);
+use TestInlineSetup;
+
+use Test::More;
+
+use Inline Config => DIRECTORY => '_Inline_05files';
 
 BEGIN {
     eval "require Inline::Files";
-    if($@) {
-      warn "Skipping - couldn't load the Inline::Files module\n";
-      print "1..1\nok 1\n";
-      exit 0;
+    if ($@) {
+        warn "Skipping - couldn't load the Inline::Files module\n";
+        print "1..1\nok 1\n";
+        exit 0;
     }
 }
 
@@ -20,10 +22,8 @@ BEGIN {
     plan(tests => 1,
          todo => [],
          onfail => sub {},
-        );
+    );
 }
-
-use Inline Config => DIRECTORY => '_Inline_test';
 
 # test 1
 # Make sure that Inline::Files support works

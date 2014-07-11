@@ -1,15 +1,18 @@
-use File::Spec;
-use lib (File::Spec->catdir(File::Spec->curdir(),'blib','lib'), File::Spec->curdir());
-use strict;
-use Test;
-use diagnostics;
-use Inline Config => DIRECTORY => '_Inline_test';
+use strict; use warnings;
+use File::Basename;
+use lib dirname(__FILE__);
+#use TestInlineSetup 'no-delete';
+use TestInlineSetup;
+
+use Test::More;
+
+use Inline Config => DIRECTORY => '_Inline_03errors';
 
 BEGIN {
     plan(tests => 3,
          todo => [],
          onfail => sub {},
-        );
+    );
 }
 
 # test 1

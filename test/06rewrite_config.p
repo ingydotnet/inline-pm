@@ -1,7 +1,7 @@
 Inline->init() ;
 
 use Inline Config =>
-    DIRECTORY => '_Inline_test',
+    DIRECTORY => '_Inline',
     _TESTING => 1,
     REWRITE_CONFIG_FILE => 1;
 

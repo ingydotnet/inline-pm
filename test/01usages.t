@@ -1,20 +1,19 @@
 use strict; use warnings;
 use File::Basename;
-use lib dirname(__FILE__), 'inc';
+use lib dirname(__FILE__);
 use TestInlineSetup;
 
 use Test::More;
 
+use Inline Config => DIRECTORY => '_Inline_01usages';
+
 BEGIN {
-    # XXX Not working with `prove -lv t` yet
     # plan(tests => 9,
     plan(tests => 7,
          todo => [],
          onfail => sub {},
-        );
+    );
 }
-
-use Inline Config => DIRECTORY => '_Inline_01usages';
 
 my $t; BEGIN { $t = -d 't' ? 't' : 'test' }
 

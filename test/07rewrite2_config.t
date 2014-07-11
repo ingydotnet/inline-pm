@@ -7,8 +7,11 @@ BEGIN {
   }
 };
 
-use warnings;
-use strict;
+use strict; use warnings;
+use File::Basename;
+use lib dirname(__FILE__);
+use TestInlineSetup;
+
 use Test::More tests => 2;
 
 use Test::Warn;
