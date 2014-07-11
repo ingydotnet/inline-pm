@@ -3,9 +3,9 @@ use Test;
 
 BEGIN {
     plan(tests => 2,
-	 todo => [],
-	 onfail => sub {},
-	);
+         todo => [],
+         onfail => sub {},
+        );
 }
 
 use Math::Simple qw(add subtract);
