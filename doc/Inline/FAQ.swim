@@ -84,8 +84,6 @@ without distributing the C code! And I've decided to share it with all of you
 NOTE: Future versions of Inline will make this process a one line command. But
 for now just use this simple recipe.
 
-----
-
 The Inline 0.40 distribution comes with a sample extension module called
 Math::Simple. Theoretically you could distribute this module on CPAN. It has
 all the necessary support for installation. You can find it in
@@ -175,8 +173,6 @@ C) Delete Math-Simple.tar and Math-Simple.ppd.
 D) Test with:
 
   perl -MMath::Simple -le 'print add(37, 42)'
-
-----
 
 That's it. The process should also work with zip instead of tar, but I haven't
 tried it.

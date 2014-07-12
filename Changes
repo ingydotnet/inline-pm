@@ -1,4 +1,9 @@
 ---
+version: 0.59
+date:    Sat Jul 12 12:11:10 PDT 2014
+changes:
+- Finish migrating and updating docs
+---
 version: 0.58
 date:    Fri Jul 11 07:02:12 BST 2014
 changes:
