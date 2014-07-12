@@ -1123,11 +1123,9 @@ Sisyphus <sisyphus@cpan.org> fixed some bugs and is current co-maintainer.
 
 =over
 
-=item * Copyright 2000-2002. Brian Ingerson.
+=item * Copyright 2000-2014. Ingy döt Net.
 
 =item * Copyright 2008, 2010-2014. Sisyphus.
-
-=item * Copyright 2014. Ingy döt Net.
 
 =back
 

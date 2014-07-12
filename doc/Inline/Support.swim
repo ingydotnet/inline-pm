@@ -1,134 +1,131 @@
-=head1 NAME
+Inline-Support
+==============
 
-Inline-Support - Support Information for Inline.pm and related modules.
+Support Information for Inline.pm and related modules.
 
-=head1 DESCRIPTION
+= Description
 
-This document contains all of the latest support information for
-C<Inline.pm> and the recognized Inline Language Support Modules (ILSMs)
-available on CPAN.
+This document contains all of the latest support information for `Inline.pm`
+and the recognized Inline Language Support Modules (ILSMs) available on CPAN.
 
-=head1 SUPPORTED LANGUAGES
+= Supported Languages
 
-The most important language that Inline supports is C<C>. That is
-because Perl itself is written in C<C>. By giving a your Perl scripts
-access to C<C>, you in effect give them access to the entire glorious
-internals of Perl. (Caveat scriptor :-)
+The most important language that Inline supports is `C`. That is because Perl
+itself is written in `C`. By giving a your Perl scripts access to `C`, you in
+effect give them access to the entire glorious internals of Perl. (Caveat
+scriptor :-)
 
 As of this writing, Inline also supports:
 
- - C++
- - Java
- - Python
- - Tcl
- - Assembly
- - CPR
- - And even Inline::Foo! :)
+* C++
+* Java
+* Python
+* Tcl
+* Assembly
+* CPR
+* And even Inline::Foo! :)
 
 Projects that I would most like to see happen in the year 2001 are:
 
- - Fortran
- - Ruby
- - Lisp
- - Guile
- - Bash
- - Perl4
+* Fortran
+* Ruby
+* Lisp
+* Guile
+* Bash
+* Perl4
 
-=head1 SUPPORTED PLATFORMS
+= Supported Platforms
 
-C<Inline::C> should work anywhere that CPAN extension modules (those
-that use XS) can be installed, using the typical install format of:
+`Inline::C` should work anywhere that CPAN extension modules (those that use
+XS) can be installed, using the typical install format of:
 
-    perl Makefile.PL
-    make
-    make test
-    make install
+  perl Makefile.PL
+  make
+  make test
+  make install
 
 It has been tested on many Unix and Windows variants.
 
-B<NOTE>: C<Inline::C> requires Perl 5.005 or higher because
-C<Parse::RecDescent> requires it. (Something to do with the C<qr>
-operator)
+*NOTE*: `Inline::C` requires Perl 5.005 or higher because `Parse::RecDescent`
+requires it. (Something to do with the `qr` operator)
 
-Inline has been successfully tested at one time or another on the
-following platforms:
+Inline has been successfully tested at one time or another on the following
+platforms:
 
-    Linux
-    Solaris
-    SunOS
-    HPUX
-    AIX
-    FreeBSD
-    OpenBSD
-    BeOS
-    OS X
-    WinNT
-    Win2K
-    WinME
-    Win98
-    Cygwin
+* Linux
+* Solaris
+* SunOS
+* HPUX
+* AIX
+* FreeBSD
+* OpenBSD
+* BeOS
+* OS X
+* WinNT
+* Win2K
+* WinME
+* Win98
+* Cygwin
 
 The Microsoft tests deserve a little more explanation. I used the following:
 
- Windows NT 4.0 (service pack 6)
- Perl 5.005_03 (ActiveState build 522)
- MS Visual C++ 6.0
- The "nmake" make utility (distributed w/ Visual C++)
+* Windows NT 4.0 (service pack 6)
+* Perl 5.005_03 (ActiveState build 522)
+* MS Visual C++ 6.0
+* The "nmake" make utility (distributed w/ Visual C++)
 
-C<Inline::C> pulls all of its base configuration (including which
-C<make> utility to use) from C<Config.pm>. Since your MSWin32 version of
-Perl probably came from ActiveState (as a binary distribution) the
-C<Config.pm> will indicate that C<nmake> is the system's C<make>
-utility. That is because ActiveState uses Visual C++ to compile Perl.
+`Inline::C` pulls all of its base configuration (including which `make`
+utility to use) from `Config.pm`. Since your MSWin32 version of Perl probably
+came from ActiveState (as a binary distribution) the `Config.pm` will indicate
+that `nmake` is the system's `make` utility. That is because ActiveState uses
+Visual C++ to compile Perl.
 
-To install C<Inline.pm> (or any other CPAN module) on MSWin32 w/ Visual
-C++, use these:
+To install `Inline.pm` (or any other CPAN module) on MSWin32 w/ Visual C++,
+use these:
 
-    perl Makefile.PL
-    nmake
-    nmake test
-    nmake install
+  perl Makefile.PL
+  nmake
+  nmake test
+  nmake install
 
 Inline has also been made to work with Mingw32/gcc on all Windows
 platforms. This is a free compiler for Windows. You must also use a perl
 built with that compiler.
 
 The "Cygwin" test was done on a Windows 98 machine using the Cygwin
-Unix/Win32 porting layer software from Cygnus. The C<perl> binary on
-this machine was also compiled using the Cygwin tool set (C<gcc>). This
+Unix/Win32 porting layer software from Cygnus. The `perl` binary on
+this machine was also compiled using the Cygwin tool set (`gcc`). This
 software is freely available from http://sources.redhat.com/cygwin/
 
 If you get Inline to work on a new platform, please send me email email.
 If it doesn't work, let me know as well and I'll see what can be done.
 
-=head1 SEE ALSO
+= See Also
 
-For general information about Inline see L<Inline>.
+For general information about Inline see [Inline].
 
-For information about using Inline with C see L<Inline::C>.
+For information about using Inline with C see [Inline::C].
 
-For sample programs using Inline with C see L<Inline::C-Cookbook>.
+For sample programs using Inline with C see [Inline::C-Cookbook].
 
 For information on writing your own Inline Language Support Module, see
-L<Inline-API>.
+[Inline-API].
 
 Inline's mailing list is inline@perl.org
 
 To subscribe, send email to inline-subscribe@perl.org
 
-=head1 AUTHOR
+= Author
 
-Brian Ingerson <INGY@cpan.org>
+ingy döt Net <ingy@cpan.org>
 
-=head1 COPYRIGHT
+= Copyright
 
-Copyright (c) 2000-2002. Brian Ingerson.
+Copyright 2000-2014. Ingy döt Net.
 
-Copyright (c) 2008, 2010, 2011. Sisyphus.
+Copyright 2008, 2010, 2011. Sisyphus.
 
-This program is free software; you can redistribute it and/or modify it
-under the same terms as Perl itself.
+This program is free software; you can redistribute it and/or modify it under
+the same terms as Perl itself.
 
 See http://www.perl.com/perl/misc/Artistic.html
-
-=cut

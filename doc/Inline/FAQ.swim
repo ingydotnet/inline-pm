@@ -1,139 +1,134 @@
-=head1 NAME
+Inline-FAQ
+==========
 
-Inline-FAQ - The Inline FAQ
+The Inline FAQ
 
-=head1 DESCRIPTION
+= Description
 
-Welcome to the official Inline FAQ. In this case, B<FAQ> means:
+Welcome to the official Inline FAQ. In this case, *FAQ* means: *Formerly
+Answered Questions*
 
-    Formerly Answered Questions
+This is a collection of old, long-winded emails that myself and others have
+sent to the Inline mailing list. (inline@perl.org) They have been reviewed and
+edited for general Inline edification. Some of them may be related to a
+specific language. They are presented here in a traditional FAQ layout.
 
-This is a collection of old, long-winded emails that myself and others
-have sent to the Inline mailing list. (inline@perl.org) They have been
-reviewed and edited for general Inline edification. Some of them may be
-related to a specific language. They are presented here in a traditional
-FAQ layout.
+= General Inline
 
-=head1 General Inline
+Since there is only a handful of content so far, all FAQs are currently under
+this heading.
 
-Since there is only a handful of content so far, all FAQs are currently
-under this heading.
-
-=head2 How disposable is a .Inline or _Inline directory?
+== How disposable is a .Inline or _Inline directory?
 
 I probably need to be more emphatic about the role of _Inline/ cache
 directories. Since they are created automatically, they are completely
-disposable. I delete them all the time. And it is fine to have a
-different one for each project. In fact as long as you don't have
-~/.Inline/ defined, Inline will create a new ./_Inline directory (unless,
-you've done something to override this automatic process - such as
-using the DIRECTORY config option, or using the PERL_INLINE_DIRECTORY
-environment variable). You can move that to ./.Inline and it will continue
-to work if you want togive it more longevity and hide it from view. There
-is a long complicated list of rules about how [_.]Inline/ directories are
-used/created. But it was designed to give you the most
-flexibility/ease-of-use. Never be afraid to nuke 'em. They'll just pop
+disposable. I delete them all the time. And it is fine to have a different one
+for each project. In fact as long as you don't have ~/.Inline/ defined, Inline
+will create a new ./_Inline directory (unless, you've done something to
+override this automatic process - such as using the DIRECTORY config option, or
+using the PERL_INLINE_DIRECTORY environment variable). You can move that to
+./.Inline and it will continue to work if you want togive it more longevity and
+hide it from view. There is a long complicated list of rules about how
+[_.]Inline/ directories are used/created. But it was designed to give you the
+most flexibility/ease-of-use. Never be afraid to nuke 'em. They'll just pop
 right back next time they're needed. :)
 
-=head2 Whatever happened to the SITE_INSTALL option?
+== Whatever happened to the SITE_INSTALL option?
 
-SITE_INSTALL is gone. I was going to leave it in and change the
-semantics, but thought it better to remove it, so people wouldn't try to
-use it the old way. There is now _INSTALL_ (but you're not supposed to
-know that :). It works magically through the use of Inline::MakeMaker. I
-explained this earlier but it's worth going through again because it's
-the biggest change for 0.40. Here's how to 'permanently' install an
-Inline extension (Inline based module) with 0.40:
+SITE_INSTALL is gone. I was going to leave it in and change the semantics, but
+thought it better to remove it, so people wouldn't try to use it the old way.
+There is now _INSTALL_ (but you're not supposed to know that :). It works
+magically through the use of Inline::MakeMaker. I explained this earlier but
+it's worth going through again because it's the biggest change for 0.40. Here's
+how to 'permanently' install an Inline extension (Inline based module) with
+0.40:
 
-    1) Create a module with Inline.
-    2) Test it using the normal/local _Inline/ cache.
-    3) Create a Makefile.PL (like the one produced by h2xs)
-    4) Change 'use ExtUtils::MakeMaker' to 'use Inline::MakeMaker'
-    5) In the Makefile.PL's WriteMakefile() insert:
+  1) Create a module with Inline.
+  2) Test it using the normal/local _Inline/ cache.
+  3) Create a Makefile.PL (like the one produced by h2xs)
+  4) Change 'use ExtUtils::MakeMaker' to 'use Inline::MakeMaker'
+  5) In the Makefile.PL's WriteMakefile() insert:
 
-        CONFIGURE_REQUIRES  =>  {
-            'Inline::MakeMaker'     => 0.45,
-            'ExtUtils::MakeMaker'   => 6.52,
-        },
+      CONFIGURE_REQUIRES  =>  {
+          'Inline::MakeMaker'     => 0.45,
+          'ExtUtils::MakeMaker'   => 6.52,
+      },
 
-       (See the "Writing Modules with Inline" section of Inline.pod for
-        an explanation/elaboration.)
+     (See the "Writing Modules with Inline" section of Inline.pod for
+      an explanation/elaboration.)
 
-    6) Change your 'use Inline C => DATA' to 'use Inline C => DATA => NAME
-       => Foo => VERSION => 1.23'
-    7) Make sure NAME matches your package name ('Foo'), or begins with
-       'Foo::'.
-    8) If you want to quiet a harmless warning that will appear when the
-       module is loaded via "require", do "Inline->init();".
-       See "Writing Modules with Inline" in the Inline pod for details.
-    9) Make sure VERSION matches $Foo::VERSION. This must be a string (not a
-       number) matching /^\d\.\d\d$/
-    10) Do the perl/make/test/install dance (thanks binkley :)
+  6) Change your 'use Inline C => DATA' to 'use Inline C => DATA => NAME
+     => Foo => VERSION => 1.23'
+  7) Make sure NAME matches your package name ('Foo'), or begins with
+     'Foo::'.
+  8) If you want to quiet a harmless warning that will appear when the
+     module is loaded via "require", do "Inline->init();".
+     See "Writing Modules with Inline" in the Inline pod for details.
+  9) Make sure VERSION matches $Foo::VERSION. This must be a string (not a
+     number) matching /^\d\.\d\d$/
+  10) Do the perl/make/test/install dance (thanks binkley :)
 
-With Inline 0.41 (or thereabouts) you can skip steps 3 & 4, and just
-say 'perl -MInline=INSTALL ./Foo.pm'. This will work for non-Inline
-modules too. It will become the defacto standard (since there is no easy
-standard) way of installing a Perl module. It will allow Makefile.PL
-parameters 'perl -MInline=INSTALL ./Foo.pm - PREFIX=/home/ingy/perl' and
-things like that. It will also make use of a MANIFEST if you provide
-one.
+With Inline 0.41 (or thereabouts) you can skip steps 3 & 4, and just say 'perl
+-MInline=INSTALL ./Foo.pm'. This will work for non-Inline modules too. It will
+become the defacto standard (since there is no easy standard) way of installing
+a Perl module. It will allow Makefile.PL parameters 'perl -MInline=INSTALL
+./Foo.pm - PREFIX=/home/ingy/perl' and things like that. It will also make use
+of a MANIFEST if you provide one.
 
-=head2 How do I create a binary distribution using Inline?
+== How do I create a binary distribution using Inline?
 
-I've figured out how to create and install a PPM binary distribution;
-with or without distributing the C code! And I've decided to share it
-with all of you :)
+I've figured out how to create and install a PPM binary distribution; with or
+without distributing the C code! And I've decided to share it with all of you
+:)
 
-NOTE: Future versions of Inline will make this process a one line
-command. But for now just use this simple recipe.
+NOTE: Future versions of Inline will make this process a one line command. But
+for now just use this simple recipe.
 
----
+----
 
 The Inline 0.40 distribution comes with a sample extension module called
-Math::Simple. Theoretically you could distribute this module on CPAN. It
-has all the necessary support for installation. You can find it in
-Inline-0.40/modules/Math/Simple/. Here are the steps for converting this
-into a binary distribution *without* C source code.
+Math::Simple. Theoretically you could distribute this module on CPAN. It has
+all the necessary support for installation. You can find it in
+Inline-0.40/modules/Math/Simple/. Here are the steps for converting this into a
+binary distribution *without* C source code.
 
-NOTE: The recipient of this binary distribution will need to have the
-PPM.pm module installed. This module requires a lot of other CPAN
-modules. ActivePerl (available for Win32, Linux, and Solaris) has all of
-these bundled. While ActivePerl isn't required, it makes things (a
-lot) easier.
+NOTE: The recipient of this binary distribution will need to have the PPM.pm
+module installed. This module requires a lot of other CPAN modules. ActivePerl
+(available for Win32, Linux, and Solaris) has all of these bundled. While
+ActivePerl isn't required, it makes things (a lot) easier.
 
 1) cd Inline-0.40/Math/Simple/
 
 2) Divide Simple.pm into two files:
 
-    ---8<--- (Simple.pm)
-    package Math::Simple;
-    use strict;
-    require Exporter;
-    @Math::Simple::ISA = qw(Exporter);
-    @Math::Simple::EXPORT = qw(add subtract);
-    $Math::Simple::VERSION = '1.23';
+  ---8<--- (Simple.pm)
+  package Math::Simple;
+  use strict;
+  require Exporter;
+  @Math::Simple::ISA = qw(Exporter);
+  @Math::Simple::EXPORT = qw(add subtract);
+  $Math::Simple::VERSION = '1.23';
 
-    use Inline (C => 'src/Simple.c' =>
-                NAME => 'Math::Simple',
-                VERSION => '1.23',
-               );
-    1;
-    ---8<---
-    ---8<--- (src/Simple.c)
-    int add (int x, int y) {
-        return x + y;
-    }
+  use Inline (C => 'src/Simple.c' =>
+              NAME => 'Math::Simple',
+              VERSION => '1.23',
+             );
+  1;
+  ---8<---
+  ---8<--- (src/Simple.c)
+  int add (int x, int y) {
+      return x + y;
+  }
 
-    int subtract (int x, int y) {
-        return x - y;
-    }
-    ---8<---
+  int subtract (int x, int y) {
+      return x - y;
+  }
+  ---8<---
 
-So now you have the Perl in one file and the C in the other. The C code
-must be in a subdirectory.
+So now you have the Perl in one file and the C in the other. The C code must be
+in a subdirectory.
 
-3)
-Note that I also changed the term 'DATA' to the name of the C file. This
+3) Note that I also changed the term 'DATA' to the name of the C file. This
 will work just as if the C were still inline.
 
 4) Run 'perl Makefile.PL'
@@ -142,39 +137,36 @@ will work just as if the C were still inline.
 
 6) Get the MD5 key from 'blib/arch/auto/Math/Simple/Simple.inl'
 
-7)
-Edit 'blib/lib/Math/Simple.pm'. Change 'src/Simple.c' to
+7) Edit 'blib/lib/Math/Simple.pm'. Change 'src/Simple.c' to
 '02c61710cab5b659efc343a9a830aa73' (the MD5 key)
 
 8) Run 'make ppd'
 
-9)
-Edit 'Math-Simple.ppd'. Fill in AUTHOR and ABSTRACT if you wish. Then
+9) Edit 'Math-Simple.ppd'. Fill in AUTHOR and ABSTRACT if you wish. Then
 change:
 
-    <CODEBASE HREF="" />
+  <CODEBASE HREF="" />
 
 to
 
-    <CODEBASE HREF="Math-Simple.tar.gz" />
+  <CODEBASE HREF="Math-Simple.tar.gz" />
 
 10) Run:
 
-    tar cvf Math-Simple.tar blib
-    gzip --best Math-Simple.tar
+  tar cvf Math-Simple.tar blib
+  gzip --best Math-Simple.tar
 
-11)
-Run:
+11) Run:
 
-    tar cvf Math-Simple-1.23.tar Math-Simple.ppd Math-Simple.tar.gz
-    gzip --best Math-Simple-1.23.tar
+  tar cvf Math-Simple-1.23.tar Math-Simple.ppd Math-Simple.tar.gz
+  gzip --best Math-Simple-1.23.tar
 
 12) Distribute Math-Simple-1.23.tar.gz with the following instructions:
 
 A) Run:
 
-    gzip -d Math-Simple-1.23.tar.gz
-    tar xvzf Math-Simple-1.23.tar
+  gzip -d Math-Simple-1.23.tar.gz
+  tar xvzf Math-Simple-1.23.tar
 
 B) Run 'ppm install Math-Simple.ppd'
 
@@ -182,32 +174,28 @@ C) Delete Math-Simple.tar and Math-Simple.ppd.
 
 D) Test with:
 
-    perl -MMath::Simple -le 'print add(37, 42)'
+  perl -MMath::Simple -le 'print add(37, 42)'
 
----
+----
 
-That's it. The process should also work with zip instead of tar, but I
-haven't tried it.
+That's it. The process should also work with zip instead of tar, but I haven't
+tried it.
 
-The recipient of the binary must have Perl built with a matching
-architecture. Luckily, ppm will catch this.
+The recipient of the binary must have Perl built with a matching architecture.
+Luckily, ppm will catch this.
 
-For a binary dist *with* C source code, simply omit steps 2, 3, 6, and
-7.
+For a binary dist *with* C source code, simply omit steps 2, 3, 6, and 7.
 
-If this seems too hard, then in a future version you should be able to
-just type:
+If this seems too hard, then in a future version you should be able to just
+type:
 
-    make ppm
+  make ppm
 
-=head2 Why does C/t/09parser.t fail on Cygwin ?
+== Why does C/t/09parser.t fail on Cygwin ?
 
-It doesn't always fail on Cygwin, but if you find that it produces
-"unable to remap .... to same address as parent" errors during the
-build phase, then it's time for you to run rebaseall.
+It doesn't always fail on Cygwin, but if you find that it produces "unable to
+remap .... to same address as parent" errors during the build phase, then it's
+time for you to run rebaseall.
 
-See http://cygwin.com/faq/faq-nochunks.html#faq.using.fixing-fork-failures
-and, if needed, seek further help from the Cygwin mailing list.
-
-
-=cut
+See http://cygwin.com/faq/faq-nochunks.html#faq.using.fixing-fork-failures and,
+if needed, seek further help from the Cygwin mailing list.
