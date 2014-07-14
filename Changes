@@ -1,4 +1,9 @@
 ---
+version: 0.62
+date:    Sun Jul 13 21:49:16 PDT 2014
+changes:
+- Actually make the 5.8.1 change I said I did in 0.61
+---
 version: 0.61
 date:    Sun Jul 13 21:47:14 PDT 2014
 changes:

@@ -1,7 +1,7 @@
 =meta: 0.0.1
 
 name: Inline
-version: 0.61
+version: 0.62
 abstract: Write Perl subroutines in other programming languages
 homepage: https://metacpan.org/release/Inline
 
@@ -16,7 +16,7 @@ author:
   homepage: http://ingy.net
 
 requires:
-  perl: 5.6.0
+  perl: 5.8.1
   Digest::MD5: 0
   File::Spec: 0.8
 
