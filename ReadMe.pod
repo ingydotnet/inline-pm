@@ -8,7 +8,7 @@ See http://github.com/ingydotnet/swim-pm#readme
 
 =head1 NAME
 
-Inline - Write Perl subroutines in other programming languages.
+Inline - Write Perl Subroutines in Other Programming Languages
 
 =for html
 <a href="https://travis-ci.org/ingydotnet/inline-pm"><img src="https://travis-ci.org/ingydotnet/inline-pm.png" alt="inline-pm"></a>

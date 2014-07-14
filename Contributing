@@ -11,11 +11,11 @@ GitHub
 
 The code for this Project is hosted at GitHub. The repository is:
 
-  git@github.com/ingydotnet/inline-pm
+  https://github.com/ingydotnet/inline-pm
 
 You can get the code with this command:
 
-  git clone git@github.com/ingydotnet/inline-pm
+  git clone https://github.com/ingydotnet/inline-pm
 
 If you've found a bug or a missing feature that you would like the author to
 know about, report it here:
@@ -24,7 +24,7 @@ know about, report it here:
 
 or fix it and submit a pull request here:
 
-  git@github.com/ingydotnet/inline-pm/pulls
+  https://github.com/ingydotnet/inline-pm/pulls
 
 See these links for help on interacting with GitHub:
 

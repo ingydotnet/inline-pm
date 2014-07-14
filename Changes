@@ -1,4 +1,11 @@
 ---
+version: 0.61
+date:    Sun Jul 13 21:47:14 PDT 2014
+changes:
+- Make Inline dep on perl 5.8.1 per The Lancaster Consensus
+- https://github.com/Perl-Toolchain-Gang/toolchain-site/blob/master/lancaster-consensus.md#minimum-supported-perl
+- Fix Metadata errors
+---
 version: 0.60
 date:    Sun Jul 13 21:19:48 PDT 2014
 changes:
