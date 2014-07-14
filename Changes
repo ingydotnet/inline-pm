@@ -1,4 +1,9 @@
 ---
+version: 0.60
+date:    Sun Jul 13 21:19:48 PDT 2014
+changes:
+- Use the new ZD Contributing file
+---
 version: 0.59
 date:    Sat Jul 12 12:11:10 PDT 2014
 changes:
@@ -15,7 +20,7 @@ changes:
 - Inline::C separated from Inline
 ---
 version: 0.56_03
-date:    
+date:    Thu Jul 10 13:36:04 BST 2014
 changes:
 - The "with" interface changed slightly - to get right $language use $_[-1].
 - Add Contrib file

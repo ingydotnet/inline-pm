@@ -62,7 +62,7 @@ install: distdir
 	make clean
 
 update: makefile
-	make readme travis version
+	make readme contrib travis version
 
 release: clean update check-release test disttest
 	make dist
@@ -115,8 +115,11 @@ upgrade:
 readme:
 	swim --pod-cpan doc/$(NAMEPATH).swim > ReadMe.pod
 
+contrib:
+	zild-render-template Contributing
+
 travis:
-	zild-make-travis
+	zild-render-template travis.yml .travis.yml
 
 clean purge:
 	rm -fr cpan .build $(DIST) $(DISTDIR)
