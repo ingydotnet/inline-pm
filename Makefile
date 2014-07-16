@@ -51,14 +51,18 @@ help:
 	@echo ''
 
 test:
+ifeq ($(wildcard pkg/no-test),)
 	prove -lv test
+else
+	@echo "Testing not available. Use 'disttest' instead."
+endif
 
 install: distdir
 	(cd $(DISTDIR); perl Makefile.PL; make install)
 	make clean
 
 update: makefile
-	make readme travis version
+	make readme contrib travis version
 
 release: clean update check-release test disttest
 	make dist
@@ -81,7 +85,11 @@ cpanshell: cpan
 	make clean
 
 cpantest: cpan
+ifeq ($(wildcard pkg/no-test),)
 	(cd cpan; prove -lv t) && make clean
+else
+	@echo "Testing not available. Use 'disttest' instead."
+endif
 
 dist: clean cpan
 	(cd cpan; dzil build)
@@ -107,8 +115,11 @@ upgrade:
 readme:
 	swim --pod-cpan doc/$(NAMEPATH).swim > ReadMe.pod
 
+contrib:
+	zild-render-template Contributing
+
 travis:
-	zild-make-travis
+	zild-render-template travis.yml .travis.yml
 
 clean purge:
 	rm -fr cpan .build $(DIST) $(DISTDIR)

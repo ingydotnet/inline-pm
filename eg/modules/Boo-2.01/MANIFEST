@@ -2,5 +2,5 @@ lib/Boo.pm
 lib/Boo/Far.pm
 lib/Boo/Far/Faz.pm
 Makefile.PL
-MANIFEST			This list of files
+MANIFEST                        This list of files
 t/boo.t

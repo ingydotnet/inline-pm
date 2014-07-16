@@ -1,8 +1,41 @@
 ---
+version: 0.62
+date:    Sun Jul 13 21:49:16 PDT 2014
+changes:
+- Actually make the 5.8.1 change I said I did in 0.61
+---
+version: 0.61
+date:    Sun Jul 13 21:47:14 PDT 2014
+changes:
+- Make Inline dep on perl 5.8.1 per The Lancaster Consensus
+- https://github.com/Perl-Toolchain-Gang/toolchain-site/blob/master/lancaster-consensus.md#minimum-supported-perl
+- Fix Metadata errors
+---
 version: 0.60
-date:    
+date:    Sun Jul 13 21:19:48 PDT 2014
+changes:
+- Use the new ZD Contributing file
+---
+version: 0.59
+date:    Sat Jul 12 12:11:10 PDT 2014
+changes:
+- Finish migrating and updating docs
+---
+version: 0.58
+date:    Fri Jul 11 07:02:12 BST 2014
+changes:
+- Fix tabs, add $VERSIONs, fix prereqs
+---
+version: 0.57
+date:    Fri Jul 11 02:05:00 BST 2014
+changes:
+- Inline::C separated from Inline
+---
+version: 0.56_03
+date:    Thu Jul 10 13:36:04 BST 2014
 changes:
 - The "with" interface changed slightly - to get right $language use $_[-1].
+- Add Contrib file
 ---
 version: 0.56_02
 date:    Thu Jul 10 03:36:04 BST 2014

@@ -8,7 +8,7 @@ See http://github.com/ingydotnet/swim-pm#readme
 
 =head1 NAME
 
-Inline - Write Perl subroutines in other programming languages.
+Inline - Write Perl Subroutines in Other Programming Languages
 
 =for html
 <a href="https://travis-ci.org/ingydotnet/inline-pm"><img src="https://travis-ci.org/ingydotnet/inline-pm.png" alt="inline-pm"></a>
@@ -1123,11 +1123,9 @@ Sisyphus <sisyphus@cpan.org> fixed some bugs and is current co-maintainer.
 
 =over
 
-=item * Copyright 2000-2002. Brian Ingerson.
+=item * Copyright 2000-2014. Ingy döt Net.
 
 =item * Copyright 2008, 2010-2014. Sisyphus.
-
-=item * Copyright 2014. Ingy döt Net.
 
 =back
 
