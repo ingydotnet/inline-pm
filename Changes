@@ -1,4 +1,9 @@
 ---
+version: 0.63
+date:    Thu Jul 17 07:51:46 PDT 2014
+changes:
+- Add mailing list info to Meta and Contributing
+---
 version: 0.62
 date:    Sun Jul 13 21:49:16 PDT 2014
 changes:
