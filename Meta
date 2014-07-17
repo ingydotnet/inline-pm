@@ -29,6 +29,7 @@ devel:
   git: https://github.com/ingydotnet/inline-pm
   bug: https://github.com/ingydotnet/inline-pm/issues
   irc: irc.perl.org#inline
+  eml: inline@perl.org
 
 =travis:
   type: perl
