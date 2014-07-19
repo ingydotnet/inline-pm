@@ -703,7 +703,7 @@ sub check_config_file {
     my ($DIRECTORY, %config);
     my $o = shift;
 
-    croak M14_usage_Config() if %main::Inline::Config::;
+    croak 'check_config_file: '.M14_usage_Config() if %main::Inline::Config::;
     croak M63_no_source($o->{API}{pkg})
       if $o->{INLINE}{md5} eq $o->{API}{code};
 
