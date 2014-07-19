@@ -1,4 +1,11 @@
 ---
+version: 0.64
+date:    Sat Jul 19 22:19:18 BST 2014
+changes:
+- Instrument "Inline::Config" error
+- Lock reading as well as writing of config file
+- Prevent adding non .pm modules to the Makefile
+---
 version: 0.63
 date:    Thu Jul 17 07:51:46 PDT 2014
 changes:
