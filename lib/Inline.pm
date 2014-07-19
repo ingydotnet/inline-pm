@@ -738,7 +738,9 @@ sub check_config_file {
 
            open CONFIG, "< ".File::Spec->catfile($DIRECTORY,$configuration_file)
              or croak M17_config_open_failed($DIRECTORY);
+           flock(CONFIG, LOCK_EX) if $^O !~ /^VMS|riscos|VOS$/;
            my $config = join '', <CONFIG>;
+           flock(CONFIG, LOCK_UN) if $^O !~ /^VMS|riscos|VOS$/;
            close CONFIG;
 
            unless($config =~ /^version :/) {
