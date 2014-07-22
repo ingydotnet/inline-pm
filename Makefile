@@ -56,7 +56,7 @@ help:
 
 test:
 ifeq ($(wildcard pkg/no-test),)
-	prove -lv -e $(PERL) test
+	$(PERL) -S prove -lv test
 else
 	@echo "Testing not available. Use 'disttest' instead."
 endif
@@ -100,7 +100,7 @@ cpanshell: cpan
 cpantest: cpan
 ifeq ($(wildcard pkg/no-test),)
 	@echo '***** Running tests in `cpan/` directory'
-	(cd cpan; prove -lv -e $(PERL) t) && make clean
+	(cd cpan; $(PERL) -S prove -lv t) && make clean
 else
 	@echo "Testing not available. Use 'disttest' instead."
 endif
