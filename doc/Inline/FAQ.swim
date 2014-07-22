@@ -20,18 +20,18 @@ this heading.
 
 == How disposable is a .Inline or _Inline directory?
 
-I probably need to be more emphatic about the role of _Inline/ cache
+I probably need to be more emphatic about the role of `_Inline/` cache
 directories. Since they are created automatically, they are completely
 disposable. I delete them all the time. And it is fine to have a different one
-for each project. In fact as long as you don't have ~/.Inline/ defined, Inline
-will create a new ./_Inline directory (unless, you've done something to
-override this automatic process - such as using the DIRECTORY config option, or
-using the PERL_INLINE_DIRECTORY environment variable). You can move that to
-./.Inline and it will continue to work if you want togive it more longevity and
-hide it from view. There is a long complicated list of rules about how
-[_.]Inline/ directories are used/created. But it was designed to give you the
-most flexibility/ease-of-use. Never be afraid to nuke 'em. They'll just pop
-right back next time they're needed. :)
+for each project. In fact as long as you don't have `~/.Inline/` defined,
+Inline will create a new `./_Inline` directory (unless, you've done something
+to override this automatic process - such as using the DIRECTORY config option,
+or using the PERL_INLINE_DIRECTORY environment variable).  You can move that to
+`./.Inline` and it will continue to work if you want togive it more longevity
+and hide it from view. There is a long complicated list of rules about how
+`[_.]Inline/` directories are used / created. But it was designed to give you
+the most flexibility / ease-of-use. Never be afraid to nuke 'em. They'll just
+pop right back next time they're needed.  :)
 
 == Whatever happened to the SITE_INSTALL option?
 
@@ -44,7 +44,7 @@ how to 'permanently' install an Inline extension (Inline based module) with
 0.40:
 
   1) Create a module with Inline.
-  2) Test it using the normal/local _Inline/ cache.
+  2) Test it using the normal / local `_Inline/` cache.
   3) Create a Makefile.PL (like the one produced by h2xs)
   4) Change 'use ExtUtils::MakeMaker' to 'use Inline::MakeMaker'
   5) In the Makefile.PL's WriteMakefile() insert:
@@ -55,7 +55,7 @@ how to 'permanently' install an Inline extension (Inline based module) with
       },
 
      (See the "Writing Modules with Inline" section of Inline.pod for
-      an explanation/elaboration.)
+      an explanation / elaboration.)
 
   6) Change your 'use Inline C => DATA' to 'use Inline C => DATA => NAME
      => Foo => VERSION => 1.23'
@@ -65,14 +65,14 @@ how to 'permanently' install an Inline extension (Inline based module) with
      module is loaded via "require", do "Inline->init();".
      See "Writing Modules with Inline" in the Inline pod for details.
   9) Make sure VERSION matches $Foo::VERSION. This must be a string (not a
-     number) matching /^\d\.\d\d$/
-  10) Do the perl/make/test/install dance (thanks binkley :)
+     number) matching `/^\d\.\d\d$/`
+  10) Do the perl / make / test / install dance (thanks binkley :)
 
-With Inline 0.41 (or thereabouts) you can skip steps 3 & 4, and just say 'perl
--MInline=INSTALL ./Foo.pm'. This will work for non-Inline modules too. It will
+With Inline 0.41 (or thereabouts) you can skip steps 3 & 4, and just say `perl
+-MInline=INSTALL ./Foo.pm`. This will work for non-Inline modules too. It will
 become the defacto standard (since there is no easy standard) way of installing
-a Perl module. It will allow Makefile.PL parameters 'perl -MInline=INSTALL
-./Foo.pm - PREFIX=/home/ingy/perl' and things like that. It will also make use
+a Perl module. It will allow Makefile.PL parameters `perl -MInline=INSTALL
+./Foo.pm - PREFIX=/home/ingy/perl` and things like that. It will also make use
 of a MANIFEST if you provide one.
 
 == How do I create a binary distribution using Inline?
@@ -87,7 +87,7 @@ for now just use this simple recipe.
 The Inline 0.40 distribution comes with a sample extension module called
 Math::Simple. Theoretically you could distribute this module on CPAN. It has
 all the necessary support for installation. You can find it in
-Inline-0.40/modules/Math/Simple/. Here are the steps for converting this into a
+`Inline-0.40/modules/Math/Simple/`. Here are the steps for converting this into a
 binary distribution *without* C source code.
 
 NOTE: The recipient of this binary distribution will need to have the PPM.pm
@@ -95,7 +95,7 @@ module installed. This module requires a lot of other CPAN modules. ActivePerl
 (available for Win32, Linux, and Solaris) has all of these bundled. While
 ActivePerl isn't required, it makes things (a lot) easier.
 
-1) cd Inline-0.40/Math/Simple/
+1) cd `Inline-0.40/Math/Simple/`
 
 2) Divide Simple.pm into two files:
 
@@ -133,10 +133,10 @@ will work just as if the C were still inline.
 
 5) Run 'make test'
 
-6) Get the MD5 key from 'blib/arch/auto/Math/Simple/Simple.inl'
+6) Get the MD5 key from `blib/arch/auto/Math/Simple/Simple.inl`
 
-7) Edit 'blib/lib/Math/Simple.pm'. Change 'src/Simple.c' to
-'02c61710cab5b659efc343a9a830aa73' (the MD5 key)
+7) Edit `blib/lib/Math/Simple.pm`. Change `src/Simple.c` to
+`02c61710cab5b659efc343a9a830aa73` (the MD5 key)
 
 8) Run 'make ppd'
 
@@ -187,7 +187,7 @@ type:
 
   make ppm
 
-== Why does C/t/09parser.t fail on Cygwin ?
+== Why does `C/t/09parser.t` fail on Cygwin ?
 
 It doesn't always fail on Cygwin, but if you find that it produces "unable to
 remap .... to same address as parent" errors during the build phase, then it's
