@@ -1548,8 +1548,6 @@ As of Inline v0.30, use of the Inline::Config module is no longer supported
 or allowed. If Inline::Config exists on your system, it can be removed. See
 the Inline documentation for information on how to configure Inline.
 
-(Module was loaded from $INC{File::Spec::Unix->catfile('Inline','Config.pm')})
-
 END
 }
 
