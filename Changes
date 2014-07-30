@@ -1,4 +1,9 @@
 ---
+version: 0.65
+date:    Wed Jul 30 04:18:50 BST 2014
+changes:
+- Update docs and M14_usage_Config error message
+---
 version: 0.64
 date:    Sat Jul 19 22:19:18 BST 2014
 changes:

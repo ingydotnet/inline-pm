@@ -1,7 +1,7 @@
 use strict; use warnings;
 package Inline;
 
-our $VERSION = '0.64';
+our $VERSION = '0.65';
 
 use Inline::denter;
 use Config;
@@ -703,7 +703,7 @@ sub check_config_file {
     my ($DIRECTORY, %config);
     my $o = shift;
 
-    croak 'check_config_file: '.M14_usage_Config() if %main::Inline::Config::;
+    croak M14_usage_Config() if %main::Inline::Config::;
     croak M63_no_source($o->{API}{pkg})
       if $o->{INLINE}{md5} eq $o->{API}{code};
 
@@ -1543,10 +1543,13 @@ END
 }
 
 sub M14_usage_Config {
-    return <<END;
+    require Data::Dumper;
+    return sprintf <<END, Data::Dumper::Dumper(\%main::Inline::Config::);
 As of Inline v0.30, use of the Inline::Config module is no longer supported
 or allowed. If Inline::Config exists on your system, it can be removed. See
 the Inline documentation for information on how to configure Inline.
+
+Inline::Config contains: %s
 
 END
 }
