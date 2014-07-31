@@ -703,7 +703,7 @@ sub check_config_file {
     my ($DIRECTORY, %config);
     my $o = shift;
 
-    croak M14_usage_Config() if %main::Inline::Config::;
+    croak M14_usage_Config() if $Inline::Config::VERSION;
     croak M63_no_source($o->{API}{pkg})
       if $o->{INLINE}{md5} eq $o->{API}{code};
 
@@ -1543,13 +1543,10 @@ END
 }
 
 sub M14_usage_Config {
-    require Data::Dumper;
-    return sprintf <<END, Data::Dumper::Dumper(\%main::Inline::Config::);
+    return <<END;
 As of Inline v0.30, use of the Inline::Config module is no longer supported
 or allowed. If Inline::Config exists on your system, it can be removed. See
 the Inline documentation for information on how to configure Inline.
-
-Inline::Config contains: %s
 
 END
 }
