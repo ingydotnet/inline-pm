@@ -6,7 +6,7 @@ use TestInlineSetup;
 
 use Test::More;
 
-use Inline Config => DIRECTORY => '_Inline_03errors';
+use Inline Config => DIRECTORY => $TestInlineSetup::DIR;
 
 BEGIN {
     plan(tests => 3,

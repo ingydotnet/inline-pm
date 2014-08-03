@@ -5,7 +5,7 @@ use TestInlineSetup;
 
 use Test::More;
 
-use Inline Config => DIRECTORY => '_Inline_02config';
+use Inline Config => DIRECTORY => $TestInlineSetup::DIR;
 
 BEGIN {
     plan(tests => 2,

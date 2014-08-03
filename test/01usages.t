@@ -5,7 +5,7 @@ use TestInlineSetup;
 
 use Test::More;
 
-use Inline Config => DIRECTORY => '_Inline_01usages';
+use Inline Config => DIRECTORY => $TestInlineSetup::DIR;
 
 my $t; BEGIN { $t = -d 't' ? 't' : 'test' }
 

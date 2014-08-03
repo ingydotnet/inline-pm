@@ -5,7 +5,7 @@ use TestInlineSetup;
 
 use Test::More;
 
-use Inline Config => DIRECTORY => '_Inline_05files';
+use Inline Config => DIRECTORY => $TestInlineSetup::DIR;
 
 BEGIN {
     eval "require Inline::Files";

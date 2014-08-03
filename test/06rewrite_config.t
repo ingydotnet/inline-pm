@@ -13,10 +13,10 @@ use Test::More tests => 2;
 
 use Test::Warn;
 
-BEGIN {
-    mkdir('_Inline_06');
-}
-use Inline Config => DIRECTORY => '_Inline_06';
+use File::Basename;
+use lib dirname(__FILE__);
+use TestInlineSetup;
+use Inline Config => DIRECTORY => $TestInlineSetup::DIR;
 eval q{use Inline 'Bogus' => 'code';};
 
 # Suppress "Set up gcc environment ..." warning.
@@ -30,9 +30,4 @@ warnings_like {require_rewrite()} [qr/$w/], 'warn_test';
 sub require_rewrite {
     my $t = -d 't' ? 't' : 'test';
     require "./$t/06rewrite_config.p";
-}
-
-use File::Path;
-END {
-    rmtree('_Inline_06');
 }
