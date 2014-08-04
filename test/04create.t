@@ -14,7 +14,7 @@ BEGIN {
 # (But make sure it's in our own space.)
 use Inline Config => DIRECTORY => $TestInlineSetup::DIR;
 use Inline 'Foo';
-ok(add(3, 7) == 10);
+ok(add(3, 7) == 10, 'in own DID');
 
 __END__
 

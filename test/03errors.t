@@ -1,46 +1,17 @@
 use strict; use warnings;
 use File::Basename;
 use lib dirname(__FILE__);
-#use TestInlineSetup 'no-delete';
 use TestInlineSetup;
-
-use Test::More;
-
+use Test::More tests => 3;
 use Inline Config => DIRECTORY => $TestInlineSetup::DIR;
 
-BEGIN {
-    plan(tests => 3,
-         todo => [],
-         onfail => sub {},
-    );
-}
+eval "use Inline Bogus => 'code';";
+like($@, qr/\QYou have specified 'Bogus' as an Inline programming language.
 
-# test 1
-# Bad first parameter
-BEGIN {
-    eval <<'END';
-    use Inline 'Bogus' => 'code';
-END
-    ok($@ =~ /\QYou have specified 'Bogus' as an Inline programming language.
+I currently only know about the following languages:/, 'Bad first parameter');
 
-I currently only know about the following languages:/);
-}
+eval "use Inline 'force', 'hocum';";
+like($@, qr/\Q${\ Inline::M48_usage_shortcuts('hocum')}/, 'Bad shortcut');
 
-# test 2
-# Bad shortcut
-BEGIN {
-    eval <<'END';
-    use Inline 'force', 'hocum';
-END
-    ok($@ =~ /\Q${\ Inline::M48_usage_shortcuts('hocum')}/);
-}
-
-# test 3
-# Bad config option
-BEGIN {
-    eval <<'END';
-    require Inline::Foo;
-    use Inline Foo => 'xxx' => ENABLE => 'BOGUM';
-END
-    ok($@ =~ Inline::Foo::usage_config('BOGUM'));
-}
+eval "use Inline Foo => 'xxx' => ENABLE => 'BOgUM';";
+like($@, qr/${\ Inline::Foo::usage_config('BOGUM') }/, 'Bad config option');

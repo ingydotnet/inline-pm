@@ -99,10 +99,10 @@ sub import {
 
     my $control = shift;
 
-    if ($control eq 'with') {
+    if (uc $control eq uc 'with') {
         return handle_with($pkg, @_);
     }
-    elsif ($control eq 'Config') {
+    elsif (uc $control eq uc 'Config') {
         return handle_global_config($pkg, @_);
     }
     elsif (exists $shortcuts{uc($control)}) {
@@ -124,7 +124,7 @@ sub import {
         $o->{API}{pkg} = $pkg;
         $o->{API}{script} = $script;
         $o->{API}{language_id} = $language_id;
-        if ($option =~ /^(FILE|BELOW)$/ or
+        if ($option =~ /^(FILE|BELOW)$/i or
             not $option and
             defined $INC{File::Spec::Unix->catfile('Inline','Files.pm')} and
             Inline::Files::get_filename($pkg)
@@ -132,12 +132,12 @@ sub import {
             $o->read_inline_file;
             $o->{CONFIG} = handle_language_config(@config);
         }
-        elsif ($option eq 'DATA' or not $option) {
+        elsif (uc $option eq 'DATA' or not $option) {
             $o->{CONFIG} = handle_language_config(@config);
             push @DATA_OBJS, $o;
             return;
         }
-        elsif ($option eq 'Config') {
+        elsif (uc $option eq uc 'Config') {
             $CONFIG{$pkg}{$language_id} = handle_language_config(@config);
             return;
         }
@@ -560,20 +560,14 @@ sub satisfy_makefile_dep {
 sub handle_global_config {
     my $pkg = shift;
     while (@_) {
-        my ($key, $value) = (shift, shift);
+        my ($key, $value) = (uc shift, shift);
         croak M02_usage() if $key =~ /[\s\n]/;
-        $key = $value if $key =~ /^(ENABLE|DISABLE)$/;
+        if ($key =~ /^(ENABLE|DISABLE)$/) {
+	    ($key, $value) = (uc $value, $key eq 'ENABLE' ? 1 : 0);
+	}
         croak M47_invalid_config_option($key)
           unless defined $default_config->{$key};
-        if ($key eq 'ENABLE') {
-            $CONFIG{$pkg}{template}{$value} = 1;
-        }
-        elsif ($key eq 'DISABLE') {
-            $CONFIG{$pkg}{template}{$value} = 0;
-        }
-        else {
-            $CONFIG{$pkg}{template}{$key} = $value;
-        }
+	$CONFIG{$pkg}{template}{$key} = $value;
     }
 }
 
@@ -583,13 +577,13 @@ sub handle_global_config {
 sub handle_language_config {
     my @values;
     while (@_) {
-        my ($key, $value) = (shift, shift);
+        my ($key, $value) = (uc shift, shift);
         croak M02_usage() if $key =~ /[\s\n]/;
         if ($key eq 'ENABLE') {
-            push @values, $value, 1;
+            push @values, uc $value, 1;
         }
         elsif ($key eq 'DISABLE') {
-            push @values, $value, 0;
+            push @values, uc $value, 0;
         }
         else {
             push @values, $key, $value;

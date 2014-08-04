@@ -5,14 +5,14 @@ use TestInlineSetup;
 
 use Test::More;
 
-use Inline Config => DIRECTORY => $TestInlineSetup::DIR;
+use Inline conFig => DiREcTOrY => $TestInlineSetup::DIR;
 
 my $t; BEGIN { $t = -d 't' ? 't' : 'test' }
 
 use Inline Foo => File::Spec->catfile(File::Spec->curdir(),$t,'file');
 ok(test1('test1'), 'read external file');
 
-use Inline Foo => 'DATA';
+use Inline Foo => 'data';
 ok(test2('test2'), 'DATA handle');
 use Inline 'Foo';
 ok(!test3('test3'), 'unspecified = DATA handle');
@@ -38,7 +38,7 @@ is(subtract(3, 7), -4, 'bind');
   $INC{__PACKAGE__.'.pm'} = 1;
   sub Inline { return unless $_[1] eq 'Foo'; { PATTERN=>'qunx-' } }
 }
-Inline->import(with => 'FakeMod');
+Inline->import(wiTh => 'FakeMod');
 Inline->bind(Foo => 'qunx-sub subtract2 { qunx-return $_[0] qunx-- $_[1]; }');
 is(subtract2(3, 7), -4, 'with works');
 
