@@ -248,6 +248,9 @@ It is up to you to validate each option and store its value in the Inline
 object (which is also passed in). If a particular option is invalid, you should
 croak with an appropriate error message.
 
+Note that all the keywords this routine receives will be converted to
+upper-case by `Inline`, whatever case the program gave.
+
 == The build() Callback
 
 This subroutine is responsible for doing the parsing and compilation of the Foo
