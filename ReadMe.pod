@@ -155,9 +155,9 @@ code can be specified using any of the following syntaxes:
 
 =over
 
-=item The DATA Keyword.
+=item The data Keyword.
 
-    use Inline Java => 'DATA';
+    use Inline Java => 'data';
 
     # Perl code goes here ...
 
@@ -166,7 +166,7 @@ code can be specified using any of the following syntaxes:
     /* Java code goes here ... */
 
 The easiest and most visually clean way to specify your source code in an
-Inline Perl program is to use the special C<DATA> keyword. This tells Inline
+Inline Perl program is to use the special C<data> keyword. This tells Inline
 to look for a special marker in your C<DATA> filehandle's input stream. In
 this example the special marker is C<__Java__>, which is the programming
 language surrounded by double underscores.
@@ -191,7 +191,7 @@ during compile time.
 =item The FILE and BELOW keywords.
 
     use Inline::Files;
-    use Inline Java => 'FILE';
+    use Inline Java => 'file';
 
     # Perl code goes here ...
 
@@ -204,15 +204,15 @@ meaning are the same as for the C<DATA> keyword, but there are a few syntactic
 and semantic twists.
 
 First, you must say 'use Inline::Files' before you 'use Inline' code that
-needs those files. The special 'C<DATA>' keyword is replaced by either
-'C<FILE>' or 'C<BELOW>'. This allows for the bad pun idiom of:
+needs those files. The special 'C<data>' keyword is replaced by either
+'C<file>' or 'C<below>'. This allows for the bad pun idiom of:
 
-    use Inline C => 'BELOW';
+    use Inline C => 'below';
 
 You can omit the C<__DATA__> tag now. Inline::Files is a source filter that
 will remove these sections from your program before Perl compiles it. They are
 then available for Inline to make use of. And since this can all be done at
-compile time, you don't have to worry about the caveats of the 'DATA' keyword.
+compile time, you don't have to worry about the caveats of the 'data' keyword.
 
 This module has a couple small gotchas. Since Inline::Files only recognizes
 file markers with capital letters, you must specify the capital form of
@@ -291,7 +291,7 @@ used but may be useful in some situations.
 
 =item Shorthand
 
-If you are using the 'DATA' or 'FILE' methods described above B<and> there are
+If you are using the 'data' or 'file' methods described above B<and> there are
 no extra parameters, you can omit the keyword altogether. For example:
 
     use Inline 'Java';
@@ -330,7 +330,7 @@ programming languages. Here is another example:
     use AutoLoader;
 
     use Inline C;
-    use Inline C => DATA => FILTERS => 'Strip_POD';
+    use Inline C => data => filters => 'Strip_POD';
     use Inline Python;
 
     1;
@@ -360,7 +360,7 @@ programming languages. Here is another example:
     """A Python Section"""
 
 An important thing to remember is that you need to have one "use Inline Foo =>
-'DATA'" for each "__Foo__" marker, and they must be in the same order. This
+'data'" for each "__Foo__" marker, and they must be in the same order. This
 allows you to apply different configuration options to each section.
 
 =head2 Configuration Options
@@ -370,23 +370,23 @@ need to override the default actions. This is easy to do. Simply list the
 Inline configuration options after the regular Inline parameters. All
 configuration options are specified as (key, value) pairs.
 
-    use Inline (C => 'DATA',
-                DIRECTORY => './inline_dir',
-                LIBS => '-lfoo',
-                INC => '-I/foo/include',
-                PREFIX => 'XXX_',
-                WARNINGS => 0,
+    use Inline (C => 'data',
+                directory => './inline_dir',
+                libs => '-lfoo',
+                inc => '-I/foo/include',
+                prefix => 'XXX_',
+                warnings => 0,
                );
 
 You can also specify the configuration options on a separate Inline call
 like this:
 
     use Inline (C => Config =>
-                DIRECTORY => './inline_dir',
-                LIBS => '-lfoo',
-                INC => '-I/foo/include',
-                PREFIX => 'XXX_',
-                WARNINGS => 0,
+                directory => './inline_dir',
+                libs => '-lfoo',
+                inc => '-I/foo/include',
+                prefix => 'XXX_',
+                warnings => 0,
                );
     use Inline C => <<'END_OF_C_CODE';
 
@@ -396,7 +396,7 @@ call. No source code will be compiled or bound to Perl.
 If you want to specify global configuration options that don't apply to a
 particular language, just leave the language out of the call. Like this:
 
-    use Inline Config => WARNINGS => 0;
+    use Inline Config => warnings => 0;
 
 The Config options are inherited and additive. You can use as many Config
 calls as you want. And you can apply different options to different code
@@ -405,22 +405,22 @@ whichever options have been specified up to that point. Here is a complex
 configuration example:
 
     use Inline (Config =>
-                DIRECTORY => './inline_dir',
+                directory => './inline_dir',
                );
     use Inline (C => Config =>
-                LIBS => '-lglobal',
+                libs => '-lglobal',
                );
-    use Inline (C => 'DATA',         # First C Section
-                LIBS => ['-llocal1', '-llocal2'],
+    use Inline (C => 'data',         # First C Section
+                libs => ['-llocal1', '-llocal2'],
                );
     use Inline (Config =>
-                WARNINGS => 0,
+                warnings => 0,
                );
-    use Inline (Python => 'DATA',    # First Python Section
-                LIBS => '-lmypython1',
+    use Inline (Python => 'data',    # First Python Section
+                libs => '-lmypython1',
                );
-    use Inline (C => 'DATA',         # Second C Section
-                LIBS => [undef, '-llocal3'],
+    use Inline (C => 'data',         # Second C Section
+                libs => [undef, '-llocal3'],
                );
 
 The first C<Config> applies to all subsequent calls. The second C<Config>
@@ -432,24 +432,24 @@ does use the same C<DIRECTORY>, and has warnings turned off. The second C<C>
 section only uses the C<local3> library. That's because a value of C<undef>
 resets the additive behavior.
 
-The C<DIRECTORY> and C<WARNINGS> options are generic Inline options. All other
+The C<directory> and C<warnings> options are generic Inline options. All other
 options are language specific. To find out what the C<C> options do, see
 C<Inline::C>.
 
 =head2 On and Off
 
 If a particular config option has value options of 1 and 0, you can use the
-ENABLE and DISABLE modifiers. In other words, this:
+'enable' and 'disable' modifiers. In other words, this:
 
     use Inline Config =>
-               FORCE_BUILD => 1,
-               CLEAN_AFTER_BUILD => 0;
+               force_build => 1,
+               clean_after_build => 0;
 
 could be reworded as:
 
     use Inline Config =>
-               ENABLE => FORCE_BUILD,
-               DISABLE => CLEAN_AFTER_BUILD;
+               enable => force_build =>
+               disable => clean_after_build;
 
 =head2 Playing 'with' Others
 
@@ -503,21 +503,21 @@ only want to set the options temporarily, for say, debugging.
 For instance, to get some general information about your Inline code in the
 script C<Foo.pl>, use the command:
 
-    perl -MInline=INFO Foo.pl
+    perl -MInline=info Foo.pl
 
 If you want to force your code to compile, even if its already done, use:
 
-    perl -MInline=FORCE Foo.pl
+    perl -MInline=force Foo.pl
 
 If you want to do both, use:
 
-    perl -MInline=INFO -MInline=FORCE Foo.pl
+    perl -MInline=info -MInline=force Foo.pl
 
 or better yet:
 
-    perl -MInline=INFO,FORCE Foo.pl
+    perl -MInline=info,force Foo.pl
 
-=head2 The Inline DIRECTORY
+=head2 The Inline 'directory'
 
 Inline needs a place to build your code and to install the results of the
 build. It uses a single directory named C<'.Inline/'> under normal
@@ -525,7 +525,7 @@ circumstances. If you create this directory in your home directory, the
 current directory or in the directory where your program resides, Inline will
 find and use it. You can also specify it in the environment variable
 C<PERL_INLINE_DIRECTORY> or directly in your program, by using the
-C<DIRECTORY> keyword option. If Inline cannot find the directory in any of
+C<directory> keyword option. If Inline cannot find the directory in any of
 these places it will create a C<'_Inline/'> directory in either your current
 directory or the directory where your script resides.
 
@@ -566,7 +566,7 @@ information.
 =head2 The 'config' Registry File
 
 Inline keeps a cached file of all of the Inline Language Support Module's meta
-data in a file called C<config>. This file can be found in your C<DIRECTORY>
+data in a file called C<config>. This file can be found in your C<directory>
 directory. If the file does not exist, Inline creates a new one. It will
 search your system for any module beginning with C<Inline::>. It will then
 call that module's C<register()> method to get useful information for future
@@ -583,9 +583,9 @@ language specific configuration, see the doc for that language.
 
 =over
 
-=item DIRECTORY
+=item directory
 
-The C<DIRECTORY> config option is the directory that Inline uses to both build
+The C<directory> config option is the directory that Inline uses to both build
 and install an extension.
 
 Normally Inline will search in a bunch of known places for a directory called
@@ -593,7 +593,7 @@ C<'.Inline/'>. Failing that, it will create a directory called C<'_Inline/'>
 
 If you want to specify your own directory, use this configuration option.
 
-Note that you must create the C<DIRECTORY> directory yourself. Inline will not
+Note that you must create the C<directory> directory yourself. Inline will not
 do it for you.
 
 =item NAME
@@ -601,8 +601,8 @@ do it for you.
 You can use this option to set the name of your Inline extension object
 module. For example:
 
-    use Inline C => 'DATA',
-               NAME => 'Foo::Bar';
+    use Inline C => 'data',
+               name => 'Foo::Bar';
 
 would cause your C code to be compiled in to the object:
 
@@ -612,27 +612,27 @@ would cause your C code to be compiled in to the object:
 (The .inl component contains dependency information to make sure the source
 code is in sync with the executable)
 
-If you don't use NAME, Inline will pick a name for you based on your program
-name or package name. In this case, Inline will also enable the AUTONAME
-option which mangles in a small piece of the MD5 fingerprint into your object
-name, to make it unique.
+If you don't use C<name>, Inline will pick a name for you based on your
+program name or package name. In this case, Inline will also enable the
+C<autoname> option which mangles in a small piece of the MD5 fingerprint into
+your object name, to make it unique.
 
-=item AUTONAME
+=item autoname
 
-This option is enabled whenever the NAME parameter is not specified. To
+This option is enabled whenever the C<name> parameter is not specified. To
 disable it say:
 
-    use Inline C => 'DATA',
-               DISABLE => 'AUTONAME';
+    use Inline C => 'data',
+               disable => 'autoname';
 
-AUTONAME mangles in enough of the MD5 fingerprint to make your module name
-unique. Objects created with AUTONAME will never get replaced. That also means
-they will never get cleaned up automatically.
+C<autoname> mangles in enough of the MD5 fingerprint to make your module name
+unique. Objects created with C<autoname> will never get replaced. That also
+means they will never get cleaned up automatically.
 
-AUTONAME is very useful for small throw away scripts. For more serious things,
-always use the NAME option.
+C<autoname> is very useful for small throw away scripts. For more serious
+things, always use the C<name> option.
 
-=item VERSION
+=item version
 
 Specifies the version number of the Inline extension object. It is used
 B<only> for modules, and it must match the global variable $VERSION.
@@ -640,110 +640,110 @@ Additionally, this option should used if (and only if) a module is being set
 up to be installed permanently into the Perl sitelib tree. Inline will croak
 if you use it otherwise.
 
-The presence of the VERSION parameter is the official way to let Inline know
-that your code is an installableI<installed module. Inline will never generate
-an object in the temporary cache (_Inline> directory) if VERSION is set. It
-will also never try to recompile a module that was installed into someone's
-Perl site tree.
+The presence of the C<version> parameter is the official way to let Inline
+know that your code is an installableI<installed module. Inline will never
+generate an object in the temporary cache (_Inline> directory) if C<version>
+is set. It will also never try to recompile a module that was installed into
+someone's Perl site tree.
 
-So the basic rule is develop without VERSION, and deliver with VERSION.
+So the basic rule is develop without C<version>, and deliver with C<version>.
 
-=item WITH
+=item with
 
-C<WITH> can also be used as a configuration option instead of using the
+C<with> can also be used as a configuration option instead of using the
 special 'with' syntax. Do this if you want to use different sections of Inline
 code I<with> different modules. (Probably a very rare usage)
 
     use Event;
-    use Inline C => DATA => WITH => 'Event';
+    use Inline C => data => with => 'Event';
 
-Modules specified using the config form of C<WITH> will B<not> be
+Modules specified using the config form of C<with> will B<not> be
 automatically required. You must C<use> them yourself.
 
-=item GLOBAL_LOAD
+=item global_load
 
 This option is for compiled languages only. It tells Inline to tell DynaLoader
 to load an object file in such a way that its symbols can be dynamically
 resolved by other object files. May not work on all platforms. See the
-C<GLOBAL> shortcut below.
+C<global> shortcut below.
 
-=item UNTAINT
+=item untaint
 
 You can use this option whenever you use Perl's C<-T> switch, for taint
 checking. This option tells Inline to blindly untaint all tainted variables.
 (This is generally considered to be an appallingly insecure thing to do, and
 not to be recommended - but the option is there for you to use if you want.
 Please consider using something other than Inline for scripts that need taint
-checking.) It also turns on SAFEMODE by default. See the C<UNTAINT> shortcut
-below. You will see warnings about blindly untainting fields in both %ENV and
-Inline objects. If you want to silence these warnings, set the Config option
-NO_UNTAINT_WARN => 1. There can be some problems untainting Inline scripts
-where older versions of Cwd, such as those that shipped with early versions
-of perl-5.8 (and earlier), are installed. Updating Cwd will probably solve
-these problems.
+checking.) It also turns on C<safemode> by default. See the C<untaint>
+shortcut below. You will see warnings about blindly untainting fields in both
+%ENV and Inline objects. If you want to silence these warnings, set the Config
+option C<no_untaint_warn> => 1. There can be some problems untainting Inline
+scripts where older versions of Cwd, such as those that shipped with early
+versions of perl-5.8 (and earlier), are installed. Updating Cwd will probably
+solve these problems.
 
-=item SAFEMODE
+=item safemode
 
 Perform extra safety checking, in an attempt to thwart malicious code. This
 option cannot guarantee security, but it does turn on all the currently
 implemented checks. (Currently, the only "currently implemented check" is to
-ensure that the C<DIRECTORY> option has also been used.)
+ensure that the C<directory> option has also been used.)
 
-There is a slight startup penalty by using SAFEMODE. Also, using UNTAINT
+There is a slight startup penalty by using C<safemode>. Also, using C<untaint>
 automatically turns this option on. If you need your code to start faster
 under C<-T> (taint) checking, you'll need to turn this option off manually.
-Only do this if you are not worried about security risks. See the C<UNSAFE>
+Only do this if you are not worried about security risks. See the C<unsafe>
 shortcut below.
 
-=item FORCE_BUILD
+=item force_build
 
 Makes Inline build (compile) the source code every time the program is run.
-The default is 0. See the C<FORCE> shortcut below.
+The default is 0. See the C<force> shortcut below.
 
-=item BUILD_NOISY
+=item build_noisy
 
 Tells ILSMs that they should dump build messages to the terminal rather than
 be silent about all the build details.
 
-=item BUILD_TIMERS
+=item build_timers
 
 Tells ILSMs to print timing information about how long each build phase took.
 Usually requires C<Time::HiRes>.
 
-=item CLEAN_AFTER_BUILD
+=item clean_after_build
 
 Tells Inline to clean up the current build area if the build was successful.
-Sometimes you want to DISABLE this for debugging. Default is 1. See the
-C<NOCLEAN> shortcut below.
+Sometimes you want to C<disable> this for debugging. Default is 1. See the
+C<noclean> shortcut below.
 
-=item CLEAN_BUILD_AREA
+=item clean_build_area
 
 Tells Inline to clean up the old build areas within the entire Inline
-DIRECTORY. Default is 0. See the C<CLEAN> shortcut below.
+C<directory>. Default is 0. See the C<clean> shortcut below.
 
-=item PRINT_INFO
+=item print_info
 
 Tells Inline to print various information about the source code. Default is 0.
-See the C<INFO> shortcut below.
+See the C<info> shortcut below.
 
-=item PRINT_VERSION
+=item print_version
 
-Tells Inline to print Version info about itself. Default is 0. See the
-C<VERSION> shortcut below.
+Tells Inline to print version info about itself. Default is 0. See the
+C<version> shortcut below.
 
-=item REPORTBUG
+=item reportbug
 
-Puts Inline into 'REPORTBUG' mode, which is what you want if you desire to
+Puts Inline into 'reportbug' mode, which is what you want if you desire to
 report a bug.
 
-=item REWRITE_CONFIG_FILE
+=item rewrite_config_file
 
-Default is 0, but setting 'REWRITE_CONFIG_FILE => 1' will mean that the
-existing configuration file in the Inline DIRECTORY will be overwritten. (This
-is useful if the existing config file is not up to date as regards supported
-languages.)
+Default is 0, but setting 'rewrite_config_file => 1' will mean that the
+existing configuration file in the Inline C<directory> will be overwritten.
+(This is useful if the existing config file is not up to date as regards
+supported languages.)
 
-=item WARNINGS
+=item warnings
 
 This option tells Inline whether to print certain warnings. Default is 1.
 
@@ -754,76 +754,76 @@ This option tells Inline whether to print certain warnings. Default is 1.
 This is a list of all the shortcut configuration options currently available
 for Inline. Specify them from the command line when running Inline scripts.
 
-      perl -MInline=NOCLEAN inline_script.pl
+      perl -MInline=noclean inline_script.pl
 
 or
 
-      perl -MInline=Info,force,NoClean inline_script.pl
+      perl -MInline=info,force,noclean inline_script.pl
 
 You can specify multiple shortcuts separated by commas. They are not case
 sensitive. You can also specify shortcuts inside the Inline program like this:
 
-      use Inline 'Info', 'Force', 'Noclean';
+      use Inline 'info', 'force', 'noclean';
 
 NOTE: If a C<'use Inline'> statement is used to set shortcuts, it can not be
       used for additional purposes.
 
 =over
 
-=item CLEAN
+=item clean
 
 Tells Inline to remove any build directories that may be lying around in your
 build area. Normally these directories get removed immediately after a
 successful build. Exceptions are when the build fails, or when you use the
-NOCLEAN or REPORTBUG options.
+C<noclean> or C<reportbug> options.
 
-=item FORCE
+=item force
 
 Forces the code to be recompiled, even if everything is up to date.
 
-=item GLOBAL
+=item global
 
-Turns on the GLOBAL_LOAD option.
+Turns on the C<global_load> option.
 
-=item INFO
+=item info
 
 This is a very useful option when you want to know what's going on under the
 hood. It tells Inline to print helpful information to C<STDERR>. Among the
 things that get printed is a list of which Inline functions were successfully
 bound to Perl.
 
-=item NOCLEAN
+=item noclean
 
 Tells Inline to leave the build files after compiling.
 
-=item NOISY
+=item noisy
 
-Use the BUILD_NOISY option to print messages during a build.
+Use the C<build_noisy> option to print messages during a build.
 
-=item REPORTBUG
+=item reportbug
 
-Puts Inline into 'REPORTBUG' mode, which does special processing when you want
-to report a bug. REPORTBUG also automatically forces a build, and doesn't
-clean up afterwards. This is so that you can tar and mail the build directory
-to me. REPORTBUG will print exact instructions on what to do. Please read and
-follow them carefully.
+Puts Inline into C<reportbug> mode, which does special processing when you
+want to report a bug. C<reportbug> also automatically forces a build, and
+doesn't clean up afterwards. This is so that you can tar and mail the build
+directory to me. C<reportbug> will print exact instructions on what to do.
+Please read and follow them carefully.
 
-NOTE: REPORTBUG informs you to use the tar command. If your system does not
+NOTE: C<reportbug> informs you to use the tar command. If your system does not
       have tar, please use the equivalent C<zip> command.
 
-=item SAFE
+=item safe
 
-Turns SAFEMODE on. UNTAINT will turn this on automatically. While this mode
-performs extra security checking, it does not guarantee safety.
+Turns C<safemode> on. C<untaint> will turn this on automatically. While this
+mode performs extra security checking, it does not guarantee safety.
 
-=item SITE_INSTALL
+=item site_install
 
 This parameter used to be used for creating installable Inline modules. It has
 been removed from Inline altogether and replaced with a much simpler and more
 powerful mechanism, C<Inline::MakeMaker>. See the section below on how to
 create modules with Inline.
 
-=item _TESTING
+=item _testing
 
 Used internally by C/tI<09parser.t and C>tI<10callback.t(in the Inline::C
 test suite). Setting this option with Inline::C will mean that files named
@@ -833,24 +833,24 @@ creating that directory if it doesn't already exist. The files (but not the
 Inline::C::_testing_cleanup(). Also used by t>06rewrite_config.t to trigger
 a warning.
 
-=item TIMERS
+=item timers
 
-Turn on BUILD_TIMERS to get extra diagnostic info about builds.
+Turn on C<build_timers> to get extra diagnostic info about builds.
 
-=item UNSAFE
+=item unsafe
 
-Turns SAFEMODE off. Use this in combination with UNTAINT for slightly
+Turns C<safemode> off. Use this in combination with C<untaint> for slightly
 faster startup time under C<-T>. Only use this if you are sure the
 environment is safe.
 
-=item UNTAINT
+=item untaint
 
-Turn the UNTAINT option on. Used with C<-T> switch. In terms of secure
+Turn the C<untaint> option on. Used with C<-T> switch. In terms of secure
 practices, this is definitely B<not> a recommended way of dealing with taint
 checking, but it's the B<only> option currently available with Inline. Use it
 at your own risk.
 
-=item VERSION
+=item version
 
 Tells Inline to report its release version.
 
@@ -875,9 +875,9 @@ do) Next, modify the C<Simple.pm> file to look like this:
     @EXPORT_OK = qw(add subtract);
     use strict;
 
-    use Inline C => 'DATA',
-               VERSION => '1.23',
-               NAME => 'Math::Simple';
+    use Inline C => 'data',
+               version => '1.23',
+               name => 'Math::Simple';
 
     # The following Inline->init() call is optional - see below for more info.
     #Inline->init();
@@ -899,9 +899,9 @@ do) Next, modify the C<Simple.pm> file to look like this:
       return x - y;
     }
 
-The important things to note here are that you B<must> specify a C<NAME> and
-C<VERSION> parameter. The C<NAME> must match your module's package name. The
-C<VERSION> parameter must match your module's C<$VERSION> variable and they
+The important things to note here are that you B<must> specify a C<name> and
+C<version> parameter. The C<name> must match your module's package name. The
+C<version> parameter must match your module's C<$VERSION> variable and they
 must be of the form C</^\d\.\d\d$/>.
 
 NOTE: These are Inline's sanity checks to make sure you know what you're doing
@@ -1070,7 +1070,7 @@ where to look for more info.
 
 By default, Inline will remove all of the mess created by the build process,
 assuming that everything worked. If the build fails, Inline will leave
-everything intact, so that you can debug your errors. Setting the C<NOCLEAN>
+everything intact, so that you can debug your errors. Setting the C<noclean>
 shortcut option will also stop Inline from cleaning up.
 
 =item * DynaLoad the Executable
@@ -1105,7 +1105,7 @@ When reporting a bug, please do the following:
 
 =over
 
-=item * Put "use Inline REPORTBUG;" at the top of your code, or use the command line option "perl -MInline=REPORTBUG ...".
+=item * Put "use Inline 'reportbug';" at the top of your code, or use the command line option "perl -MInline=reportbug ...".
 
 =item * Run your code.
 

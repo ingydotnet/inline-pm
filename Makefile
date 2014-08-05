@@ -11,18 +11,24 @@ PERL ?= $(shell which perl)
 ZILD := $(PERL) -S zild
 
 ifneq (,$(shell which zild))
+    NAMEPATH := $(shell $(ZILD) meta =cpan/libname)
+    NAMEPATH := $(subst ::,/,$(NAMEPATH))
+ifeq (,$(NAMEPATH))
+    NAMEPATH := $(shell $(ZILD) meta name)
+endif
     NAME := $(shell $(ZILD) meta name)
     VERSION := $(shell $(ZILD) meta version)
     RELEASE_BRANCH := $(shell $(ZILD) meta branch)
 else
     NAME := No-Name
+    NAMEPATH := $(NAME)
     VERSION := 0
     RELEASE_BRANCH := master
 endif
 
 DISTDIR := $(NAME)-$(VERSION)
 DIST := $(DISTDIR).tar.gz
-NAMEPATH := $(subst -,/,$(NAME))
+NAMEPATH := $(subst -,/,$(NAMEPATH))
 SUCCESS := "$(DIST) Released!!!"
 
 default: help
@@ -49,6 +55,7 @@ help:
 	@echo '    make upgrade   - Upgrade the build system (Makefile)'
 	@echo '    make readme    - Make the ReadMe.pod file'
 	@echo '    make travis    - Make a travis.yml file'
+	@echo '    make uninstall - Uninstall the dist from this repo'
 	@echo ''
 	@echo '    make clean     - Clean up build files'
 	@echo '    make help      - Show this help'
@@ -71,14 +78,21 @@ prereqs:
 
 update: makefile
 	@echo '***** Updating/regenerating repo content'
-	make readme contrib travis version
+	make readme contrib travis version webhooks
 
-release: clean update check-release date test disttest
+release:
+	make self-install
+	make clean
+	make update
+	make check-release
+	make date
+	make test
+	make disttest
 	@echo '***** Releasing $(DISTDIR)'
 	make dist
 	cpan-upload $(DIST)
 	make clean
-	[ -z "$$(git status -s)" ] || git commit -am '$(VERSION)'
+	[ -z "$$(git status -s)" ] || zild-git-commit
 	git push
 	git tag $(VERSION)
 	git push --tag
@@ -140,6 +154,10 @@ contrib:
 travis:
 	$(PERL) -S zild-render-template travis.yml .travis.yml
 
+uninstall: distdir
+	(cd $(DISTDIR); perl Makefile.PL; make uninstall)
+	make clean
+
 clean purge:
 	rm -fr cpan .build $(DIST) $(DISTDIR)
 
@@ -149,12 +167,18 @@ clean purge:
 check-release:
 	@echo '***** Checking readiness to release $(DIST)'
 	RELEASE_BRANCH=$(RELEASE_BRANCH) zild-check-release
+	git stash
+	git pull --rebase origin $(RELEASE_BRANCH)
+	git stash pop
 
 # We don't want to update the Makefile in Zilla::Dist since it is the real
 # source, and would be reverting to whatever was installed.
 ifeq (Zilla-Dist,$(NAME))
 makefile:
 	@echo Skip 'make upgrade'
+
+self-install: install
+	[ -n "which plenv" ] && plenv rehash
 else
 makefile:
 	@cp Makefile /tmp/
@@ -164,6 +188,8 @@ makefile:
 	    exit 1; \
 	fi
 	@rm /tmp/Makefile
+
+self-install:
 endif
 
 date:
@@ -171,3 +197,6 @@ date:
 
 version:
 	$(PERL) -S zild-version-update
+
+webhooks:
+	$(PERL) -S zild webhooks
