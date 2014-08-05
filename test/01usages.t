@@ -12,7 +12,7 @@ my $t; BEGIN { $t = -d 't' ? 't' : 'test' }
 use Inline Foo => File::Spec->catfile(File::Spec->curdir(),$t,'file');
 ok(test1('test1'), 'read external file');
 
-use Inline Foo => 'data';
+use Inline Foo => 'DATA';
 ok(test2('test2'), 'DATA handle');
 use Inline 'Foo';
 ok(!test3('test3'), 'unspecified = DATA handle');

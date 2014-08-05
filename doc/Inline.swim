@@ -132,9 +132,9 @@ second parameter identifies the source code that you want to bind
 to Perl. The source code can be specified using any of the
 following syntaxes:
 
-- The data Keyword.
+- The DATA Keyword.
 
-    use Inline Java => 'data';
+    use Inline Java => 'DATA';
 
     # Perl code goes here ...
 
@@ -143,7 +143,7 @@ following syntaxes:
     /* Java code goes here ... */
 
   The easiest and most visually clean way to specify your source code in an
-  Inline Perl program is to use the special `data` keyword. This tells Inline
+  Inline Perl program is to use the special `DATA` keyword. This tells Inline
   to look for a special marker in your `DATA` filehandle's input stream. In
   this example the special marker is `__Java__`, which is the programming
   language surrounded by double underscores.
@@ -181,7 +181,7 @@ following syntaxes:
   a few syntactic and semantic twists.
 
   First, you must say 'use Inline::Files' before you 'use Inline' code
-  that needs those files. The special '`data`' keyword is replaced by
+  that needs those files. The special '`DATA`' keyword is replaced by
   either '`file`' or '`below`'. This allows for the bad pun idiom of:
 
     use Inline C => 'below';
@@ -190,7 +190,7 @@ following syntaxes:
   that will remove these sections from your program before Perl compiles
   it. They are then available for Inline to make use of. And since this
   can all be done at compile time, you don't have to worry about the
-  caveats of the 'data' keyword.
+  caveats of the 'DATA' keyword.
 
   This module has a couple small gotchas. Since Inline::Files only
   recognizes file markers with capital letters, you must specify the
@@ -270,7 +270,7 @@ following syntaxes:
 
 - Shorthand
 
-  If you are using the 'data' or 'file' methods described above *and* there are
+  If you are using the 'DATA' or 'file' methods described above *and* there are
   no extra parameters, you can omit the keyword altogether.  For example:
 
     use Inline 'Java';
@@ -306,7 +306,7 @@ programming languages. Here is another example:
   use AutoLoader;
 
   use Inline C;
-  use Inline C => data => filters => 'Strip_POD';
+  use Inline C => DATA => filters => 'Strip_POD';
   use Inline Python;
 
   1;
@@ -336,7 +336,7 @@ programming languages. Here is another example:
   """A Python Section"""
 
 An important thing to remember is that you need to have one "use Inline Foo =>
-'data'" for each "__Foo__" marker, and they must be in the same order. This
+'DATA'" for each "__Foo__" marker, and they must be in the same order. This
 allows you to apply different configuration options to each section.
 
 == Configuration Options
@@ -346,7 +346,7 @@ need to override the default actions. This is easy to do. Simply list the
 Inline configuration options after the regular Inline parameters. All
 configuration options are specified as (key, value) pairs.
 
-  use Inline (C => 'data',
+  use Inline (C => 'DATA',
               directory => './inline_dir',
               libs => '-lfoo',
               inc => '-I/foo/include',
@@ -385,16 +385,16 @@ have been specified up to that point. Here is a complex configuration example:
   use Inline (C => Config =>
               libs => '-lglobal',
              );
-  use Inline (C => 'data',         # First C Section
+  use Inline (C => 'DATA',         # First C Section
               libs => ['-llocal1', '-llocal2'],
              );
   use Inline (Config =>
               warnings => 0,
              );
-  use Inline (Python => 'data',    # First Python Section
+  use Inline (Python => 'DATA',    # First Python Section
               libs => '-lmypython1',
              );
-  use Inline (C => 'data',         # Second C Section
+  use Inline (C => 'DATA',         # Second C Section
               libs => [undef, '-llocal3'],
              );
 
@@ -573,7 +573,7 @@ language specific configuration, see the doc for that language.
   You can use this option to set the name of your Inline extension object
   module. For example:
 
-    use Inline C => 'data',
+    use Inline C => 'DATA',
                name => 'Foo::Bar';
 
   would cause your C code to be compiled in to the object:
@@ -594,7 +594,7 @@ language specific configuration, see the doc for that language.
   This option is enabled whenever the `name` parameter is not specified. To
   disable it say:
 
-    use Inline C => 'data',
+    use Inline C => 'DATA',
                disable => 'autoname';
 
   `autoname` mangles in enough of the MD5 fingerprint to make your module name
@@ -627,7 +627,7 @@ language specific configuration, see the doc for that language.
   Inline code /with/ different modules. (Probably a very rare usage)
 
     use Event;
-    use Inline C => data => with => 'Event';
+    use Inline C => DATA => with => 'Event';
 
   Modules specified using the config form of `with` will *not* be automatically
   required. You must `use` them yourself.
@@ -841,7 +841,7 @@ Next, modify the `Simple.pm` file to look like this:
   @EXPORT_OK = qw(add subtract);
   use strict;
 
-  use Inline C => 'data',
+  use Inline C => 'DATA',
              version => '1.23',
              name => 'Math::Simple';
 

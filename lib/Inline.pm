@@ -132,7 +132,7 @@ sub import {
             $o->read_inline_file;
             $o->{CONFIG} = handle_language_config(@config);
         }
-        elsif (uc $option eq 'DATA' or not $option) {
+        elsif ($option eq 'DATA' or not $option) {
             $o->{CONFIG} = handle_language_config(@config);
             push @DATA_OBJS, $o;
             return;
