@@ -155,9 +155,9 @@ code can be specified using any of the following syntaxes:
 
 =over
 
-=item The data Keyword.
+=item The DATA Keyword.
 
-    use Inline Java => 'data';
+    use Inline Java => 'DATA';
 
     # Perl code goes here ...
 
@@ -166,7 +166,7 @@ code can be specified using any of the following syntaxes:
     /* Java code goes here ... */
 
 The easiest and most visually clean way to specify your source code in an
-Inline Perl program is to use the special C<data> keyword. This tells Inline
+Inline Perl program is to use the special C<DATA> keyword. This tells Inline
 to look for a special marker in your C<DATA> filehandle's input stream. In
 this example the special marker is C<__Java__>, which is the programming
 language surrounded by double underscores.
@@ -204,7 +204,7 @@ meaning are the same as for the C<DATA> keyword, but there are a few syntactic
 and semantic twists.
 
 First, you must say 'use Inline::Files' before you 'use Inline' code that
-needs those files. The special 'C<data>' keyword is replaced by either
+needs those files. The special 'C<DATA>' keyword is replaced by either
 'C<file>' or 'C<below>'. This allows for the bad pun idiom of:
 
     use Inline C => 'below';
@@ -212,7 +212,7 @@ needs those files. The special 'C<data>' keyword is replaced by either
 You can omit the C<__DATA__> tag now. Inline::Files is a source filter that
 will remove these sections from your program before Perl compiles it. They are
 then available for Inline to make use of. And since this can all be done at
-compile time, you don't have to worry about the caveats of the 'data' keyword.
+compile time, you don't have to worry about the caveats of the 'DATA' keyword.
 
 This module has a couple small gotchas. Since Inline::Files only recognizes
 file markers with capital letters, you must specify the capital form of
@@ -291,7 +291,7 @@ used but may be useful in some situations.
 
 =item Shorthand
 
-If you are using the 'data' or 'file' methods described above B<and> there are
+If you are using the 'DATA' or 'file' methods described above B<and> there are
 no extra parameters, you can omit the keyword altogether. For example:
 
     use Inline 'Java';
@@ -330,7 +330,7 @@ programming languages. Here is another example:
     use AutoLoader;
 
     use Inline C;
-    use Inline C => data => filters => 'Strip_POD';
+    use Inline C => DATA => filters => 'Strip_POD';
     use Inline Python;
 
     1;
@@ -360,7 +360,7 @@ programming languages. Here is another example:
     """A Python Section"""
 
 An important thing to remember is that you need to have one "use Inline Foo =>
-'data'" for each "__Foo__" marker, and they must be in the same order. This
+'DATA'" for each "__Foo__" marker, and they must be in the same order. This
 allows you to apply different configuration options to each section.
 
 =head2 Configuration Options
@@ -370,7 +370,7 @@ need to override the default actions. This is easy to do. Simply list the
 Inline configuration options after the regular Inline parameters. All
 configuration options are specified as (key, value) pairs.
 
-    use Inline (C => 'data',
+    use Inline (C => 'DATA',
                 directory => './inline_dir',
                 libs => '-lfoo',
                 inc => '-I/foo/include',
@@ -410,16 +410,16 @@ configuration example:
     use Inline (C => Config =>
                 libs => '-lglobal',
                );
-    use Inline (C => 'data',         # First C Section
+    use Inline (C => 'DATA',         # First C Section
                 libs => ['-llocal1', '-llocal2'],
                );
     use Inline (Config =>
                 warnings => 0,
                );
-    use Inline (Python => 'data',    # First Python Section
+    use Inline (Python => 'DATA',    # First Python Section
                 libs => '-lmypython1',
                );
-    use Inline (C => 'data',         # Second C Section
+    use Inline (C => 'DATA',         # Second C Section
                 libs => [undef, '-llocal3'],
                );
 
@@ -601,7 +601,7 @@ do it for you.
 You can use this option to set the name of your Inline extension object
 module. For example:
 
-    use Inline C => 'data',
+    use Inline C => 'DATA',
                name => 'Foo::Bar';
 
 would cause your C code to be compiled in to the object:
@@ -622,7 +622,7 @@ your object name, to make it unique.
 This option is enabled whenever the C<name> parameter is not specified. To
 disable it say:
 
-    use Inline C => 'data',
+    use Inline C => 'DATA',
                disable => 'autoname';
 
 C<autoname> mangles in enough of the MD5 fingerprint to make your module name
@@ -655,7 +655,7 @@ special 'with' syntax. Do this if you want to use different sections of Inline
 code I<with> different modules. (Probably a very rare usage)
 
     use Event;
-    use Inline C => data => with => 'Event';
+    use Inline C => DATA => with => 'Event';
 
 Modules specified using the config form of C<with> will B<not> be
 automatically required. You must C<use> them yourself.
@@ -875,7 +875,7 @@ do) Next, modify the C<Simple.pm> file to look like this:
     @EXPORT_OK = qw(add subtract);
     use strict;
 
-    use Inline C => 'data',
+    use Inline C => 'DATA',
                version => '1.23',
                name => 'Math::Simple';
 
