@@ -5,18 +5,8 @@ use base 'Exporter';
 use ExtUtils::MakeMaker();
 use Carp;
 
-our @EXPORT = qw(WriteMakefile WriteInlineMakefile);
+our @EXPORT = qw(WriteMakefile);
 our $VERSION = '0.66';
-
-sub WriteInlineMakefile {
-#    warn <<END;
-#
-#Inline::MakeMaker::WriteInlineMakefile() is deprecated as of Inline-0.44.
-#Inline::MakeMaker::WriteMakefile() should be used instead.
-#
-#END
-    goto &WriteMakefile;
-}
 
 sub WriteMakefile {
     my %args = @_;
