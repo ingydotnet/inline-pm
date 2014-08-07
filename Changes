@@ -1,4 +1,11 @@
 ---
+version: 0.67
+date:    Fri Aug  8 00:37:17 BST 2014
+changes:
+- Remove WriteInlineMakefile.
+- Make "use Inline" keywords case-insensitive.
+- Add a devel ILSM test for running before release
+---
 version: 0.66
 date:    Fri Aug  1 00:43:36 BST 2014
 changes:
