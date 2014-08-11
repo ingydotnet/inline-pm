@@ -6,7 +6,7 @@ use ExtUtils::MakeMaker();
 use Carp;
 
 our @EXPORT = qw(WriteMakefile);
-our $VERSION = '0.67';
+our $VERSION = '0.68';
 
 sub WriteMakefile {
     my %args = @_;

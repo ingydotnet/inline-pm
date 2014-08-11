@@ -480,19 +480,11 @@ L<C Configuration Options|Inline::C>. E.g.:
     my $confighashref = Event->Inline('C'); # only supports C in 1.21
     # hashref contains keys INC, TYPEMAPS, MYEXTLIB, AUTO_INCLUDE, BOOT
 
-If your module supports L<ExtUtils::Depends>, your function might be as
-simple as this:
+If your module uses L<ExtUtils::Depends> version 0.400 or higher, your module
+only needs this:
 
     package Module;
-    sub Inline {
-        my ($class, $lang) = @_;
-        return unless $lang eq 'C'; # Inline's error message is good
-        require Module::Install::Files;
-        +{
-            map { (uc($_) =>  ${$Module::Install::Files::{$_}}) } qw(inc libs),
-            TYPEMAPS => \@Module::Install::Files::typemaps,
-        };
-    }
+    use autouse Module::Install::Files => qw(Inline);
 
 =head2 Inline Shortcuts
 

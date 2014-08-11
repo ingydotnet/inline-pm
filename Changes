@@ -1,4 +1,9 @@
 ---
+version: 0.68
+date:    Mon Aug 11 01:19:12 BST 2014
+changes:
+- Update "with" docs for EU::D 0.400.
+---
 version: 0.67
 date:    Fri Aug  8 00:37:17 BST 2014
 changes:
