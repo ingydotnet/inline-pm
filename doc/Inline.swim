@@ -455,8 +455,8 @@ Configuration Options"[Inline::C]. E.g.:
   my $confighashref = Event->Inline('C'); # only supports C in 1.21
   # hashref contains keys INC, TYPEMAPS, MYEXTLIB, AUTO_INCLUDE, BOOT
 
-If your module uses [ExtUtils::Depends] version 0.400 or higher, your
-module only needs this:
+If your module uses [ExtUtils::Depends] version 0.400 or higher, your module
+only needs this:
 
   package Module;
   use autouse Module::Install::Files => qw(Inline);
