@@ -1,7 +1,7 @@
 use strict; use warnings;
 package Inline;
 
-our $VERSION = '0.68';
+our $VERSION = '0.69';
 
 use Inline::denter;
 use Config;

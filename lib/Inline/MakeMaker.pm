@@ -5,8 +5,23 @@ use base 'Exporter';
 use ExtUtils::MakeMaker();
 use Carp;
 
-our @EXPORT = qw(WriteMakefile);
-our $VERSION = '0.68';
+our @EXPORT = qw(WriteMakefile WriteInlineMakefile);
+our $VERSION = '0.69';
+
+sub WriteInlineMakefile {
+    carp <<EOF;
+
+======================== DEPRECATION ALERT ======================
+
+WriteInlineMakefile was deprecated in 2002. This warning is from 2014.
+WriteInlineMakefile will soon be removed. Please change this Makefile.PL
+to use WriteMakefile instead.
+
+========================== MESSAGE ENDS =========================
+
+EOF
+     goto &WriteMakefile;
+}
 
 sub WriteMakefile {
     my %args = @_;

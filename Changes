@@ -1,4 +1,9 @@
 ---
+version: 0.69
+date:    Fri Aug 15 20:54:27 BST 2014
+changes:
+- Restore deprecated "WriteInlineMakefile" for now.
+---
 version: 0.68
 date:    Mon Aug 11 01:19:12 BST 2014
 changes:
