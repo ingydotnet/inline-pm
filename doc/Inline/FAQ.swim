@@ -29,8 +29,8 @@ to override this automatic process - such as using the DIRECTORY config option,
 or using the PERL_INLINE_DIRECTORY environment variable).  You can move that to
 `./.Inline` and it will continue to work if you want togive it more longevity
 and hide it from view. There is a long complicated list of rules about how
-`[_.]Inline/` directories are used / created. But it was designed to give you
-the most flexibility / ease-of-use. Never be afraid to nuke 'em. They'll just
+`[_.]Inline/` directories are used\/created. But it was designed to give you
+the most flexibility\/ease-of-use. Never be afraid to nuke 'em. They'll just
 pop right back next time they're needed.  :)
 
 == Whatever happened to the SITE_INSTALL option?
