@@ -1,7 +1,7 @@
 =meta: 0.0.1
 
 name: Inline
-version: 0.70
+version: 0.71
 abstract: Write Perl subroutines in other programming languages
 homepage: https://metacpan.org/release/Inline
 
@@ -24,6 +24,8 @@ test:
   requires:
     Test::More: 0.88
     Test::Warn: 0.23
+  generate:
+    000-require-modules.t: true
 
 devel:
   git: https://github.com/ingydotnet/inline-pm
