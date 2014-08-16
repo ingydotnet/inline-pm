@@ -1,13 +1,10 @@
 use strict; use warnings;
-use File::Basename;
-use lib dirname(__FILE__);
+my $t; use lib ($t = -e 't' ? 't' : 'test');
 use TestInlineSetup;
 
 use Test::More;
 
 use Inline conFig => DiREcTOrY => $TestInlineSetup::DIR;
-
-my $t; BEGIN { $t = -d 't' ? 't' : 'test' }
 
 use Inline Foo => File::Spec->catfile(File::Spec->curdir(),$t,'file');
 ok(test1('test1'), 'read external file');

@@ -8,8 +8,7 @@ BEGIN {
 };
 
 use strict; use warnings;
-use File::Basename;
-use lib dirname(__FILE__);
+use lib -e 't' ? 't' : 'test';
 use TestInlineSetup;
 
 use Test::More tests => 2;

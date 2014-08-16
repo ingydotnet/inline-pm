@@ -7,14 +7,12 @@ BEGIN {
   }
 };
 
-use warnings;
-use strict;
+use warnings; use strict;
+use lib -e 't' ? 't' : 'test';
 use Test::More tests => 2;
 
 use Test::Warn;
 
-use File::Basename;
-use lib dirname(__FILE__);
 use TestInlineSetup;
 use Inline Config => DIRECTORY => $TestInlineSetup::DIR;
 eval q{use Inline 'Bogus' => 'code';};
