@@ -1,19 +1,26 @@
-=meta: 0.0.1
+=meta: 0.0.2
 
 name: Inline
-version: 0.72
+version: 0.73
 abstract: Write Perl subroutines in other programming languages
 homepage: https://metacpan.org/release/Inline
-
+language: perl
 license: perl
-copyright: 2000-2014. Ingy döt Net.
+copyright: 2000-2014
+
 author:
   name: Ingy döt Net
   email: ingy@cpan.org
+  homepage: http://ingy.net
   github: ingydotnet
   twitter: ingydotnet
   freenode: ingy
-  homepage: http://ingy.net
+
+devel:
+  git: https://github.com/ingydotnet/inline-pm
+  bug: https://github.com/ingydotnet/inline-pm/issues
+  irc: irc.perl.org#inline
+  eml: inline@perl.org
 
 requires:
   perl: 5.8.1
@@ -24,15 +31,6 @@ test:
   requires:
     Test::More: 0.88
     Test::Warn: 0.23
-  generate:
-    000-require-modules.t: true
 
-devel:
-  git: https://github.com/ingydotnet/inline-pm
-  bug: https://github.com/ingydotnet/inline-pm/issues
-  irc: irc.perl.org#inline
-  eml: inline@perl.org
-
-=travis:
-  type: perl
-  irc: irc.perl.org#inline
+=zild:
+  test-000: require
