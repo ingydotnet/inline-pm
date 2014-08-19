@@ -1,7 +1,7 @@
 use strict; use warnings;
 package Inline;
 
-our $VERSION = '0.74';
+our $VERSION = '0.75';
 
 use Inline::denter;
 use Config;
@@ -563,11 +563,11 @@ sub handle_global_config {
         my ($key, $value) = (uc shift, shift);
         croak M02_usage() if $key =~ /[\s\n]/;
         if ($key =~ /^(ENABLE|DISABLE)$/) {
-	    ($key, $value) = (uc $value, $key eq 'ENABLE' ? 1 : 0);
-	}
+            ($key, $value) = (uc $value, $key eq 'ENABLE' ? 1 : 0);
+        }
         croak M47_invalid_config_option($key)
           unless defined $default_config->{$key};
-	$CONFIG{$pkg}{template}{$key} = $value;
+        $CONFIG{$pkg}{template}{$key} = $value;
     }
 }
 
