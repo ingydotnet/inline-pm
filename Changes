@@ -1,4 +1,9 @@
 ---
+version: 0.76
+date:    Tue Aug 19 16:43:41 PDT 2014
+changes:
+- Missed a TAB in previous release :\
+---
 version: 0.75
 date:    Tue Aug 19 16:18:15 PDT 2014
 changes:

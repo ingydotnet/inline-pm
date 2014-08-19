@@ -6,7 +6,7 @@ use ExtUtils::MakeMaker();
 use Carp;
 
 our @EXPORT = qw(WriteMakefile WriteInlineMakefile);
-our $VERSION = '0.75';
+our $VERSION = '0.76';
 
 sub WriteInlineMakefile {
     carp <<EOF;
@@ -96,7 +96,7 @@ MAKEFILE
     for (0..$#objects) {
         print MAKEFILE <<MAKEFILE;
 $obj_rules[$_]: \$(TO_INST_PM)
-	\$(PERL) -Mblib -MInline=NOISY,_INSTALL_ -M$objects[$_] -e"Inline::satisfy_makefile_dep({API => {modinlname => '$obj_rules[$_]', module => '$objects[$_]'}});" $version \$(INST_ARCHLIB)
+\t\$(PERL) -Mblib -MInline=NOISY,_INSTALL_ -M$objects[$_] -e"Inline::satisfy_makefile_dep({API => {modinlname => '$obj_rules[$_]', module => '$objects[$_]'}});" $version \$(INST_ARCHLIB)
 MAKEFILE
     }
 
