@@ -1,4 +1,10 @@
 ---
+version: 0.77
+date:    Fri Sep 19 23:13:20 UTC 2014
+changes:
+- Allow new USING usages.
+- Updated the docs.
+---
 version: 0.76
 date:    Tue Aug 19 16:43:41 PDT 2014
 changes:

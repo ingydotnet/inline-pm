@@ -6,7 +6,7 @@ use ExtUtils::MakeMaker();
 use Carp;
 
 our @EXPORT = qw(WriteMakefile WriteInlineMakefile);
-our $VERSION = '0.76';
+our $VERSION = '0.77';
 
 sub WriteInlineMakefile {
     carp <<EOF;

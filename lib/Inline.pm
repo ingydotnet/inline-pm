@@ -1,7 +1,7 @@
 use strict; use warnings;
 package Inline;
 
-our $VERSION = '0.76';
+our $VERSION = '0.77';
 
 use Inline::denter;
 use Config;
@@ -298,11 +298,13 @@ sub push_overrides {
     my ($language_id) = $o->{API}{language_id};
     my ($ilsm) = $o->{INLINE}{ILSM_module};
     for (@{$o->{CONFIG}{USING}}) {
+        my $fixed_name = /^Parser?(Pegex|RegExp|RecDescent)$/ ? "Parser::$1" : $_;
+        $fixed_name =~ s/^:://;
         my $using_module = /^::/
-                           ? "Inline::$language_id$_"
+                           ? "Inline::${language_id}::$fixed_name"
                            : /::/
                              ? $_
-                             : "Inline::${language_id}::$_";
+                             : "Inline::${language_id}::$fixed_name";
         eval "require $using_module";
         croak "Invalid module '$using_module' in USING list:\n$@" if $@;
         my $register;

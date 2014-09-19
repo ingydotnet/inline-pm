@@ -560,7 +560,7 @@ language specific configuration, see the doc for that language.
   Note that you must create the `directory` directory yourself. Inline will not
   do it for you.
 
-- NAME
+- name
 
   You can use this option to set the name of your Inline extension object
   module. For example:
@@ -623,6 +623,17 @@ language specific configuration, see the doc for that language.
 
   Modules specified using the config form of `with` will *not* be automatically
   required. You must `use` them yourself.
+
+- using
+
+  You can override modules that get used by ILSMs with the `using` option.
+  This is typically used to override the default parser for [Inline::C], but
+  might be used by any ILSM for any purpose.
+
+    use Inline config => using => '::Parser::RecDescent';
+    use Inline C => '...';
+
+  This would tell [Inline::C] to use [Inline::C::Parser::RecDescent].
 
 - global_load
 
