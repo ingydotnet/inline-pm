@@ -335,8 +335,8 @@ programming languages. Here is another example:
   __Python__
   """A Python Section"""
 
-An important thing to remember is that you need to have one "use Inline Foo =>
-'DATA'" for each "__Foo__" marker, and they must be in the same order. This
+An important thing to remember is that you need to have one `use Inline Foo =>
+'DATA'` for each `__Foo__` marker, and they must be in the same order. This
 allows you to apply different configuration options to each section.
 
 == Configuration Options
@@ -547,7 +547,7 @@ necessary as of Inline-0.49.)
 This section lists all of the generic Inline configuration options. For
 language specific configuration, see the doc for that language.
 
-- directory
+- `directory`
 
   The `directory` config option is the directory that Inline uses to both build
   and install an extension.
@@ -560,7 +560,7 @@ language specific configuration, see the doc for that language.
   Note that you must create the `directory` directory yourself. Inline will not
   do it for you.
 
-- name
+- `name`
 
   You can use this option to set the name of your Inline extension object
   module. For example:
@@ -581,7 +581,7 @@ language specific configuration, see the doc for that language.
   option which mangles in a small piece of the MD5 fingerprint into your object
   name, to make it unique.
 
-- autoname
+- `autoname`
 
   This option is enabled whenever the `name` parameter is not specified. To
   disable it say:
@@ -596,7 +596,7 @@ language specific configuration, see the doc for that language.
   `autoname` is very useful for small throw away scripts. For more serious
   things, always use the `name` option.
 
-- version
+- `version`
 
   Specifies the version number of the Inline extension object. It is used
   *only* for modules, and it must match the global variable $VERSION.
@@ -604,15 +604,15 @@ language specific configuration, see the doc for that language.
   up to be installed permanently into the Perl sitelib tree. Inline will croak
   if you use it otherwise.
 
-  The presence of the `version` parameter is the official way to let Inline know
-  that your code is an installable/installed module. Inline will never generate
-  an object in the temporary cache (_Inline/ directory) if `version` is set. It
-  will also never try to recompile a module that was installed into someone's
-  Perl site tree.
+  The presence of the `version` parameter is the official way to let Inline
+  know that your code is an installable/installed module. Inline will never
+  generate an object in the temporary cache (`_Inline/` directory) if
+  `version` is set. It will also never try to recompile a module that was
+  installed into someone's Perl site tree.
 
   So the basic rule is develop without `version`, and deliver with `version`.
 
-- with
+- `with`
 
   `with` can also be used as a configuration option instead of using the
   special 'with' syntax. Do this if you want to use different sections of
@@ -624,7 +624,7 @@ language specific configuration, see the doc for that language.
   Modules specified using the config form of `with` will *not* be automatically
   required. You must `use` them yourself.
 
-- using
+- `using`
 
   You can override modules that get used by ILSMs with the `using` option.
   This is typically used to override the default parser for [Inline::C], but
@@ -635,14 +635,14 @@ language specific configuration, see the doc for that language.
 
   This would tell [Inline::C] to use [Inline::C::Parser::RecDescent].
 
-- global_load
+- `global_load`
 
   This option is for compiled languages only. It tells Inline to tell
   DynaLoader to load an object file in such a way that its symbols can be
   dynamically resolved by other object files. May not work on all platforms.
   See the `global` shortcut below.
 
-- untaint
+- `untaint`
 
   You can use this option whenever you use Perl's `-T` switch, for taint
   checking. This option tells Inline to blindly untaint all tainted variables.
@@ -670,55 +670,55 @@ language specific configuration, see the doc for that language.
   Only do this if you are not worried about security risks. See the `unsafe`
   shortcut below.
 
-- force_build
+- `force_build`
 
   Makes Inline build (compile) the source code every time the program is run.
   The default is 0. See the `force` shortcut below.
 
-- build_noisy
+- `build_noisy`
 
   Tells ILSMs that they should dump build messages to the terminal rather than
   be silent about all the build details.
 
-- build_timers
+- `build_timers`
 
   Tells ILSMs to print timing information about how long each build phase took.
   Usually requires `Time::HiRes`.
 
-- clean_after_build
+- `clean_after_build`
 
   Tells Inline to clean up the current build area if the build was successful.
   Sometimes you want to `disable` this for debugging. Default is 1. See the
   `noclean` shortcut below.
 
-- clean_build_area
+- `clean_build_area`
 
   Tells Inline to clean up the old build areas within the entire Inline
   `directory`. Default is 0. See the `clean` shortcut below.
 
-- print_info
+- `print_info`
 
   Tells Inline to print various information about the source code. Default is
   0. See the `info` shortcut below.
 
-- print_version
+- `print_version`
 
   Tells Inline to print version info about itself. Default is 0. See the
   `version` shortcut below.
 
-- reportbug
+- `reportbug`
 
   Puts Inline into 'reportbug' mode, which is what you want if you desire to
   report a bug.
 
-- rewrite_config_file
+- `rewrite_config_file`
 
-  Default is 0, but setting 'rewrite_config_file => 1' will mean that the
+  Default is 0, but setting `rewrite_config_file => 1` will mean that the
   existing configuration file in the Inline `directory` will be overwritten.
   (This is useful if the existing config file is not up to date as regards
   supported languages.)
 
-- warnings
+- `warnings`
 
   This option tells Inline whether to print certain warnings. Default is 1.
 
@@ -727,51 +727,51 @@ language specific configuration, see the doc for that language.
 This is a list of all the shortcut configuration options currently available
 for Inline. Specify them from the command line when running Inline scripts.
 
-    perl -MInline=noclean inline_script.pl
+  perl -MInline=noclean inline_script.pl
 
 or
 
-    perl -MInline=info,force,noclean inline_script.pl
+  perl -MInline=info,force,noclean inline_script.pl
 
 You can specify multiple shortcuts separated by commas. They are not case
 sensitive. You can also specify shortcuts inside the Inline program like this:
 
-    use Inline 'info', 'force', 'noclean';
+  use Inline 'info', 'force', 'noclean';
 
 NOTE: If a `'use Inline'` statement is used to set shortcuts, it can not be
 used for additional purposes.
 
-- clean
+- `clean`
 
   Tells Inline to remove any build directories that may be lying around in your
   build area. Normally these directories get removed immediately after a
   successful build. Exceptions are when the build fails, or when you use the
   `noclean` or `reportbug` options.
 
-- force
+- `force`
 
   Forces the code to be recompiled, even if everything is up to date.
 
-- global
+- `global`
 
   Turns on the `global_load` option.
 
-- info
+- `info`
 
   This is a very useful option when you want to know what's going on under the
   hood. It tells Inline to print helpful information to `STDERR`.  Among the
   things that get printed is a list of which Inline functions were successfully
   bound to Perl.
 
-- noclean
+- `noclean`
 
   Tells Inline to leave the build files after compiling.
 
-- noisy
+- `noisy`
 
   Use the `build_noisy` option to print messages during a build.
 
-- reportbug
+- `reportbug`
 
   Puts Inline into `reportbug` mode, which does special processing when you
   want to report a bug. `reportbug` also automatically forces a build, and
@@ -782,46 +782,46 @@ used for additional purposes.
   NOTE: `reportbug` informs you to use the tar command. If your system does not
   have tar, please use the equivalent `zip` command.
 
-- safe
+- `safe`
 
   Turns `safemode` on. `untaint` will turn this on automatically. While
   this mode performs extra security checking, it does not guarantee safety.
 
-- site_install
+- `site_install`
 
   This parameter used to be used for creating installable Inline modules.  It
   has been removed from Inline altogether and replaced with a much simpler and
   more powerful mechanism, `Inline::MakeMaker`. See the section below on how to
   create modules with Inline.
 
-- _testing
+- `_testing`
 
   Used internally by C/t/09parser.t and C/t/10callback.t(in the Inline::C test
   suite). Setting this option with Inline::C will mean that files named
-  'parser_id' and 'void_test' are created in the ./Inline_test directory,
+  `parser_id` and `void_test` are created in the `./Inline_test` directory,
   creating that directory if it doesn't already exist. The files (but not the
-  ./Inline_test directory) are cleaned up by calling
-  Inline::C::_testing_cleanup().  Also used by t/06rewrite_config.t to trigger
-  a warning.
+  `./Inline_test directory`) are cleaned up by calling
+  `Inline::C::_testing_cleanup()`.  Also used by `t/06rewrite_config.t` to
+  trigger a warning.
 
-- timers
+- `timers`
 
   Turn on `build_timers` to get extra diagnostic info about builds.
 
-- unsafe
+- `unsafe`
 
   Turns `safemode` off. Use this in combination with `untaint` for
   slightly faster startup time under `-T`. Only use this if you are sure
   the environment is safe.
 
-- untaint
+- `untaint`
 
   Turn the `untaint` option on. Used with `-T` switch.  In terms of secure
   practices, this is definitely *not* a recommended way of dealing with taint
   checking, but it's the *only* option currently available with Inline. Use it
   at your own risk.
 
-- version
+- `version`
 
   Tells Inline to report its release version.
 
@@ -895,11 +895,11 @@ following directive to the Makefile.PL's WriteMakefile():
       'ExtUtils::MakeMaker'   => 6.52,
   },
 
-This "CONFIGURE_REQUIRES" directive ensures that the cpan shell will install
+This `CONFIGURE_REQUIRES` directive ensures that the cpan shell will install
 Inline on the user's machine (if it's not already present) before building your
 Inline-based module.  Specifying of "ExtUtils::MakeMaker => 6.52," is optional,
 and can be omitted if you like. It ensures only that some harmless warnings
-relating to the "CONFIGURE_REQUIRES" directive won't be emitted during the
+relating to the `CONFIGURE_REQUIRES` directive won't be emitted during the
 building of the module. It also means, of course, that ExtUtils::Makemaker will
 first be updated on the user's machine unless the user already has version 6.52
 or later.
@@ -923,7 +923,7 @@ Now all you need to do is:
 
 That will generate the file `Math-Simple-0.20.tar.gz` which is a distributable
 package. (It will also generate some harmless warnings in relation to
-"CONFIGURE_REQUIRES" unless the version of your ExtUtils::MakeMaker is 6.52 or
+`CONFIGURE_REQUIRES` unless the version of your ExtUtils::MakeMaker is 6.52 or
 later.) That's all there is to it.
 
 *IMPORTANT NOTE*: Although the above steps will produce a workable module, you
@@ -994,22 +994,22 @@ Inline performs the following steps:
   By default Inline will try to build and install under the first place that
   meets one of the following conditions:
 
-    A) The DIRECTORY= config option; if specified
-    B) The PERL_INLINE_DIRECTORY environment variable; if set
-    C) .Inline/ (in current directory); if exists and $PWD != $HOME
-    D) bin/.Inline/ (in directory of your script); if exists
-    E) ~/.Inline/; if exists
-    F) ./_Inline/; if exists
-    G) bin/_Inline; if exists
-    H) Create ./_Inline/; if possible
-    I) Create bin/_Inline/; if possible
+  + The DIRECTORY= config option; if specified
+  + The `PERL_INLINE_DIRECTORY` environment variable; if set
+  + `.Inline/` (in current directory); if exists and `$PWD != $HOME`
+  + bin/.Inline/ (in directory of your script); if exists
+  + `~/.Inline/` - if exists
+  + `./_Inline/` - if exists
+  + `bin/_Inline` - if exists
+  + Create `./_Inline/` - if possible
+  + Create `bin/_Inline/` - if possible
 
   Failing that, Inline will croak. This is rare and easily remedied by just
   making a directory that Inline will use.
 
-  If the PERL_INSTALL_ROOT Environment Variable has been set, you will need to
-  make special provision for that if the 'make install' phase of your Inline
-  scripts are to succeed.
+  If the `PERL_INSTALL_ROOT` Environment Variable has been set, you will need
+  to make special provision for that if the 'make install' phase of your
+  Inline scripts are to succeed.
 
   If the module option is being compiled for permanent installation, then
   Inline will only use `./_Inline/` to build in, and the
