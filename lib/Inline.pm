@@ -79,10 +79,15 @@ sub SAFEMODE {$safemode}
 # This is where everything starts.
 #==============================================================================
 sub import {
+    my $class = shift;
+    $class->import_heavy(@_);
+}
+
+sub import_heavy {
     local ($/, $") = ("\n", ' '); local ($\, $,);
 
     my $o;
-    my ($pkg, $script) = caller;
+    my ($pkg, $script) = caller(1);
     # Not sure what this is for. Let's see what breaks.
     # $pkg =~ s/^.*[\/\\]//;
     my $class = shift;
