@@ -1,4 +1,9 @@
 ---
+version: 0.78
+date:    Tue Dec  2 15:21:30 EST 2014
+changes:
+- Move working code of Inline::import to Inline::import_heavy to support Inline::Module
+---
 version: 0.77
 date:    Fri Sep 19 23:13:20 UTC 2014
 changes:
