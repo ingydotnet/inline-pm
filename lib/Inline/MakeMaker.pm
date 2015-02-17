@@ -94,9 +94,10 @@ END
 
 MAKEFILE
     for (0..$#objects) {
+        # the subdivision in hashes is done to avoid {}, which break dmake
         print MAKEFILE <<MAKEFILE;
 $obj_rules[$_]: \$(TO_INST_PM)
-\t\$(PERL) -Mblib -MInline=NOISY,_INSTALL_ -M$objects[$_] -e"Inline::satisfy_makefile_dep({API => {modinlname => '$obj_rules[$_]', module => '$objects[$_]'}});" $version \$(INST_ARCHLIB)
+\t\$(PERL) -Mblib -MInline=NOISY,_INSTALL_ -M$objects[$_] -e"my %A = (modinlname => '$obj_rules[$_]', module => '$objects[$_]'); my %S = (API => \\%A); Inline::satisfy_makefile_dep(\\%S);" $version \$(INST_ARCHLIB)
 MAKEFILE
     }
 
