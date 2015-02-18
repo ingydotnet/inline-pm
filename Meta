@@ -1,12 +1,12 @@
 =meta: 0.0.2
 
 name: Inline
-version: 0.78
-abstract: Write Perl subroutines in other programming languages
+version: 0.79
+abstract: Write Perl Subroutines in Other Programming Languages
 homepage: https://metacpan.org/release/Inline
 language: perl
 license: perl
-copyright: 2000-2014
+copyright: 2000-2015
 
 author:
   name: Ingy döt Net

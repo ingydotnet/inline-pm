@@ -1,9 +1,4 @@
-Inline
-======
-
-Write Perl Subroutines in Other Programming Languages
-
-<badge travis coveralls ingydotnet/inline-pm>
+<<<cpan-head>>>
 
 = Synopsis
 
@@ -1091,7 +1086,7 @@ Sisyphus <sisyphus@cpan.org> fixed some bugs and is current co-maintainer.
 
 = Copyright
 
-* Copyright 2000-2014. Ingy döt Net.
+* Copyright 2000-2015. Ingy döt Net.
 * Copyright 2008, 2010-2014. Sisyphus.
 
 This program is free software; you can redistribute it and/or modify it under
