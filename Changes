@@ -1,4 +1,9 @@
 ---
+version: 0.80
+date:    
+changes:
+- Fix dependency problem in Inline::MakeMaker affecting parallel builds
+---
 version: 0.79
 date:    Tue Feb 17 16:16:55 PST 2015
 changes:
