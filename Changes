@@ -1,6 +1,6 @@
 ---
 version: 0.80
-date:    
+date:    Fri Mar 13 20:03:52 PDT 2015
 changes:
 - Fix dependency problem in Inline::MakeMaker affecting parallel builds
 ---
@@ -12,7 +12,8 @@ changes:
 version: 0.78
 date:    Tue Dec  2 15:21:30 EST 2014
 changes:
-- Move working code of Inline::import to Inline::import_heavy to support Inline::Module
+- Move working code of Inline::import to Inline::import_heavy to support
+  Inline::Module
 ---
 version: 0.77
 date:    Fri Sep 19 23:13:20 UTC 2014
