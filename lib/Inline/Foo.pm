@@ -63,6 +63,7 @@ sub build {
     $o->mkpath($path) unless -d $path;
     open FOO_OBJ, "> $obj"
       or croak "Can't open $obj for output\n$!";
+    binmode(FOO_OBJ, ':utf8');
     print FOO_OBJ $code;
     close \*FOO_OBJ;
 }
@@ -72,6 +73,7 @@ sub load {
     my $obj = $o->{API}{location};
     open FOO_OBJ, "< $obj"
       or croak "Can't open $obj for output\n$!";
+    binmode(FOO_OBJ, ':utf8');
     my $code = join '', <FOO_OBJ>;
     close \*FOO_OBJ;
     eval "package $o->{API}{pkg};\n$code";
