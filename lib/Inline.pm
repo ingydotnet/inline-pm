@@ -7,10 +7,12 @@ use Inline::denter;
 use Config;
 use Carp;
 use Cwd qw(abs_path cwd);
+use Encode;
 use File::Spec;
 use File::Spec::Unix;
 use Fcntl qw(LOCK_EX LOCK_UN);
 use version;
+use utf8;
 
 my %CONFIG = ();
 my @DATA_OBJS = ();
@@ -461,7 +463,11 @@ sub check_installed {
     $o->{INLINE}{object_ready} = 0;
     unless ($o->{API}{code} =~ /^[A-Fa-f0-9]{32}$/) {
         require Digest::MD5;
-        $o->{INLINE}{md5} = Digest::MD5::md5_hex($o->{API}{code});
+        my $encoded_code = $o->{API}{code};
+        if ( utf8::is_utf8($encoded_code)) {
+            $encoded_code = Encode::encode_utf8($encoded_code);
+        }
+        $o->{INLINE}{md5} = Digest::MD5::md5_hex($encoded_code);
     }
     else {
         $o->{INLINE}{md5} = $o->{API}{code};
