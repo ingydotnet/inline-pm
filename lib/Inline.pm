@@ -827,11 +827,14 @@ sub create_config_file {
         # Therefore we need to grep for it - otherwise, if P::RD *is* in a different PERL5LIB
         # directory the ensuing rebuilt @INC will not include that directory and attempts to use
         # Inline::CPP (and perhaps other Inline modules) will fail because P::RD isn't found.
-        my @_inc = map { "-I$_" }
-       ($inline,
-        grep {(-d File::Spec->catdir($_,"Inline") or -d File::Spec->catdir($_,"auto","Inline") or -e File::Spec->catdir($_,"Parse/RecDescent.pm"))} @INC);
-       system $perl, @_inc, "-MInline=_CONFIG_", "-e1", "$dir"
-          and croak M20_config_creation_failed($dir);
+        my @_inc = map { "-I\"$_\"" } (grep {(
+            -d File::Spec->catdir($_,"Inline") or
+            -d File::Spec->catdir($_,"auto","Inline") or
+            -e File::Spec->catdir($_,"Parse/RecDescent.pm") or
+            -e File::Spec->catdir($_,"Cwd.pm")
+        )} @INC, $inline);
+        my @cmd = ($perl, @_inc, "-MInline=_CONFIG_", "-e1", "$dir");
+        system @cmd and croak M20_config_creation_failed($dir, join(" ",@cmd));
         return;
     }
 
@@ -1621,10 +1624,10 @@ END
 }
 
 sub M20_config_creation_failed {
-    my ($dir) = @_;
+    my ($dir, $cmd) = @_;
     my $file = File::Spec->catfile(${dir}, $configuration_file);
     return <<END;
-Failed to autogenerate ${file}.
+Failed to autogenerate ${file} via ${cmd}:
 
 END
 }
