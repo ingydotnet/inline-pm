@@ -6,6 +6,22 @@ use Test::More;
 
 use Inline conFig => DiREcTOrY => $TestInlineSetup::DIR;
 
+unless ($TestInlineSetup::DIAG) {
+    diag <<'EOD'
+Unable to load diagnostics module, test results are unaffected.
+
+The diagnostics module cannot be loaded. The module gets its
+explanations for messages from the perldoc file perldiag.pod.
+
+Although both the module and the perldoc file are core parts of perl,
+some packaging systems distribute them in separate packages.
+
+E.g. in Cygwin this package is called perl_pods. Installing this
+package should make the diagnostics module load correctly.
+
+EOD
+}
+
 use Inline Foo => File::Spec->catfile(File::Spec->curdir(),$t,'file');
 ok(test1('test1'), 'read external file');
 
