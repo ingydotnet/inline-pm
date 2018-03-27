@@ -1,7 +1,12 @@
 use strict; use warnings;
 package TestInlineSetup;
 
-use diagnostics;
+our $DIAG =  eval {
+    require diagnostics;
+    diagnostics->import();
+    1;
+};
+
 use File::Path;
 use File::Spec;
 
