@@ -4,6 +4,7 @@ use strict;
 use base 'Exporter';
 use ExtUtils::MakeMaker();
 use Carp;
+use version;
 
 our @EXPORT = qw(WriteMakefile WriteInlineMakefile);
 our $VERSION = '0.80';
@@ -40,10 +41,8 @@ END
         $version = ExtUtils::MM_Unix->parse_version($args{VERSION_FROM})
           or croak "Can't determine version for $name\n";
     }
-    croak <<END unless $version =~ /^\d\.\d\d$/;
-Invalid version '$version' for $name.
-Must be of the form '#.##'. (For instance '1.23')
-END
+    croak "Invalid 'version.pm' version '$version' for '$name'.\n"
+        unless version::is_lax($version);
 
     # Provide a convenience rule to clean up Inline's messes
     $args{clean} = { FILES => "_Inline *.inl " }

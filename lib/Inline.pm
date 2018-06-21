@@ -10,6 +10,7 @@ use Cwd qw(abs_path cwd);
 use File::Spec;
 use File::Spec::Unix;
 use Fcntl qw(LOCK_EX LOCK_UN);
+use version;
 
 my %CONFIG = ();
 my @DATA_OBJS = ();
@@ -395,7 +396,8 @@ sub check_config {
                   unless $value =~ /^[a-zA-Z_](\w|::)*$/;
             }
             elsif ($key eq 'VERSION') {
-                croak M13_usage_VERSION($value) unless $value =~ /^\d\.\d\d*$/;
+                croak M13_usage_VERSION($value)
+                    unless version::is_lax($value);
             }
             $o->{CONFIG}{$key} = $value;
         }
@@ -1536,8 +1538,7 @@ END
 sub M13_usage_VERSION {
     my ($version) = @_;
     return <<END;
-Invalid value for VERSION config option: '$version'
-Must be of the form '#.##'.
+Invalid (according to version.pm) VERSION config option: '$version'
 (Should also be specified as a string rather than a floating point number)
 
 END
