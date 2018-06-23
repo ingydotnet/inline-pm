@@ -12,7 +12,7 @@ Inline - Write Perl Subroutines in Other Programming Languages
 
 =head1 Version
 
-This document describes L<Inline> version B<0.80>.
+This document describes L<Inline> version B<0.80_01>.
 
 =head1 Synopsis
 

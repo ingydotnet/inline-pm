@@ -1,4 +1,13 @@
 ---
+version: 0.80_01
+date:    Fri Jun 22 21:39:49 MDT 2018
+changes:
+- PR/59 @pypt++ Travis test against Perl 5.22, 5.24, 5.26
+- PR/60 @pypt++ Calculate MD5 hashes of UTF-8 source by encoding it first
+- PR/61 @rurban++ Fix wrong -I in subcmd
+- PR/66 @soren++ Fix failing tests on systems missing perldiag.pod
+- PR/67 NERDVANA++ Relax the version requirement for installing modules
+---
 version: 0.80
 date:    Fri Mar 13 20:03:52 PDT 2015
 changes:
