@@ -33,6 +33,20 @@ rules about how `[_.]Inline/` directories are used\/created. But it was
 designed to give you the most flexibility\/ease-of-use. Never be afraid to
 nuke 'em. They'll just pop right back next time they're needed.  :)
 
+== What is the best way to package Inline code for CPAN?
+
+This distribution includes Inline::MakeMaker, described below, which takes
+special steps during the installation of your module to make sure the code
+gets compiled and installed, rather than compiled by users at runtime.
+But, users of your module need to install Inline and the language support
+module like Inline::CPP as prerequisites for your module.
+
+A better way to distribute your module is with Inline::Module, which takes
+special steps to remove dependencies on Inline::* and convert it to a
+plain XS module during the construction of your distribution before you
+upload it to CPAN.  It also integrates easily with Dist::Zilla and other
+modern authoring tools for a more streamlined authoring experience.
+
 == Whatever happened to the `SITE_INSTALL` option?
 
 `SITE_INSTALL` is gone. I was going to leave it in and change the semantics,
