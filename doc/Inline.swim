@@ -263,6 +263,12 @@ following syntaxes:
   ie './file.ext' instead of simply 'file.ext'.) These methods are less
   frequently used but may be useful in some situations.
 
+  For instance, to load your C++ code from a file named the same as your perl
+  module with a swapped file extension, you can use:
+
+    use Inline CPP => (__FILE__ =~ s/\.pm$/.cpp/r);
+
+
 - Shorthand
 
   If you are using the 'DATA' or 'file' methods described above *and* there are
@@ -596,7 +602,8 @@ language specific configuration, see the doc for that language.
   Specifies the version number of the Inline extension object. It is used
   *only* for modules, and it must match the global variable $VERSION.
   Additionally, this option should used if (and only if) a module is being set
-  up to be installed permanently into the Perl sitelib tree. Inline will croak
+  up to be installed permanently into the Perl sitelib tree using
+  Inline::MakeMaker (NOT used by Inline::Module). Inline will croak
   if you use it otherwise.
 
   The presence of the `version` parameter is the official way to let Inline
@@ -822,9 +829,20 @@ used for additional purposes.
 
 = Writing Modules with Inline
 
-Writing CPAN modules that use C code is easy with Inline. Let's say that you
-wanted to write a module called `Math::Simple`. Start by using the following
-command:
+The current preferred way to author CPAN modules with Inline is to use
+Inline::Module (distributed separately).  Inline ships with Inline::MakeMaker,
+which helps you set up a Makefile.PL that invokes Inline at install time to
+compile all the code before it gets installed, but the resulting module still
+depends on Inline and the language support module like Inline::C.  In order to
+avoid this dependency, what you really want to do is convert your distribution
+to plain XS before uploading it to CPAN.  Inline::Module fills that role, and
+also integrates well with more modern authoring tools.
+
+See Inline::Module for details on that approach, or continue reading below for
+the older Inline::MakeMaker technique.
+
+Let's say that you wanted to write a module called `Math::Simple`. Start by
+using the following command:
 
   h2xs -PAXn Math::Simple
 
@@ -866,7 +884,7 @@ Next, modify the `Simple.pm` file to look like this:
 The important things to note here are that you *must* specify a `name` and
 `version` parameter. The `name` must match your module's package name. The
 `version` parameter must match your module's `$VERSION` variable and they must
-be of the form `/^\d\.\d\d$/`.
+be considered valid by `version::parse`.
 
 NOTE: These are Inline's sanity checks to make sure you know what you're doing
 before uploading your code to CPAN. They insure that once the module has been
