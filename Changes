@@ -1,4 +1,9 @@
 ---
+version: 0.80_03
+date:    Fri 01 Feb 2019 11:26:18 PM CET
+changes:
+- Fix @inc, add another exception for Inline::c (SISYPHUS++)
+---
 version: 0.80_02
 date:    Fri Jun 22 22:21:11 MDT 2018
 changes:
