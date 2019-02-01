@@ -6,7 +6,7 @@ abstract: Write Perl Subroutines in Other Programming Languages
 homepage: https://metacpan.org/release/Inline
 language: perl
 license: perl
-copyright: 2000-2018
+copyright: 2000-2019
 
 author:
   name: Ingy döt Net
