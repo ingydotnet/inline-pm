@@ -829,7 +829,13 @@ sub create_config_file {
         # Inline::CPP (and perhaps other Inline modules) will fail because P::RD isn't found.
         my @_inc = map { "-I$_" }
        ($inline,
-        grep {(-d File::Spec->catdir($_,"Inline") or -d File::Spec->catdir($_,"auto","Inline") or -e File::Spec->catdir($_,"Win32/Mutex.pm") or -e File::Spec->catdir($_,"Parse/RecDescent.pm"))} @INC);
+        grep {(
+               -d File::Spec->catdir($_,"Inline")
+            or -d File::Spec->catdir($_,"auto","Inline")
+            or -e File::Spec->catdir($_,"Win32", "Mutex.pm")
+            or -d File::Spec->catdir($_,"auto", "Win32", "Mutex")
+            or -e File::Spec->catdir($_,"Parse", "RecDescent.pm")
+        )} @INC);
        system $perl, @_inc, "-MInline=_CONFIG_", "-e1", "$dir"
           and croak M20_config_creation_failed($dir);
         return;
