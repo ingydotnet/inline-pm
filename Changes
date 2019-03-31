@@ -1,4 +1,9 @@
 ---
+version: 0.82
+date:    Sun 31 Mar 2019 04:10:24 PM CEST
+changes:
+- Another fix for @INC PR#69 TINITA
+---
 version: 0.81
 date:    Sun 03 Feb 2019 04:42:05 PM CET
 changes:
