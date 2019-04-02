@@ -15,6 +15,7 @@ END_OF_FOO
 
 ok(test2('test2'), 'PATTERN');
 use Inline Foo => ConFig => ENABLE => 'BaR';
+use Inline Foo => ConFig =>; # check accumulates instead of reset
 use Inline Foo => <<'END_OF_FOO', PAtTERN => 'gogo-';
 gogo-sub test2 {
     bar-return $_[0] gogo-eq 'test2';
