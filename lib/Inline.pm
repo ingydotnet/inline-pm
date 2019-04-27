@@ -843,7 +843,6 @@ sub create_config_file {
 
     my ($lib, $mod, $register, %checked,
         %languages, %types, %modules, %suffixes);
-  LIB:
     for my $lib (@INC) {
         next unless -d File::Spec->catdir($lib,"Inline");
         opendir LIB, File::Spec->catdir($lib,"Inline")
@@ -851,7 +850,7 @@ sub create_config_file {
         while ($mod = readdir(LIB)) {
             next unless $mod =~ /\.pm$/;
             $mod =~ s/\.pm$//;
-            next LIB if ($checked{$mod}++);
+            next if ($checked{$mod}++);
             if ($mod eq 'Config') {     # Skip Inline::Config
                 warn M14_usage_Config();
                 next;
