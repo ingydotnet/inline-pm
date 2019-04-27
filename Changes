@@ -1,4 +1,11 @@
 ---
+version: 0.82_001
+date:    Sat 27 Apr 2019 02:51:43 PM CEST
+changes:
+- Reference Inline::Module in docs related to installation (PR#68 @nrdvana++)
+- "create_config_file: don't accidentally skip rest of directory scanning (PR#73 @eserte++)"
+- Merge per-language config, not overwrite (PR#71 @mohawk++)
+---
 version: 0.82
 date:    Sun 31 Mar 2019 04:10:24 PM CEST
 changes:
