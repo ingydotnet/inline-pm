@@ -1,6 +1,6 @@
 ---
-version: 0.82_001
-date:    Sat 27 Apr 2019 02:51:43 PM CEST
+version: 0.83
+date:    Sun 28 Apr 2019 11:30:37 AM CEST
 changes:
 - Reference Inline::Module in docs related to installation (PR#68 @nrdvana++)
 - "create_config_file: don't accidentally skip rest of directory scanning (PR#73 @eserte++)"
