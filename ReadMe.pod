@@ -49,8 +49,8 @@ is modified) so you only take the performance hit once. Code that is Inlined
 into distributed modules (like on the CPAN) will get compiled when the module
 is installed, so the end user will never notice the compilation time.
 
-Best of all, it works the same on both Unix and Microsoft Windows. See L<Inline-
-Support> for support information.
+Best of all, it works the same on both Unix and Microsoft Windows. See L<Inline-Support>
+for support information.
 
 =head2 Why Inline?
 
