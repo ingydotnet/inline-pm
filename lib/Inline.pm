@@ -802,6 +802,25 @@ sub check_config_file {
     $o->{INLINE}{ILSM_suffix} = $config{suffixes}->{$o->{API}{language}};
 }
 
+sub derive_minus_I {
+    my $o = shift;
+    require Cwd;
+    my %libexclude = map { $_=>1 }
+      # perl has these already
+      (grep length, map $Config{$_},
+        qw(archlibexp privlibexp sitearchexp sitelibexp vendorarchexp vendorlibexp)),
+      (defined $ENV{PERL5LIB} ? (
+        map { my $l = $_; ($l, map File::Spec->catdir($l, $Config{$_}), qw(version archname)) }
+        split $Config{path_sep}, $ENV{PERL5LIB}
+      ) : ()),
+      ;
+    my @libinclude = grep !$libexclude{$_}, @INC;
+    # grep is because on Windows, Cwd::abs_path blows up on non-exist dir
+    @libinclude = map Cwd::abs_path($_), grep -e, @libinclude;
+    my %seen; @libinclude = grep !$seen{$_}++, @libinclude; # de-dup
+    @libinclude;
+}
+
 #==============================================================================
 # Auto-detect installed Inline language support modules
 #==============================================================================
@@ -816,28 +835,10 @@ sub create_config_file {
         my $perl = $Config{perlpath};
         $perl = $^X unless -f $perl;
         ($perl) = $perl =~ /(.*)/s if UNTAINT;
-        local $ENV{PERL5LIB} if defined $ENV{PERL5LIB};
         local $ENV{PERL5OPT} if defined $ENV{PERL5OPT};
-        my $inline = $INC{'Inline.pm'};
-        $inline ||= File::Spec->curdir();
-        my($v,$d,$f) = File::Spec->splitpath($inline);
-        $f = "" if $f eq 'Inline.pm';
-        $inline = File::Spec->catpath($v,$d,$f);
 
-        # P::RD may be in a different PERL5LIB dir to Inline (as happens with cpan smokers).
-        # Therefore we need to grep for it - otherwise, if P::RD *is* in a different PERL5LIB
-        # directory the ensuing rebuilt @INC will not include that directory and attempts to use
-        # Inline::CPP (and perhaps other Inline modules) will fail because P::RD isn't found.
-        my @_inc = map { "-I$_" }
-       ($inline,
-        grep {(
-               -d File::Spec->catdir($_,"Inline")
-            or -d File::Spec->catdir($_,"auto","Inline")
-            or -e File::Spec->catdir($_,"Win32", "Mutex.pm")
-            or -d File::Spec->catdir($_,"auto", "Win32", "Mutex")
-            or -e File::Spec->catdir($_,"Parse", "RecDescent.pm")
-        )} @INC);
-       system $perl, @_inc, "-MInline=_CONFIG_", "-e1", "$dir"
+        my @_inc = map "-I$_", $o->derive_minus_I;
+	system $perl, @_inc, "-MInline=_CONFIG_", "-e1", "$dir"
           and croak M20_config_creation_failed($dir);
         return;
     }

@@ -342,6 +342,15 @@ This section will describe all of the Inline object "API" attributes.
 
   This is the shared library extension name. (Usually 'so' or 'dll').
 
+== derive_minus_I Method
+
+ILSMs may need to run Perl subprocesses with a similar environment
+to the current one - particularly `@INC`. This method can be called to
+return a list of absolute paths to pass to a Perl interpreter to recreate
+that environment. You will need to prepend `-I` to each one. This method
+omits from that list any paths that occur in `$ENV{PERL5LIB}` or the
+Perl default libraries since those will be available already.
+
 = The Inline Namespace
 
 `Inline.pm` has been set up so that anyone can write their own language support
