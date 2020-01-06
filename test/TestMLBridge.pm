@@ -16,6 +16,7 @@ sub derive_minus_i {
 
     join '',
         map "$_\n",
+        grep { $_ ne 't' and $_ ne 'inc/lib' }
         map abs2rel($_),
         Inline->derive_minus_I;
 }
