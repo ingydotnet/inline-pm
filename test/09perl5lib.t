@@ -2,6 +2,7 @@
 
 
 *perl.derive-minus-i == *minus-i-paths
+  :"Test Inline->derive_minus_I -- +"
 
 
 === TEST 1 - No settings
@@ -9,7 +10,7 @@
 --- minus-i-paths
 
 
-=== TEST 2 - @INC added to with real dirs as non-existing filtered out
+=== TEST 2 - Add relative paths to @INC
 --- perl
 push @INC, qw(doc eg);
 
