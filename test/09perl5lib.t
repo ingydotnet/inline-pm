@@ -1,19 +1,18 @@
 #!/usr/bin/env testml
 
-*perl.derive-minus-i == *perl5lib
+
+*perl.derive-minus-i == *minus-i-paths
+
 
 === TEST 1 - No settings
 --- perl
-
-
---- perl5lib
-
+--- minus-i-paths
 
 
 === TEST 2 - @INC added to with real dirs as non-existing filtered out
 --- perl
 push @INC, qw(doc eg);
 
---- perl5lib
+--- minus-i-paths
 doc
 eg
