@@ -35,3 +35,4 @@ test:
 
 =zild:
   test-000: require
+  include_testml: 1

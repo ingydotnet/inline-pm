@@ -32,6 +32,8 @@ before_install:
 - perl -V
 
 install:
+- git clone --depth=1
+  git://github.com/testml-lang/testml ../testml
 - cpan-install --coverage
   Digest::MD5
   File::Spec
@@ -44,6 +46,8 @@ before_script:
 
 script:
 - true &&
+  source ../testml/.rc &&
+  TESTML_RUN=perl5-tap
   prove -lv test/
 
 after_success:
