@@ -8,6 +8,9 @@ use File::Spec::Functions qw(abs2rel);
 sub derive_minus_i {
     my ($self, $perl) = @_;
 
+    mkdir 'doc';
+    mkdir 'eg';
+
     local @INC = @INC;
     eval $perl;
 
