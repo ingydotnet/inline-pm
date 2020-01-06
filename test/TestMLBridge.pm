@@ -5,7 +5,7 @@ use base 'TestML::Bridge';
 use Inline;
 use File::Spec::Functions qw(rel2abs abs2rel);
 
-sub derive_minus_I {
+sub derive_minus_i {
     my ($self, $perl) = @_;
 
     local @INC = @INC;

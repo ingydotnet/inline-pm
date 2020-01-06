@@ -1,6 +1,6 @@
 #!/usr/bin/env testml
 
-*perl.derive-minus-I == *perl5lib
+*perl.derive-minus-i == *perl5lib
 
 === TEST 1 - No settings
 --- perl
