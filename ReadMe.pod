@@ -474,7 +474,8 @@ You can specify a single module or a list of them. Like:
 
     use Inline with => qw(Event Foo Bar);
 
-Currently, C<Event> is the only module that works I<with> Inline.
+Currently, modules that works I<with> Inline include C<Event>, C<PDL>, and
+those that use C<Alien::Build>.
 
 In order to make B<your> module work I<with> Inline in this way, your module
 needs to provide a class method called C<Inline> that takes an Inline language
