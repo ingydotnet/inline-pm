@@ -1,4 +1,9 @@
 ---
+version: 0.85
+date:    Mon Jan  6 07:33:52 PST 2020
+changes:
+- Fix a taint issue @mohawk2++
+---
 version: 0.84
 date:    Mon Jan  6 07:04:31 PST 2020
 changes:
