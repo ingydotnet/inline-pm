@@ -805,7 +805,7 @@ sub check_config_file {
 sub derive_minus_I {
     my $o = shift;
     require Cwd;
-    my %libexclude = map { $_=>1 }
+    my @libexclude = (
       # perl has these already
       (grep length, map $Config{$_},
         qw(archlibexp privlibexp sitearchexp sitelibexp vendorarchexp vendorlibexp)),
@@ -813,7 +813,14 @@ sub derive_minus_I {
         map { my $l = $_; ($l, map File::Spec->catdir($l, $Config{$_}), qw(version archname)) }
         split $Config{path_sep}, $ENV{PERL5LIB}
       ) : ()),
-      ;
+    );
+    if ($^O eq 'MSWin32') {
+      # Strawberry Perl Unix-ises its @INC, so we need to add Unix-y versions
+      push @libexclude,
+        map { my $d = $_; $d =~ s#\\#/#g; $d }
+        @libexclude;
+    }
+    my %libexclude = map { $_=>1 } @libexclude;
     my @libinclude = grep !$libexclude{$_}, grep { $_ ne '.' } @INC;
     # grep is because on Windows, Cwd::abs_path blows up on non-exist dir
     @libinclude = map Cwd::abs_path($_), grep -e, @libinclude;
