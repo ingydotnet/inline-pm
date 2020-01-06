@@ -1,4 +1,9 @@
 ---
+version: 0.85_001
+date:    Mon Jan  6 09:48:41 PST 2020
+changes:
+- Fix derive_minus_I on windows
+---
 version: 0.85
 date:    Mon Jan  6 07:33:52 PST 2020
 changes:
