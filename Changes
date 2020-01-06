@@ -1,4 +1,11 @@
 ---
+version: 0.84
+date:    Mon Jan  6 07:04:31 PST 2020
+changes:
+- https://github.com/ingydotnet/inline-pm/pull/75
+  Make correct PERL5LIB to pass on including -I flags
+  @mohawk2++
+---
 version: 0.83
 date:    Sun 28 Apr 2019 11:30:37 AM CEST
 changes:

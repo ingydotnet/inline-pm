@@ -7,7 +7,7 @@ This repository contains the source code for the Perl 5 module distribution:
 
     by Ingy döt Net
 
-  Copyright 2000-2019. Ingy döt Net.
+  Copyright 2000-2020. Ingy döt Net.
 
 License
 -------
@@ -59,6 +59,7 @@ This repoository contains the following top level files and directories:
 
   About       - This file describing the repository. (generated)
   Changes     - Change log file in YAML.
+  .gitignore  - Git's ignore file.
   Meta        - All metadata for the project.
   ReadMe.pod  - Top level ReadMe file for GitHub. (generated)
   .travis.yml - Travis CI test control file. (generated)
