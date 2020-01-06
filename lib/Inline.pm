@@ -818,6 +818,7 @@ sub derive_minus_I {
     # grep is because on Windows, Cwd::abs_path blows up on non-exist dir
     @libinclude = map Cwd::abs_path($_), grep -e, @libinclude;
     my %seen; @libinclude = grep !$seen{$_}++, @libinclude; # de-dup
+    @libinclude = map /(.*)/s, @libinclude if UNTAINT;
     @libinclude;
 }
 
