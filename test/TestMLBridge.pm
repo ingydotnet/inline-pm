@@ -17,4 +17,10 @@ sub derive_minus_i {
         Inline->derive_minus_I;
 }
 
+sub eval_catch {
+    my ($self, $perl) = @_;
+    eval $perl;
+    return $@;
+}
+
 1;

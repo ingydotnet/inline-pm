@@ -1,16 +1,29 @@
-use strict; use warnings;
-use lib -e 't' ? 't' : 'test';
-use TestInlineSetup;
-use Test::More tests => 3;
-use Inline Config => DIRECTORY => $TestInlineSetup::DIR;
+#!/usr/bin/env testml
 
-eval "use Inline Bogus => 'code';";
-like($@, qr/\QYou have specified 'Bogus' as an Inline programming language.
 
-I currently only know about the following languages:/, 'Bad first parameter');
+*perl.eval-catch =~ *error-patterns
 
-eval "use Inline 'force', 'hocum';";
-like($@, qr/\Q${\ Inline::M48_usage_shortcuts('hocum')}/, 'Bad shortcut');
 
-eval "use Inline Foo => 'xxx' => ENABLE => 'BOgUM';";
-like($@, qr/${\ Inline::Foo::usage_config('BOGUM') }/, 'Bad config option');
+=== Bad first parameter
+--- perl
+use Inline Bogus => 'code';
+--- error-patterns(@/)
+You have specified 'Bogus' as an Inline programming language.
+I currently only know about the following languages:
+
+
+=== Bad shortcut
+--- perl
+use Inline 'force', 'hocum';
+--- error-patterns(@/)
+Invalid shortcut 'hocum' specified.
+Valid shortcuts are:
+VERSION, INFO, FORCE, NOCLEAN, CLEAN, UNTAINT, SAFE, UNSAFE,
+GLOBAL, NOISY and REPORTBUG
+
+
+=== Bad config option
+--- perl
+use Inline Foo => 'xxx' => ENABLE => 'BOgUM';
+--- error-patterns(@/)
+'BOGUM' is not a valid config option for Inline::Foo
