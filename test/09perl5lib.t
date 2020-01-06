@@ -1,7 +1,7 @@
 #!/usr/bin/env testml
 
 
-*perl.derive-minus-i == *minus-i-paths
+derive-minus-i(*perl) == *minus-i-paths
   :"Test Inline->derive_minus_I -- +"
 
 
