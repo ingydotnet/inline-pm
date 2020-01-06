@@ -3,7 +3,7 @@ package TestMLBridge;
 use base 'TestML::Bridge';
 
 use Inline;
-use File::Spec::Functions qw(abs2rel);
+use File::Spec::Functions qw(abs2rel catdir);
 
 sub derive_minus_i {
     my ($self, $perl) = @_;
@@ -16,7 +16,7 @@ sub derive_minus_i {
 
     join '',
         map "$_\n",
-        grep { $_ ne 't' and $_ ne 'inc/lib' }
+        grep { $_ ne 't' and $_ ne catdir(qw(inc lib)) }
         map abs2rel($_),
         Inline->derive_minus_I;
 }
