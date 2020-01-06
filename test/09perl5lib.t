@@ -17,3 +17,10 @@ push @INC, qw(doc eg);
 --- minus-i-paths
 doc
 eg
+
+
+=== TEST 3 - Non-existing paths are removed
+--- perl
+push @INC, qw(foo doc bar eg baz);
+
+--- ^minus-i-paths
