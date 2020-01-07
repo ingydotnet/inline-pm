@@ -7,7 +7,7 @@ use Carp;
 use version;
 
 our @EXPORT = qw(WriteMakefile WriteInlineMakefile);
-our $VERSION = '0.85_002';
+our $VERSION = '0.85_003';
 
 sub WriteInlineMakefile {
     carp <<EOF;
