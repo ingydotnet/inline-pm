@@ -1,4 +1,9 @@
 ---
+version: 0.85_002
+date:    Tue Jan  7 07:33:57 PST 2020
+changes:
+- Fix missing Text::Diff problem for testing
+---
 version: 0.85_001
 date:    Mon Jan  6 09:48:41 PST 2020
 changes:
