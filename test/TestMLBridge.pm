@@ -6,7 +6,7 @@ use Inline;
 use File::Spec::Functions qw(abs2rel catdir);
 
 sub derive_minus_i {
-    my ($self, $perl, $paths) = @_;
+    my ($self, $perl, $paths_expected) = @_;
 
     mkdir 'doc';
     mkdir 'eg';
@@ -14,14 +14,12 @@ sub derive_minus_i {
     local @INC = @INC;
     eval $perl;
 
-    my @got = map abs2rel($_), Inline->derive_minus_I;
+    my %paths_got = map { abs2rel($_) => 1 } Inline->derive_minus_I;
 
-    my $out = '';
-    for my $path (split /\n/, $paths) {
-        $out .= "$path\n" if grep { $path eq $_ } @got;
-    }
-
-    return $out;
+    join '',
+        map "$_\n",
+        grep $paths_got{$_},
+        split /\n/, $paths_expected;
 }
 
 sub eval_catch {
