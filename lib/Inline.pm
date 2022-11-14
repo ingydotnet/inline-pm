@@ -1086,7 +1086,7 @@ sub env_untaint {
     {
     no warnings ('uninitialized'); # In case $ENV{$_} is set to undef.
       for (keys %ENV) {
-          ($ENV{$_}) = $ENV{$_} =~ /(.*)/;
+          ($ENV{$_}) = $ENV{$_} =~ /(.*)/s;
       }
     }
 
