@@ -53,7 +53,8 @@ sub build {
     $code =~ s/$pattern//g;
     $code =~ s/bar-//g if $o->{ILSM}{BAR};
     {
-        package Foo::Tester;
+        package
+            Foo::Tester;
         our $VERSION = '0.02';
         eval $code;
     }
