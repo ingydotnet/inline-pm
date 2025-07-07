@@ -750,7 +750,7 @@ sub check_config_file {
 
        my $load_cfg = sub {
            $o->create_config_file($DIRECTORY)
-             if not -e File::Spec->catfile($DIRECTORY, $configuration_file);
+             if not -s File::Spec->catfile($DIRECTORY, $configuration_file);
 
            open my $fh, "<", File::Spec->catfile($DIRECTORY,$configuration_file)
              or croak M17_config_open_failed($DIRECTORY);
