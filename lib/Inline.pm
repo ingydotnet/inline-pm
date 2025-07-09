@@ -730,10 +730,8 @@ sub check_config_file {
         my $cwd = Cwd::cwd();
         $DIRECTORY =
           $o->{INLINE}{DIRECTORY} = File::Spec->catdir($cwd, $did);
-        if (not -d $DIRECTORY) {
-            _mkdir($DIRECTORY, 0777)
-              or croak M16_DIRECTORY_mkdir_failed($DIRECTORY);
-        }
+        _mkdir($DIRECTORY, 0777)
+          or croak M16_DIRECTORY_mkdir_failed($DIRECTORY);
     }
     else {
         $DIRECTORY = $o->{INLINE}{DIRECTORY} =
@@ -1299,7 +1297,7 @@ sub mkpath {
     foreach (@parts){
         push(@done,$_);
         my $path = File::Spec->catpath($volume,File::Spec->catdir(@done),"");
-        -d $path || _mkdir($path, 0777);
+        _mkdir($path, 0777);
     }
     croak M53_mkdir_failed($mkpath)
       unless -d $mkpath;
@@ -1428,7 +1426,7 @@ sub _mkdir {
     my $mode = shift || 0777;
     ($dir) = ($dir =~ /(.*)/) if UNTAINT;
     $dir =~ s|[/\\:]$||;
-    return mkdir($dir, $mode);
+    return mkdir($dir, $mode) || $!{EEXIST};
 }
 
 #==============================================================================
