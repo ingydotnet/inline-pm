@@ -1,4 +1,10 @@
 ---
+version: 0.87
+date:    Thu Jul 10 01:22:04 PM PDT 2025
+changes:
+- Apply https://github.com/ingydotnet/inline-pm/pull/83 @mauke++
+- Apply https://github.com/ingydotnet/inline-pm/pull/85 @mauke++
+---
 version: 0.86
 date:    Wed Jan  8 21:19:58 PST 2020
 changes:
