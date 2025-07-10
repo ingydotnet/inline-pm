@@ -1295,7 +1295,8 @@ sub mkpath {
     foreach (@parts){
         push(@done,$_);
         my $path = File::Spec->catpath($volume,File::Spec->catdir(@done),"");
-        -d $path || _mkdir($path, 0777);
+        # Use _mkdir which now handles race conditions
+        _mkdir($path, 0777) unless -d $path;
     }
     croak M53_mkdir_failed($mkpath)
       unless -d $mkpath;
@@ -1419,12 +1420,37 @@ sub find_temp_dir {
     return $TEMP_DIR = abs_path($temp_dir);
 }
 
+#==============================================================================
+# Create a directory atomically, handling race conditions
+# This function handles the case where multiple processes try to create
+# the same directory simultaneously by treating "directory already exists"
+# as a successful operation.
+#==============================================================================
 sub _mkdir {
     my $dir = shift;
     my $mode = shift || 0777;
     ($dir) = ($dir =~ /(.*)/) if UNTAINT;
     $dir =~ s|[/\\:]$||;
-    return mkdir($dir, $mode);
+    
+    # Try to create the directory
+    my $result = mkdir($dir, $mode);
+    
+    # If mkdir failed, check if it's because the directory already exists
+    # This handles the race condition where another process created it first
+    if (!$result) {
+        my $errno = $!;
+        if ($errno == 17 || $errno == 13) {  # EEXIST (17) or EACCES (13)
+            # Directory already exists or permission denied
+            # Check if it actually exists now
+            if (-d $dir) {
+                return 1;  # Treat as success
+            }
+        }
+        # Set the original error back
+        $! = $errno;
+    }
+    
+    return $result;
 }
 
 #==============================================================================
